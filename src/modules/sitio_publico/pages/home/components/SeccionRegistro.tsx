@@ -1,0 +1,54 @@
+import { Box, Link, Typography } from "@mui/material";
+import { enlacesExternos } from "../../../constants/navegacionPublica";
+
+export function SeccionRegistro() {
+  return (
+    <Box
+      component="section"
+      sx={{
+        minHeight: { xs: 410, md: 415 },
+        bgcolor: "#dc3e26",
+        color: "#fff",
+        display: "grid",
+        placeItems: "center",
+        px: "8vw",
+        py: 8,
+        textAlign: "center",
+      }}
+    >
+      <Box>
+        <Typography
+          component="h2"
+          sx={{
+            fontFamily: "var(--fuente-ligera)",
+            fontSize: { xs: 50, md: 64 },
+            fontWeight: 400,
+            lineHeight: 1,
+          }}
+        >
+          Regístrate
+        </Typography>
+        <Typography
+          sx={{
+            mt: 1,
+            mb: 6,
+            fontFamily: "var(--fuente-ligera)",
+            fontSize: { xs: 21, md: 24 },
+          }}
+        >
+          Pruébanos y obtén timbres gratis.
+        </Typography>
+        <Link
+          href={enlacesExternos.registro}
+          target="_blank"
+          rel="noopener noreferrer"
+          color="inherit"
+          underline="hover"
+          sx={{ fontFamily: "var(--fuente-regular)", fontSize: 16 }}
+        >
+          Unirse
+        </Link>
+      </Box>
+    </Box>
+  );
+}

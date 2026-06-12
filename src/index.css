@@ -1,0 +1,59 @@
+@font-face {
+  font-family: "Aeonik Light";
+  src:
+    url("https://www.timbox.com.mx/wp-content/uploads/2021/02/Aeonik-Light.woff2")
+      format("woff2"),
+    url("https://www.timbox.com.mx/wp-content/uploads/2021/02/Aeonik-Light.woff")
+      format("woff");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Aeonik Regular";
+  src:
+    url("https://www.timbox.com.mx/wp-content/uploads/2021/02/Aeonik-Regular.woff2")
+      format("woff2"),
+    url("https://www.timbox.com.mx/wp-content/uploads/2021/02/Aeonik-Regular.woff")
+      format("woff");
+  font-display: swap;
+}
+
+:root {
+  --azul-timbox: #15212f;
+  --rojo-timbox: #dc3e26;
+  --gris-timbox: #e4e4e4;
+  --fuente-ligera: "Aeonik Light", "Segoe UI", sans-serif;
+  --fuente-regular: "Aeonik Regular", "Segoe UI", sans-serif;
+  font-family: var(--fuente-ligera);
+  color: var(--azul-timbox);
+  background: #f1f1f1;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body,
+#root {
+  min-width: 320px;
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+button,
+a {
+  font: inherit;
+}
