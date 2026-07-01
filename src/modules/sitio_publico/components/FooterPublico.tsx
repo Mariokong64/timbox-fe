@@ -6,7 +6,7 @@ import { columnasFooter } from "../constants/navegacionPublica";
 
 export function FooterPublico() {
   return (
-    <Box component="footer" sx={{ bgcolor: "#fff" }}>
+    <Box component="footer" sx={{ bgcolor: "var(--blanco-timbox)" }}>
       <Box
         sx={{
           width: "min(1120px, 86vw)",
@@ -43,7 +43,7 @@ export function FooterPublico() {
                   sx={{
                     fontFamily: "var(--fuente-regular)",
                     fontSize: 13,
-                    color: "rgba(21,33,47,.48)",
+                    color: "var(--texto-footer-claro)",
                   }}
                 >
                   {enlace.texto}
@@ -56,8 +56,8 @@ export function FooterPublico() {
 
       <Box
         sx={{
-          bgcolor: "#15212f",
-          color: "rgba(255,255,255,.5)",
+          bgcolor: "var(--azul-timbox)",
+          color: "var(--texto-blanco-medio)",
           minHeight: 100,
           px: { xs: 3, md: "11vw" },
           py: 2.5,

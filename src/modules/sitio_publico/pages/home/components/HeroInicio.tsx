@@ -9,11 +9,11 @@ export function HeroInicio() {
       sx={{
         position: "relative",
         minHeight: { xs: 900, md: 810 },
-        bgcolor: "#15212f",
+        bgcolor: "var(--azul-timbox)",
         backgroundImage: `url(${fondoHome})`,
         backgroundSize: "cover",
         backgroundPosition: { xs: "58% center", md: "center" },
-        color: "#fff",
+        color: "var(--blanco-timbox)",
       }}
     >
       <Box
@@ -23,7 +23,7 @@ export function HeroInicio() {
           inset: "0 auto auto 0",
           width: "29%",
           height: 580,
-          bgcolor: "#15212f",
+          bgcolor: "var(--azul-timbox)",
         }}
       />
 
@@ -32,14 +32,14 @@ export function HeroInicio() {
         sx={{
           display: { xs: "none", md: "block" },
           position: "absolute",
-          top: 205,
+          top: 70,
           left: "37.2vw",
-          width: 470,
+          width: 530,
           m: 0,
-          color: "#fff",
+          color: "var(--blanco-timbox)",
           fontFamily: "var(--fuente-ligera)",
-          fontSize: 64,
-          fontWeight: 400,
+          fontSize: 80,
+          fontWeight: 200,
           lineHeight: 1,
         }}
       >
@@ -57,15 +57,15 @@ export function HeroInicio() {
         sx={{
           display: { xs: "block", md: "none" },
           position: "absolute",
-          top: 278,
+          top: 300,
           left: "8vw",
-          width: 275,
+          width: 300,
           maxWidth: "80vw",
           m: 0,
-          color: "#fff",
+          color: "var(--blanco-timbox)",
           fontFamily: "var(--fuente-ligera)",
           fontSize: 45,
-          fontWeight: 400,
+          fontWeight: 200,
           lineHeight: 1,
         }}
       >
@@ -79,7 +79,7 @@ export function HeroInicio() {
           bottom: 0,
           width: { xs: "95%", md: "35%" },
           height: 230,
-          bgcolor: "#dc3e26",
+          bgcolor: "var(--rojo-timbox)",
           display: "flex",
           alignItems: "center",
           pl: { xs: "8vw", md: "8vw" },

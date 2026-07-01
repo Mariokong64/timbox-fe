@@ -10,10 +10,10 @@ export function SeccionQuienesSomos() {
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "29% 71%" },
         minHeight: { xs: 610, md: 500 },
-        bgcolor: "#f1f1f1",
+        bgcolor: "var(--fondo-timbox)",
       }}
     >
-      <Box sx={{ display: { xs: "none", md: "block" }, bgcolor: "#dc3e26" }} />
+      <Box sx={{ display: { xs: "none", md: "block" }, bgcolor: "var(--rojo-timbox)" }} />
 
       <Box
         sx={{

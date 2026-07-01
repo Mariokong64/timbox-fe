@@ -7,8 +7,8 @@ export function SeccionRegistro() {
       component="section"
       sx={{
         minHeight: { xs: 410, md: 415 },
-        bgcolor: "#dc3e26",
-        color: "#fff",
+        bgcolor: "var(--rojo-timbox)",
+        color: "var(--blanco-timbox)",
         display: "grid",
         placeItems: "center",
         px: "8vw",

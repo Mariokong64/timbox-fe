@@ -14,7 +14,8 @@ export function EnlaceConFlecha({
   claro = false,
   separado = false,
 }: EnlaceConFlechaProps) {
-  const color = claro ? "#fff" : "#15212f";
+  const color = claro ? "var(--blanco-timbox)" : "var(--azul-timbox)";
+  const borde = claro ? "var(--texto-blanco-medio)" : "var(--borde-azul-medio)";
 
   return (
     <Link
@@ -37,7 +38,7 @@ export function EnlaceConFlecha({
         sx={{
           width: { xs: 42, md: 50 },
           height: { xs: 42, md: 50 },
-          border: `1px solid ${claro ? "rgba(255,255,255,.55)" : "rgba(21,33,47,.55)"}`,
+          border: `1px solid ${borde}`,
           borderRadius: "50%",
           display: "grid",
           placeItems: "center",

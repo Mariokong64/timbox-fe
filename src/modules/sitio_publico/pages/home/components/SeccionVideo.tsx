@@ -10,7 +10,7 @@ export function SeccionVideo() {
       sx={{
         position: "relative",
         minHeight: { xs: "60vh", md: "90vh" },
-        backgroundImage: `linear-gradient(rgba(9,27,41,.58), rgba(9,27,41,.58)), url(${fondoVideo})`,
+        backgroundImage: `linear-gradient(var(--video-overlay), var(--video-overlay)), url(${fondoVideo})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
       }}
@@ -24,9 +24,9 @@ export function SeccionVideo() {
           transform: "translate(-50%, -50%)",
           width: { xs: 100, md: 155 },
           height: { xs: 100, md: 155 },
-          bgcolor: "rgba(255,255,255,.32)",
-          color: "#fff",
-          "&:hover": { bgcolor: "rgba(255,255,255,.46)" },
+          bgcolor: "var(--boton-play-fondo)",
+          color: "var(--blanco-timbox)",
+          "&:hover": { bgcolor: "var(--boton-play-fondo-hover)" },
         }}
       >
         <PlayArrowIcon sx={{ fontSize: { xs: 46, md: 66 } }} />

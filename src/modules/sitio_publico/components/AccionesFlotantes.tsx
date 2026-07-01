@@ -20,9 +20,9 @@ export function AccionesFlotantes() {
         sx={{
           width: 42,
           height: 42,
-          bgcolor: "#15212f",
-          color: "#dc3e26",
-          "&:hover": { bgcolor: "#fff" },
+          bgcolor: "var(--azul-timbox)",
+          color: "var(--rojo-timbox)",
+          "&:hover": { bgcolor: "var(--blanco-timbox)" },
         }}
       >
         <SupportAgentIcon sx={{ fontSize: 17 }} />
@@ -32,9 +32,9 @@ export function AccionesFlotantes() {
         sx={{
           width: 42,
           height: 42,
-          bgcolor: "#15212f",
-          color: "#fff",
-          "&:hover": { bgcolor: "#fff", color: "#15212f" },
+          bgcolor: "var(--azul-timbox)",
+          color: "var(--blanco-timbox)",
+          "&:hover": { bgcolor: "var(--blanco-timbox)", color: "var(--azul-timbox)" },
         }}
       >
         <ShareIcon sx={{ fontSize: 17 }} />

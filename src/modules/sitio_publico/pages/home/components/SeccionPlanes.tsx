@@ -14,8 +14,8 @@ export function SeccionPlanes() {
       <Box
         sx={{
           minHeight: { xs: "40vh", md: "104vh" },
-          bgcolor: "#15212f",
-          color: "#fff",
+          bgcolor: "var(--azul-timbox)",
+          color: "var(--blanco-timbox)",
           display: "flex",
           alignItems: "center",
           px: { xs: "8vw", md: "15vw" },
@@ -40,14 +40,14 @@ export function SeccionPlanes() {
         <Plan
           titulo="Bajo demanda"
           descripcion="Ilimitados"
-          fondo="#f1f1f1"
-          color="#15212f"
+          fondo="var(--fondo-timbox)"
+          color="var(--azul-timbox)"
         />
         <Plan
           titulo="Timbres Prepago"
           descripcion="Compra mínima de 100 timbres"
-          fondo="#dc3e26"
-          color="#fff"
+          fondo="var(--rojo-timbox)"
+          color="var(--blanco-timbox)"
           claro
         />
       </Box>

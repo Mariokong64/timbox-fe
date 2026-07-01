@@ -9,7 +9,7 @@ export function SeccionIntegracion() {
       sx={{
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "50% 50%" },
-        bgcolor: "#e4e4e4",
+        bgcolor: "var(--gris-timbox)",
       }}
     >
       <Box

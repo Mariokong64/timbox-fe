@@ -7,7 +7,7 @@ import { MenuLateralPublico } from "../components/MenuLateralPublico";
 
 export function PublicLayout() {
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "#f1f1f1", overflowX: "hidden" }}>
+    <Box sx={{ minHeight: "100vh", bgcolor: "var(--fondo-timbox)", overflowX: "hidden" }}>
       <BarraAccesoPublica />
       <MenuLateralPublico />
       <AccionesFlotantes />

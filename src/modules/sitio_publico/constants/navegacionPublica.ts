@@ -9,13 +9,12 @@ export interface EnlaceFooter {
 }
 
 export const opcionesMenuPublico: OpcionNavegacion[] = [
-  { texto: "Inicio", ruta: "/" },
-  { texto: "Empresa", ruta: "/empresa" },
   { texto: "Planes", ruta: "/planes" },
-  { texto: "Integración", ruta: "/integracion" },
+  { texto: "Integradores", ruta: "/integradores" },
   { texto: "Soluciones", ruta: "/soluciones" },
-  { texto: "Soporte", ruta: "/soporte" },
   { texto: "Validador", ruta: "/validador" },
+  { texto: "Empresa", ruta: "/empresa" },
+  { texto: "Soporte", ruta: "/soporte" },
   { texto: "Contacto", ruta: "/contacto" },
 ];
 

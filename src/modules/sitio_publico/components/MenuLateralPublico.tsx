@@ -1,66 +1,106 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
-import {
-  Box,
-  IconButton,
-  Link,
-  List,
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { Box, Link, List, ListItem, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import {
-  enlacesExternos,
-  opcionesMenuPublico,
-} from "../constants/navegacionPublica";
-import { LogoTimboxClaro } from "./LogoTimboxClaro";
+import { opcionesMenuPublico } from "../constants/navegacionPublica";
+
+const contactoMenu = {
+  ventas: "contacto@timbox.com.mx",
+  soporte: "soporte@timbox.com.mx",
+  telefonos: ["800 788 0195", "442 454 7840"],
+  horario: ["Lunes - Viernes", "9:30 - 19:00", "CST"],
+};
 
 export function MenuLateralPublico() {
   const [abierto, setAbierto] = useState(false);
+  const anchoContenedor = "min(1600px, 90vw)";
+  const anchoContenido = { xs: "100%", md: "100%" };
+  const margenIzquierdoContenido = { xs: 0, md: "25%" };
+  const puntosAbrir = [1, 2, 3];
+  const puntosCerrar = [1, 2, 3, 4];
+
+  useEffect(() => {
+    if (!abierto) {
+      document.body.style.overflow = "";
+      return;
+    }
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [abierto]);
 
   return (
     <>
-      <Box
-        component="button"
-        type="button"
-        onClick={() => setAbierto(true)}
-        aria-label="Abrir menú principal"
-        sx={{
-          position: { xs: "absolute", md: "fixed" },
-          top: { xs: 58, md: 0 },
-          right: 0,
-          zIndex: 60,
-          width: { xs: 70, md: 105 },
-          height: { xs: 70, md: 222 },
-          border: 0,
-          bgcolor: { xs: "transparent", md: "#15212f" },
-          color: "#fff",
-          cursor: "pointer",
-        }}
-      >
-        <Typography
+      {!abierto && (
+        <Box
+          component="button"
+          type="button"
+          onClick={() => setAbierto(true)}
+          aria-label="Abrir menú principal"
           sx={{
-            display: { xs: "none", md: "block" },
-            mt: 3,
-            fontFamily: "var(--fuente-regular)",
-            fontSize: 14,
-            letterSpacing: "4px",
-            textTransform: "uppercase",
+            position: { xs: "absolute", md: "fixed" },
+            top: { xs: 58, md: 0 },
+            right: 0,
+            zIndex: 60,
+            width: { xs: 70, md: 105 },
+            height: { xs: 70, md: 222 },
+            border: 0,
+            bgcolor: { xs: "var(--transparente)", md: "var(--azul-timbox)" },
+            color: "var(--blanco-timbox)",
+            cursor: "pointer",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            p: 0,
           }}
         >
-          Menú
-        </Typography>
-        <MoreVertIcon
-          sx={{
-            mt: { xs: 0, md: 7 },
-            color: "rgba(255,255,255,.55)",
-            fontSize: { xs: 38, md: 28 },
-          }}
-        />
-      </Box>
+          <Typography
+            sx={{
+              display: { xs: "none", md: "block" },
+              mt: { md: 6 },
+              fontFamily: "var(--fuente-regular)",
+              fontSize: 15,
+              fontWeight: 700,
+              letterSpacing: "4px",
+              textTransform: "uppercase",
+            }}
+          >
+            Menú
+          </Typography>
+
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "7px",
+              mt: 9,
+            }}
+          >
+            {puntosAbrir.map((punto) => (
+              <Box
+                key={punto}
+                sx={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: "50%",
+                  bgcolor: "var(--texto-blanco-medio)",
+                }}
+              />
+            ))}
+          </Box>
+
+          <MoreVertIcon
+            sx={{
+              display: { xs: "block", md: "none" },
+              color: "var(--texto-blanco-medio)",
+              fontSize: 38,
+            }}
+          />
+        </Box>
+      )}
 
       <Box
         aria-hidden={!abierto}
@@ -68,95 +108,226 @@ export function MenuLateralPublico() {
           position: "fixed",
           inset: 0,
           zIndex: 100,
-          bgcolor: "#15212f",
-          color: "#fff",
+          bgcolor: "var(--azul-timbox)",
+          color: "var(--blanco-timbox)",
           overflowY: "auto",
           opacity: abierto ? 1 : 0,
           visibility: abierto ? "visible" : "hidden",
           transform: abierto ? "translateX(0)" : "translateX(100%)",
-          transition: "opacity .3s ease, transform .3s ease, visibility .3s",
+          transition: "opacity .35s ease, transform .35s ease, visibility .35s",
         }}
       >
-        <IconButton
-          onClick={() => setAbierto(false)}
-          aria-label="Cerrar menú principal"
-          sx={{
-            position: "absolute",
-            top: 24,
-            right: { xs: 22, md: 44 },
-            color: "#fff",
-          }}
-        >
-          <CloseIcon sx={{ fontSize: 34 }} />
-        </IconButton>
-
-        <Box
-          sx={{
-            width: "min(1120px, 84vw)",
-            mx: "auto",
-            pt: { xs: 12, md: 14 },
-            pb: 7,
-          }}
-        >
-          <Box sx={{ mb: { xs: 5, md: 7 } }}>
-            <LogoTimboxClaro ancho={190} />
-          </Box>
-
-          <List disablePadding>
-            {opcionesMenuPublico.map((opcion) => (
-              <ListItem key={opcion.ruta} disablePadding sx={{ py: 0.7 }}>
-                <Link
-                  component={RouterLink}
-                  to={opcion.ruta}
-                  onClick={() => setAbierto(false)}
-                  underline="none"
-                  sx={{
-                    color: "rgba(255,255,255,.35)",
-                    fontFamily: "var(--fuente-ligera)",
-                    fontSize: { xs: 29, md: 35 },
-                    "&:hover": {
-                      color: "#fff",
-                      textDecoration: "underline",
-                    },
-                  }}
-                >
-                  {opcion.texto}
-                </Link>
-              </ListItem>
-            ))}
-          </List>
-
+        {abierto && (
           <Box
+            component="button"
+            type="button"
+            onClick={() => setAbierto(false)}
+            aria-label="Cerrar menú principal"
             sx={{
-              mt: 6,
-              pt: 4,
-              borderTop: "1px solid rgba(255,255,255,.2)",
-              display: "grid",
-              gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" },
-              gap: 4,
-              color: "rgba(255,255,255,.55)",
+              position: "fixed",
+              top: 0,
+              right: 0,
+              zIndex: 140,
+              width: { xs: 70, md: 105 },
+              height: { xs: 70, md: 222 },
+              border: 0,
+              bgcolor: "var(--azul-timbox)",
+              color: "var(--blanco-timbox)",
+              cursor: "pointer",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              p: 0,
             }}
           >
-            <Box>
-              <Link
-                href={enlacesExternos.registro}
-                color="inherit"
-                underline="hover"
-                sx={{ mr: 4 }}
-              >
-                Regístrate
-              </Link>
-              <Link
-                href={enlacesExternos.inicioSesion}
-                color="inherit"
-                underline="hover"
-              >
-                Inicio de sesión
-              </Link>
+            <Typography
+              sx={{
+                display: { xs: "none", md: "block" },
+                mt: { md: 6 },
+                fontFamily: "var(--fuente-regular)",
+                fontSize: 15,
+                fontWeight: 700,
+                letterSpacing: "4px",
+                textTransform: "uppercase",
+              }}
+            >
+              Cerrar
+            </Typography>
+
+            <Box
+              sx={{
+                display: { xs: "none", md: "grid" },
+                gridTemplateColumns: "repeat(2, 5px)",
+                gap: "7px",
+                mt: 9,
+              }}
+            >
+              {puntosCerrar.map((punto) => (
+                <Box
+                  key={punto}
+                  sx={{
+                    width: 5,
+                    height: 5,
+                    borderRadius: "50%",
+                    bgcolor: "var(--blanco-timbox)",
+                  }}
+                />
+              ))}
             </Box>
-            <Box sx={{ display: "flex", gap: 1.5, justifyContent: { md: "flex-end" } }}>
-              <FacebookIcon />
-              <LinkedInIcon />
+
+            <CloseIcon
+              sx={{
+                display: { xs: "block", md: "none" },
+                fontSize: 34,
+                mt: 2,
+              }}
+            />
+          </Box>
+        )}
+
+        <Box
+          component="section"
+          sx={{
+            width: anchoContenedor,
+            mx: "auto",
+            pt: { xs: 14, md: 18 },
+            pb: 8,
+          }}
+        >
+          <Box
+            sx={{
+              width: anchoContenido,
+              ml: margenIzquierdoContenido,
+            }}
+          >
+            <List
+              disablePadding
+              sx={{
+                minHeight: { xs: "auto", md: 330 },
+              }}
+            >
+              {opcionesMenuPublico.map((opcion) => (
+                <ListItem key={opcion.ruta} disablePadding sx={{ py: 0.25 }}>
+                  <Link
+                    component={RouterLink}
+                    to={opcion.ruta}
+                    onClick={() => setAbierto(false)}
+                    underline="none"
+                    sx={{
+                      color: "var(--texto-blanco-tenue)",
+                      fontFamily: "var(--fuente-ligera)",
+                      fontSize: { xs: 32, md: 36 },
+                      lineHeight: 1.18,
+                      fontWeight: 300,
+                      "&:hover": {
+                        color: "var(--blanco-timbox)",
+                      },
+                    }}
+                  >
+                    {opcion.texto}
+                  </Link>
+                </ListItem>
+              ))}
+            </List>
+
+            <Box
+              sx={{
+                mt: { xs: 5, md: 4 },
+                pt: { xs: 4, md: 7 },
+                borderTop: "1px solid var(--borde-blanco-tenue)",
+                display: "grid",
+                gridTemplateColumns: {
+                  xs: "1fr",
+                  md: "1.3fr .75fr .7fr",
+                },
+                gap: { xs: 4, md: 8 },
+                color: "var(--texto-blanco-medio)",
+              }}
+            >
+              <Box>
+                <Typography
+                  sx={{
+                    mb: 2,
+                    color: "var(--blanco-timbox)",
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 18,
+                    fontWeight: 600,
+                  }}
+                >
+                  Contacto general
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 17,
+                    color: "var(--texto-blanco-tenue)",
+                    lineHeight: 1.7,
+                  }}
+                >
+                  Ventas: {contactoMenu.ventas}
+                  <br />
+                  Soporte Técnico: {contactoMenu.soporte}
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography
+                  sx={{
+                    mb: 2,
+                    color: "var(--blanco-timbox)",
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 18,
+                    fontWeight: 600,
+                  }}
+                >
+                  Tel.
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 18,
+                    color: "var(--texto-blanco-tenue)",
+                    lineHeight: 1.8,
+                  }}
+                >
+                  {contactoMenu.telefonos.map((telefono) => (
+                    <Box key={telefono} component="span" sx={{ display: "block" }}>
+                      {telefono}
+                    </Box>
+                  ))}
+                </Typography>
+              </Box>
+
+              <Box>
+                <Typography
+                  sx={{
+                    mb: 2,
+                    color: "var(--blanco-timbox)",
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 18,
+                    fontWeight: 600,
+                  }}
+                >
+                  Horarios
+                </Typography>
+
+                <Typography
+                  sx={{
+                    fontFamily: "var(--fuente-regular)",
+                    fontSize: 15,
+                    color: "var(--texto-blanco-tenue)",
+                    lineHeight: 1.6,
+                  }}
+                >
+                  {contactoMenu.horario.map((texto) => (
+                    <Box key={texto} component="span" sx={{ display: "block" }}>
+                      {texto}
+                    </Box>
+                  ))}
+                </Typography>
+              </Box>
             </Box>
           </Box>
         </Box>
