@@ -25,7 +25,7 @@ export function SeccionPlanes() {
           component="h2"
           sx={{
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 42, md: 40 },
+            fontSize: { xs: 42, md: 50 },
             fontWeight: 400,
             lineHeight: 1,
           }}
@@ -81,7 +81,7 @@ function Plan({ titulo, descripcion, fondo, color, claro = false }: PlanProps) {
           component="h3"
           sx={{
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 40, md: 40 },
+            fontSize: { xs: 40, md: 50 },
             fontWeight: 400,
             lineHeight: 1,
           }}
@@ -93,7 +93,7 @@ function Plan({ titulo, descripcion, fondo, color, claro = false }: PlanProps) {
             mt: 0.5,
             mb: 7,
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 21, md: 22 },
+            fontSize: { xs: 21, md: 32 },
             lineHeight: 1.1,
           }}
         >

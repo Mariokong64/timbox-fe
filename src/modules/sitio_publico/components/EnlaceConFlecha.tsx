@@ -28,7 +28,7 @@ export function EnlaceConFlecha({
         color,
         opacity: claro ? 0.65 : 0.55,
         fontFamily: "var(--fuente-regular)",
-        fontSize: { xs: 16, md: 17 },
+        fontSize: { xs: 16, md: 23 },
         "&:hover": { color, opacity: 1, textDecoration: "underline" },
       }}
     >
@@ -36,8 +36,8 @@ export function EnlaceConFlecha({
       <Box
         component="span"
         sx={{
-          width: { xs: 42, md: 50 },
-          height: { xs: 42, md: 50 },
+          width: { xs: 42, md: 45 },
+          height: { xs: 42, md: 45 },
           border: `1px solid ${borde}`,
           borderRadius: "50%",
           display: "grid",

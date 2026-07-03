@@ -2,6 +2,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { PublicLayout } from "../modules/sitio_publico/layout/PublicLayout";
 import { HomePage } from "../modules/sitio_publico/pages/home/HomePage";
+import { Planes } from "../modules/sitio_publico/pages/planes/Planes";
 
 export function AppRouter() {
   return (
@@ -9,6 +10,7 @@ export function AppRouter() {
       <Routes>
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
+          <Route path="/planes" element={<Planes />} />
         </Route>
       </Routes>
     </BrowserRouter>

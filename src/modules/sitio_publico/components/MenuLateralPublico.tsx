@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { Box, Link, List, ListItem, Typography } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -12,8 +12,13 @@ const contactoMenu = {
   horario: ["Lunes - Viernes", "9:30 - 19:00", "CST"],
 };
 
-export function MenuLateralPublico() {
-  const [abierto, setAbierto] = useState(false);
+type MenuLateralPublicoProps = {
+  abierto: boolean;
+  onAbrir: () => void;
+  onCerrar: () => void;
+};
+
+export function MenuLateralPublico({ abierto, onAbrir, onCerrar }: MenuLateralPublicoProps) {
   const anchoContenedor = "min(1600px, 90vw)";
   const anchoContenido = { xs: "100%", md: "100%" };
   const margenIzquierdoContenido = { xs: 0, md: "25%" };
@@ -37,7 +42,7 @@ export function MenuLateralPublico() {
         <Box
           component="button"
           type="button"
-          onClick={() => setAbierto(true)}
+          onClick={onAbrir}
           aria-label="Abrir menú principal"
           sx={{
             position: { xs: "absolute", md: "fixed" },
@@ -121,13 +126,13 @@ export function MenuLateralPublico() {
           <Box
             component="button"
             type="button"
-            onClick={() => setAbierto(false)}
+            onClick={onCerrar}
             aria-label="Cerrar menú principal"
             sx={{
               position: "fixed",
               top: 0,
               right: 0,
-              zIndex: 140,
+              zIndex: 130,
               width: { xs: 70, md: 105 },
               height: { xs: 70, md: 222 },
               border: 0,
@@ -211,7 +216,7 @@ export function MenuLateralPublico() {
                   <Link
                     component={RouterLink}
                     to={opcion.ruta}
-                    onClick={() => setAbierto(false)}
+                    onClick={onCerrar}
                     underline="none"
                     sx={{
                       color: "var(--texto-blanco-tenue)",

@@ -6,7 +6,7 @@ export function SeccionRegistro() {
     <Box
       component="section"
       sx={{
-        minHeight: { xs: 410, md: 415 },
+        minHeight: { xs: 410, md: 470 },
         bgcolor: "var(--rojo-timbox)",
         color: "var(--blanco-timbox)",
         display: "grid",
@@ -21,7 +21,7 @@ export function SeccionRegistro() {
           component="h2"
           sx={{
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 50, md: 64 },
+            fontSize: { xs: 50, md: 74 },
             fontWeight: 400,
             lineHeight: 1,
           }}
@@ -33,7 +33,7 @@ export function SeccionRegistro() {
             mt: 1,
             mb: 6,
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 21, md: 24 },
+            fontSize: { xs: 21, md: 35 },
           }}
         >
           Pruébanos y obtén timbres gratis.
@@ -44,7 +44,7 @@ export function SeccionRegistro() {
           rel="noopener noreferrer"
           color="inherit"
           underline="hover"
-          sx={{ fontFamily: "var(--fuente-regular)", fontSize: 16 }}
+          sx={{ fontFamily: "var(--fuente-regular)", fontSize: 28 }}
         >
           Unirse
         </Link>

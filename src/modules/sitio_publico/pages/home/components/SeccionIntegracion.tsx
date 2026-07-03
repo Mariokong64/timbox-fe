@@ -29,7 +29,7 @@ export function SeccionIntegracion() {
             sx={{
               mb: 4,
               fontFamily: "var(--fuente-ligera)",
-              fontSize: { xs: 42, md: 40 },
+              fontSize: { xs: 42, md: 56 },
               fontWeight: 400,
               lineHeight: 1,
             }}
@@ -40,7 +40,7 @@ export function SeccionIntegracion() {
             sx={{
               mb: 7,
               fontFamily: "var(--fuente-ligera)",
-              fontSize: { xs: 22, md: 24 },
+              fontSize: { xs: 22, md: 32 },
               lineHeight: 1.05,
             }}
           >

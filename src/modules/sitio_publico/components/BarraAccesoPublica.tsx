@@ -1,16 +1,36 @@
 import {Box, Link} from '@mui/material';
 import {Link as RouterLink} from 'react-router-dom';
 import {enlacesExternos} from '../constants/navegacionPublica';
-import {LogoTimboxClaro} from './LogoTimboxClaro';
+import {LogoTimboxConLetras} from './LogoTimboxConLetras';
 
-export function BarraAccesoPublica() {
+type BarraAccesoPublicaProps = {
+  modo: "claro" | "oscuro";
+  onLogoClick: () => void;
+};
+
+export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProps) {
+  const usarHeaderOscuro = modo === "oscuro";
+
+  const colorLink = usarHeaderOscuro
+    ? "var(--texto-footer-claro)"
+    : "var(--texto-blanco-fuerte)";
+
+  const colorLinkHover = usarHeaderOscuro
+    ? "var(--azul-timbox)"
+    : "var(--blanco-timbox)";
+
+  const colorLinea = usarHeaderOscuro
+    ? "var(--borde-azul-medio)"
+    : "var(--blanco-timbox)";
+
+
     return (
         <Box
             component="header"
             sx={{
                 position: 'absolute',
                 inset: '0 0 auto',
-                zIndex: 120,
+                zIndex: 160,
                 display: 'grid',
                 gridTemplateColumns: {xs: '1fr', md: '29% 62% 9%'},
                 pointerEvents: 'none'
@@ -23,12 +43,12 @@ export function BarraAccesoPublica() {
                     pointerEvents: 'auto'
                 }}
             >
-                <Box component={RouterLink} to="/" aria-label="Ir al inicio" sx={{display: 'inline-flex', textDecoration: 'none'}}>
+                <Box component={RouterLink} to="/" aria-label="Ir al inicio" onClick={onLogoClick} sx={{display: 'inline-flex', textDecoration: 'none'}}>
                     <Box sx={{display: {xs: 'block', md: 'none'}, mt: 1}}>
-                        <LogoTimboxClaro ancho={220} />
+                        <LogoTimboxConLetras ancho={220} variante={modo} />
                     </Box>
                     <Box sx={{display: {xs: 'none', md: 'block'}, mt: 1}}>
-                        <LogoTimboxClaro ancho={200} />
+                        <LogoTimboxConLetras ancho={200} variante={modo} />
                     </Box>
                 </Box>
             </Box>
@@ -50,7 +70,7 @@ export function BarraAccesoPublica() {
                     sx={{
                         height: '1px',
                         width: '100%',
-                        backgroundColor: 'var(--blanco-timbox)'
+                        backgroundColor: colorLinea
                     }}
                 />
 
@@ -72,7 +92,7 @@ export function BarraAccesoPublica() {
                             top: 8,
                             bottom: 8,
                             width: '1px',
-                            backgroundColor: 'var(--borde-blanco-marcado)',
+                            backgroundColor: colorLinea,
                             transform: 'translateX(-50%)'
                         }}
                     />
@@ -92,7 +112,7 @@ export function BarraAccesoPublica() {
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 height: '100%',
-                                color: 'var(--texto-blanco-fuerte)',
+                                color: colorLink,
                                 textAlign: 'center',
                                 fontFamily: 'var(--fuente-regular)',
                                 fontSize: 16,
@@ -100,7 +120,7 @@ export function BarraAccesoPublica() {
                                 lineHeight: 1,
                                 zIndex: 1,
                                 '&:hover': {
-                                    color: 'var(--blanco-timbox)'
+                                    color: colorLinkHover
                                 }
                             }}
                         >
@@ -114,7 +134,7 @@ export function BarraAccesoPublica() {
                     sx={{
                         height: '1px',
                         width: '100%',
-                        backgroundColor: 'var(--blanco-timbox)'
+                        backgroundColor: colorLinea
                     }}
                 />
             </Box>

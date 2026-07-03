@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
-import logoSat from "../../../../../shared/assets/logo_SAT.png";
 import { EnlaceConFlecha } from "../../../components/EnlaceConFlecha";
+import { LogoSat } from "../../../components/LogoSat";
 
 export function SeccionQuienesSomos() {
   return (
@@ -9,7 +9,7 @@ export function SeccionQuienesSomos() {
       sx={{
         display: "grid",
         gridTemplateColumns: { xs: "1fr", md: "29% 71%" },
-        minHeight: { xs: 610, md: 500 },
+        minHeight: { xs: 650, md: 600 },
         bgcolor: "var(--fondo-timbox)",
       }}
     >
@@ -18,9 +18,9 @@ export function SeccionQuienesSomos() {
       <Box
         sx={{
           display: "grid",
-          gridTemplateColumns: { xs: "1fr", md: "1fr 150px" },
+          gridTemplateColumns: { xs: "1fr", md: "1fr 250px" },
           alignItems: "center",
-          gap: { xs: 4, md: 6 },
+          gap: { xs: 4, md: 5 },
           pl: { xs: "8vw", md: "8vw" },
           pr: { xs: "8vw", md: "5vw" },
           pt: { xs: 15, md: 8 },
@@ -33,7 +33,7 @@ export function SeccionQuienesSomos() {
             sx={{
               mb: 4,
               fontFamily: "var(--fuente-ligera)",
-              fontSize: { xs: 40, md: 40 },
+              fontSize: { xs: 40, md: 50 },
               fontWeight: 400,
               lineHeight: 1,
             }}
@@ -45,7 +45,7 @@ export function SeccionQuienesSomos() {
               maxWidth: 780,
               mb: 2,
               fontFamily: "var(--fuente-ligera)",
-              fontSize: { xs: 22, md: 24 },
+              fontSize: { xs: 22, md: 30 },
               lineHeight: 1.05,
             }}
           >
@@ -55,23 +55,7 @@ export function SeccionQuienesSomos() {
           <EnlaceConFlecha texto="Empieza ahora" href="/empresa" />
         </Box>
 
-        <Box
-          component="a"
-          href="http://omawww.sat.gob.mx/tramitesyservicios/Paginas/pac_timbox.htm"
-          target="_blank"
-          rel="noopener noreferrer"
-          sx={{
-            display: "block",
-            justifySelf: { xs: "start", md: "center" },
-          }}
-        >
-          <Box
-            component="img"
-            src={logoSat}
-            alt="SAT Proveedor Autorizado PCCFDI 0184"
-            sx={{ width: { xs: 105, md: 120 }, height: "auto", opacity: 0.58 }}
-          />
-        </Box>
+        <LogoSat/>
       </Box>
     </Box>
   );

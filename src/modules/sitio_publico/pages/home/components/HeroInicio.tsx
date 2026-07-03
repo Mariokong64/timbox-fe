@@ -88,11 +88,11 @@ export function HeroInicio() {
       >
         <Box>
           <Typography
-            component="h2"
+            component="h1"
             sx={{
               mb: 1,
               fontFamily: "var(--fuente-ligera)",
-              fontSize: { xs: 21, md: 24 },
+              fontSize: { xs: 25, md: 30 },
               fontWeight: 400,
             }}
           >
