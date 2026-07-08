@@ -1,7 +1,6 @@
 import {Box, Link} from '@mui/material';
-import {Link as RouterLink} from 'react-router-dom';
 import {enlacesExternos} from '../constants/navegacionPublica';
-import {LogoTimboxConLetras} from './LogoTimboxConLetras';
+import {LogoTimboxConLetras} from '../../../shared/components/LogoTimboxConLetras';
 
 type BarraAccesoPublicaProps = {
   modo: "claro" | "oscuro";
@@ -43,14 +42,20 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                     pointerEvents: 'auto'
                 }}
             >
-                <Box component={RouterLink} to="/" aria-label="Ir al inicio" onClick={onLogoClick} sx={{display: 'inline-flex', textDecoration: 'none'}}>
-                    <Box sx={{display: {xs: 'block', md: 'none'}, mt: 1}}>
-                        <LogoTimboxConLetras ancho={220} variante={modo} />
-                    </Box>
-                    <Box sx={{display: {xs: 'none', md: 'block'}, mt: 1}}>
-                        <LogoTimboxConLetras ancho={200} variante={modo} />
-                    </Box>
-                </Box>
+                <LogoTimboxConLetras
+                    to="/"
+                    onClick={onLogoClick}
+                    ancho={220}
+                    variante={modo}
+                    sx={{display: {xs: 'inline-flex', md: 'none'}, mt: 1}}
+                />
+                <LogoTimboxConLetras
+                    to="/"
+                    onClick={onLogoClick}
+                    ancho={200}
+                    variante={modo}
+                    sx={{display: {xs: 'none', md: 'inline-flex'}, mt: 1}}
+                />
             </Box>
 
             <Box

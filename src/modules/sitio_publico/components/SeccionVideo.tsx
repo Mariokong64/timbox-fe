@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Box, Dialog, IconButton } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import CloseIcon from "@mui/icons-material/Close";
-import fondoVideo from "../../../../../shared/assets/fondo_video_home.png";
+import fondoVideo from "../../../shared/assets/fondo_video_home.png";
 
 const VIDEO_URL = "https://www.youtube.com/embed/INlqN1lN6HE?autoplay=1&start=4&rel=0";
 

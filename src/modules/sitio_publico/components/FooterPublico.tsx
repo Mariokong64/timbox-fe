@@ -18,7 +18,7 @@ export function FooterPublico() {
                     },
                     columnGap: {xs: 2, sm: 12},
                     rowGap: {xs: 2, sm: 0},
-                    py: {xs: 5, md: 5},
+                    py: {xs: 5, md: 3},
                     alignItems: 'center'
                 }}
             >
