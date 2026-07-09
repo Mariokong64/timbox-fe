@@ -9,7 +9,9 @@ import { MenuLateralPublico } from "../components/MenuLateralPublico";
 export function PublicLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { pathname } = useLocation();
-  const rutasConHeaderOscuro = ["/planes", "/timbrar-cfdi"];
+  const rutasDocumentacionSoporte = ["/timbrar-cfdi", "/timbrar-cfdi-4-0", "/timbrar-referencia", "/timbrar-zip"];
+  const rutasConHeaderOscuro = ["/planes", ...rutasDocumentacionSoporte];
+  const esRutaDocumentacionSoporte = rutasDocumentacionSoporte.includes(pathname);
   const modoHeader = menuAbierto || !rutasConHeaderOscuro.includes(pathname) ? "claro" : "oscuro";
 
   const abrirMenu = () => {
@@ -34,7 +36,7 @@ export function PublicLayout() {
         <Outlet />
       </Box>
 
-      <FooterPublico />
+      {!esRutaDocumentacionSoporte && <FooterPublico />}
     </Box>
   );
 }

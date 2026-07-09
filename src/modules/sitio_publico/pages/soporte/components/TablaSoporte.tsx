@@ -11,26 +11,27 @@ export function TablaSoporte({ columnas, filas }: TablaSoporteProps) {
     <TableContainer
       component={Box}
       sx={{
-        my: 3,
+        my: { xs: 2.5, md: 2 },
         overflowX: "auto",
-        border: "1px solid rgba(21, 33, 47, 0.12)",
-        bgcolor: "rgba(255, 255, 255, 0.55)",
+        border: 0,
+        bgcolor: "var(--blanco-timbox)",
       }}
     >
-      <Table size="small" sx={{ minWidth: 620 }}>
+      <Table sx={{ minWidth: 620, borderCollapse: "separate", borderSpacing: 0, tableLayout: "fixed" }}>
         <TableHead>
           <TableRow>
             {columnas.map((columna) => (
               <TableCell
                 key={columna}
                 sx={{
-                  py: 1.6,
-                  px: 2,
+                  py: { xs: 2, md: 2.35 },
+                  px: { xs: 2.2, md: 2.5 },
+                  bgcolor: "var(--fondo-timbox)",
                   color: "var(--azul-timbox)",
                   fontFamily: "var(--fuente-regular)",
-                  fontSize: 16,
+                  fontSize: { xs: 16, md: 20 },
                   fontWeight: 700,
-                  borderBottom: "1px solid rgba(21, 33, 47, 0.18)",
+                  borderBottom: 0,
                 }}
               >
                 {columna}
@@ -40,19 +41,24 @@ export function TablaSoporte({ columnas, filas }: TablaSoporteProps) {
         </TableHead>
         <TableBody>
           {filas.map((fila, indice) => (
-            <TableRow key={indice}>
+            <TableRow
+              key={indice}
+              sx={{
+                bgcolor: indice % 2 === 1 ? "var(--fondo-timbox)" : "var(--blanco-timbox)",
+              }}
+            >
               {fila.map((celda, celdaIndice) => (
                 <TableCell
                   key={`${indice}-${celdaIndice}`}
                   sx={{
-                    py: 1.45,
-                    px: 2,
+                    py: { xs: 2, md: 2.45 },
+                    px: { xs: 2.2, md: 2.5 },
                     color: "rgba(21, 33, 47, 0.76)",
-                    fontFamily: celdaIndice === 0 ? "var(--fuente-regular)" : "var(--fuente-ligera)",
-                    fontSize: 16,
-                    lineHeight: 1.45,
-                    borderBottom: "1px solid rgba(21, 33, 47, 0.08)",
-                    verticalAlign: "top",
+                    fontFamily: "var(--fuente-ligera)",
+                    fontSize: { xs: 16, md: 20 },
+                    lineHeight: 1.5,
+                    borderBottom: 0,
+                    verticalAlign: "middle",
                     "& a": {
                       color: "var(--rojo-timbox)",
                       textDecoration: "none",

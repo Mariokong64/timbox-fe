@@ -8,7 +8,7 @@ type BloqueContenidoSoporteProps = {
 
 export function BloqueContenidoSoporte({ titulo, children }: BloqueContenidoSoporteProps) {
   return (
-    <Box sx={{ mb: { xs: 5, md: 6 } }}>
+    <Box sx={{ mb: { xs: 4.5, md: 3.2 } }}>
       <Typography
         component="h3"
         sx={{
@@ -24,10 +24,10 @@ export function BloqueContenidoSoporte({ titulo, children }: BloqueContenidoSopo
       <Box
         sx={{
           fontFamily: "var(--fuente-ligera)",
-          fontSize: { xs: 18, md: 21 },
-          lineHeight: 1.65,
+          fontSize: { xs: 18, md: 20 },
+          lineHeight: 1.48,
           color: "rgba(21, 33, 47, 0.78)",
-          "& p": { mt: 0, mb: 2.5 },
+          "& p": { mt: 0, mb: 2.1 },
           "& a": {
             color: "var(--rojo-timbox)",
             textDecoration: "none",

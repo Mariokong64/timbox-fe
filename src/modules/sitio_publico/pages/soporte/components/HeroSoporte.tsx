@@ -21,10 +21,10 @@ export function HeroSoporte() {
       <Typography
         component="h1"
         sx={{
-          mt: { xs: 11, md: 8 },
+          mt: { xs: 11, md: 6 },
           fontFamily: "var(--fuente-ligera)",
-          fontSize: { xs: 44, sm: 58, md: 67 },
-          fontWeight: 300,
+          fontSize: { xs: 44, sm: 58, md: 72 },
+          fontWeight: 350,
           lineHeight: 1,
           letterSpacing: 0,
           textShadow: "0 8px 32px rgba(21, 33, 47, 0.35)",

@@ -21,7 +21,7 @@ export function TarjetaEnlaceSoporte({ enlace }: TarjetaEnlaceSoporteProps) {
         gap: { xs: 2, md: 4 },
         color: "rgba(255, 255, 255, 0.86)",
         fontFamily: "var(--fuente-ligera)",
-        fontSize: { xs: 22, md: 28 },
+        fontSize: { xs: 22, md: 32 },
         lineHeight: 1.15,
         position: "relative",
         transition: "background-color .22s ease, color .22s ease, transform .22s ease",

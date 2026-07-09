@@ -1,9 +1,10 @@
 import { Box, Link, Typography } from "@mui/material";
 import type { ReactNode } from "react";
+import { Link as RouterLink } from "react-router-dom";
 
 export type ItemMenuDocumentacion = {
   texto: string;
-  href: string;
+  to: string;
 };
 
 type LayoutDocumentacionSoporteProps = {
@@ -11,7 +12,7 @@ type LayoutDocumentacionSoporteProps = {
   titulo: string;
   menu: ItemMenuDocumentacion[];
   activo: string;
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export function LayoutDocumentacionSoporte({
@@ -27,28 +28,46 @@ export function LayoutDocumentacionSoporte({
       sx={{
         bgcolor: "var(--fondo-timbox)",
         color: "var(--azul-timbox)",
-        pt: { xs: 18, md: 20 },
-        pb: { xs: 8, md: 14 },
+        height: { md: "100vh" },
+        minHeight: { xs: "100vh", md: "auto" },
+        overflow: { xs: "visible", md: "hidden" },
+        pt: { xs: 17, md: "140px" },
+        pb: { xs: 7, md: 0 },
       }}
     >
-      <Box sx={{ width: "min(1420px, 86vw)", mx: "auto" }}>
+      <Box
+        sx={{
+          width: {
+            xs: "min(100% - 32px, 760px)",
+            md: "min(1652px, calc(100vw - 250px))",
+          },
+          mx: "auto",
+        }}
+      >
         <Box
           component="nav"
           aria-label="Breadcrumb"
           sx={{
-            mb: { xs: 5, md: 8 },
+            mb: { xs: 4, md: "26px" },
             display: "flex",
             alignItems: "center",
-            gap: 1.5,
-            color: "rgba(21, 33, 47, 0.58)",
+            gap: { xs: 1.25, md: 2 },
+            color: "rgba(21, 33, 47, 0.74)",
             fontFamily: "var(--fuente-regular)",
-            fontSize: 16,
+            fontSize: { xs: 14, md: 16 },
           }}
         >
-          <Link href="/soporte" underline="none" sx={{ color: "inherit", "&:hover": { color: "var(--rojo-timbox)" } }}>
+          <Link
+            component={RouterLink}
+            to="/soporte"
+            underline="none"
+            sx={{ color: "inherit", "&:hover": { color: "var(--rojo-timbox)" } }}
+          >
             Soporte
           </Link>
-          <Box component="span">/</Box>
+          <Box component="span" sx={{ color: "rgba(21, 33, 47, 0.42)" }}>
+            &gt;
+          </Box>
           <Box component="span" sx={{ color: "var(--azul-timbox)" }}>
             {categoria}
           </Box>
@@ -57,53 +76,53 @@ export function LayoutDocumentacionSoporte({
         <Box
           sx={{
             display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "285px minmax(0, 1fr)" },
-            gap: { xs: 5, md: 9 },
+            gridTemplateColumns: { xs: "1fr", md: "372px minmax(0, 1fr)" },
+            gap: { xs: 4, md: "42px" },
             alignItems: "start",
           }}
         >
           <Box
             component="aside"
             sx={{
-              position: { xs: "static", md: "sticky" },
-              top: { md: 120 },
+              pt: { xs: 0, md: "35px" },
+              minWidth: 0,
             }}
           >
-            <Typography
-              component="h1"
+            <Box
+              component="ul"
               sx={{
-                mb: 3,
-                fontFamily: "var(--fuente-ligera)",
-                fontSize: { xs: 36, md: 42 },
-                fontWeight: 300,
-                lineHeight: 1,
+                m: 0,
+                p: 0,
+                listStyle: "none",
+                bgcolor: "var(--blanco-timbox)",
+                width: "100%",
               }}
             >
-              {categoria}
-            </Typography>
-
-            <Box component="ul" sx={{ m: 0, p: 0, listStyle: "none" }}>
               {menu.map((item) => {
-                const esActivo = item.href === activo;
+                const esActivo = item.to === activo;
                 return (
-                  <Box key={item.texto} component="li">
+                  <Box key={item.texto} component="li" sx={{ "&:last-of-type a": { borderBottom: 0 } }}>
                     <Link
-                      href={item.href}
+                      component={RouterLink}
+                      to={item.to}
                       underline="none"
                       sx={{
-                        display: "block",
-                        py: 1.4,
-                        pl: 2,
-                        pr: 1,
+                        display: "flex",
+                        alignItems: "center",
+                        minHeight: 72,
+                        pl: 2.5,
+                        pr: 2,
                         borderLeft: esActivo ? "3px solid var(--rojo-timbox)" : "3px solid transparent",
-                        color: esActivo ? "var(--azul-timbox)" : "rgba(21, 33, 47, 0.55)",
-                        bgcolor: esActivo ? "rgba(21, 33, 47, 0.06)" : "transparent",
+                        borderBottom: "1px solid rgba(21, 33, 47, 0.08)",
+                        color: esActivo ? "var(--rojo-timbox)" : "var(--azul-timbox)",
+                        bgcolor: esActivo ? "rgba(21, 33, 47, 0.015)" : "var(--blanco-timbox)",
                         fontFamily: "var(--fuente-regular)",
-                        fontSize: 18,
+                        fontSize: { xs: 17, md: 20 },
+                        lineHeight: 1.2,
                         transition: "color .2s ease, background-color .2s ease, border-color .2s ease",
                         "&:hover": {
-                          color: "var(--azul-timbox)",
-                          bgcolor: "rgba(21, 33, 47, 0.05)",
+                          color: "var(--rojo-timbox)",
+                          bgcolor: "rgba(21, 33, 47, 0.025)",
                           borderLeftColor: "var(--rojo-timbox)",
                         },
                       }}
@@ -116,13 +135,32 @@ export function LayoutDocumentacionSoporte({
             </Box>
           </Box>
 
-          <Box component="article" sx={{ minWidth: 0 }}>
+          <Box
+            component="article"
+            sx={{
+              minWidth: 0,
+              bgcolor: "var(--blanco-timbox)",
+              height: { md: "calc(100vh - 227px)" },
+              overflowY: { xs: "visible", md: "auto" },
+              overflowX: "hidden",
+              px: { xs: 2.5, sm: 4, md: "58px" },
+              pt: { xs: 5, md: "92px" },
+              pb: { xs: 6, md: 10 },
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+              "&::-webkit-scrollbar": {
+                display: "none",
+              },
+            }}
+          >
             <Typography
               component="h2"
               sx={{
-                mb: { xs: 4, md: 5 },
+                mb: { xs: 3.5, md: "27px" },
+                pb: { xs: 0, md: "26px" },
+                borderBottom: { xs: 0, md: "1px solid rgba(21, 33, 47, 0.08)" },
                 fontFamily: "var(--fuente-regular)",
-                fontSize: { xs: 34, md: 44 },
+                fontSize: { xs: 31, md: 31 },
                 fontWeight: 700,
                 lineHeight: 1.08,
               }}

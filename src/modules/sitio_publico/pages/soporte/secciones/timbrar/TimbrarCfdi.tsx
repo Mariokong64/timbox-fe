@@ -1,20 +1,10 @@
 import { Link, Typography } from "@mui/material";
-import { BloqueCodigoSoporte } from "../components/BloqueCodigoSoporte";
-import { BloqueContenidoSoporte } from "../components/BloqueContenidoSoporte";
-import { ContactoDudasSoporte } from "../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../components/LayoutDocumentacionSoporte";
-import { TablaSoporte } from "../components/TablaSoporte";
-import imagenDudasUno from "../assets/Componente-35-–-2@2x.png";
-import imagenDudasDos from "../assets/Componente-34-–-1@2x.png";
-import imagenDudasTres from "../assets/Componente-32-–-1@2x.png";
-import imagenDudasCuatro from "../assets/Componente-36-–-1@2x.png";
-
-const menuTimbrar = [
-  { texto: "Timbrar CFDI", href: "/timbrar-cfdi" },
-  { texto: "Timbrar CFDI 4.0", href: "https://www.timbox.com.mx/timbrar-cfdi-4-0/" },
-  { texto: "Timbrar Referencia", href: "https://www.timbox.com.mx/timbrar-refencia/" },
-  { texto: "Timbrar ZIP", href: "https://www.timbox.com.mx/404-copy/" },
-];
+import { imagenesDudasTimbrar, menuTimbrar } from "./constantes";
+import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
+import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
+import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
+import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { TablaSoporte } from "../../components/TablaSoporte";
 
 const ejemploPeticion = `<soapenv:Envelope
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -100,7 +90,7 @@ export function TimbrarCfdi() {
         />
       </BloqueContenidoSoporte>
 
-      <ContactoDudasSoporte imagen={imagenDudasUno} />
+      <ContactoDudasSoporte imagen={imagenesDudasTimbrar.uno} />
 
       <BloqueContenidoSoporte titulo="Ejemplo de petición al servicio">
         <BloqueCodigoSoporte codigo={ejemploPeticion} />
@@ -125,7 +115,7 @@ export function TimbrarCfdi() {
         <BloqueCodigoSoporte codigo={ejemploRespuesta} />
       </BloqueContenidoSoporte>
 
-      <ContactoDudasSoporte imagen={imagenDudasDos} />
+      <ContactoDudasSoporte imagen={imagenesDudasTimbrar.dos} />
 
       <BloqueContenidoSoporte titulo="Códigos de error nivel petición">
         <TablaSoporte
@@ -144,7 +134,7 @@ export function TimbrarCfdi() {
         />
       </BloqueContenidoSoporte>
 
-      <ContactoDudasSoporte imagen={imagenDudasTres} />
+      <ContactoDudasSoporte imagen={imagenesDudasTimbrar.tres} />
 
       <BloqueContenidoSoporte titulo="Matrices de error del SAT">
         <Typography sx={{ mb: 2, fontFamily: "var(--fuente-ligera)", fontSize: { xs: 18, md: 21 } }}>
@@ -203,7 +193,7 @@ export function TimbrarCfdi() {
         />
       </BloqueContenidoSoporte>
 
-      <ContactoDudasSoporte imagen={imagenDudasCuatro} />
+      <ContactoDudasSoporte imagen={imagenesDudasTimbrar.cuatro} />
     </LayoutDocumentacionSoporte>
   );
 }

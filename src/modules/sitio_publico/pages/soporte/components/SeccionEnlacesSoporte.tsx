@@ -28,7 +28,7 @@ export function SeccionEnlacesSoporte({ grupo }: SeccionEnlacesSoporteProps) {
           sx={{
             mb: { xs: 4, md: 6 },
             fontFamily: "var(--fuente-ligera)",
-            fontSize: { xs: 38, md: 43 },
+            fontSize: { xs: 38, md: 50 },
             fontWeight: 300,
             lineHeight: 1,
             textAlign: "center",
