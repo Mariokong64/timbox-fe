@@ -20,7 +20,7 @@ type MenuLateralPublicoProps = {
 
 export function MenuLateralPublico({ abierto, onAbrir, onCerrar }: MenuLateralPublicoProps) {
   const anchoContenedor = "min(1600px, 90vw)";
-  const anchoContenido = { xs: "100%", md: "100%" };
+  const anchoContenido = { xs: "100%", md: "75%" };
   const margenIzquierdoContenido = { xs: 0, md: "25%" };
   const puntosAbrir = [1, 2, 3];
   const puntosCerrar = [1, 2, 3, 4];
@@ -116,6 +116,7 @@ export function MenuLateralPublico({ abierto, onAbrir, onCerrar }: MenuLateralPu
           bgcolor: "var(--azul-timbox)",
           color: "var(--blanco-timbox)",
           overflowY: "auto",
+          overflowX: "hidden",
           opacity: abierto ? 1 : 0,
           visibility: abierto ? "visible" : "hidden",
           transform: abierto ? "translateX(0)" : "translateX(100%)",
