@@ -1,23 +1,9 @@
 import { timboxApi } from "../../../../../api/timboxApi";
 
-export interface ValidarComprobantePayload {
-  archivo: File;
-  captchaToken: string;
-}
+const BASE_URL = "/validador";
 
-export async function validarComprobanteFiscal({
-  archivo,
-  captchaToken,
-}: ValidarComprobantePayload): Promise<unknown> {
-  const formData = new FormData();
-  formData.append("archivo", archivo);
-  formData.append("captchaToken", captchaToken);
-
-  const { data } = await timboxApi.post("/validador", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  });
+export async function enviarFormDataValidador(formData: FormData): Promise<unknown> {
+  const { data } = await timboxApi.post(BASE_URL, formData);
 
   return data;
 }

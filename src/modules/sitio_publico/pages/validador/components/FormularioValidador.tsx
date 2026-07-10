@@ -1,8 +1,8 @@
 import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { Alert, Box, Button, Link, Typography } from "@mui/material";
 import { AlertaProceso } from "../../../components/AlertaProceso";
-import { CaptchaVerificacion } from "../../../components/CaptchaVerificacion";
-import { validarComprobanteFiscal } from "../api/validadorApi";
+import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
+import { enviarSolicitudValidacionComprobante } from "../servicio/enviarSolicitudValidador";
 import {
   normalizarResultadoValidador,
   obtenerMensajeError,
@@ -15,6 +15,7 @@ import { ResultadoValidadorVista } from "./ResultadoValidadorVista";
 
 export function FormularioValidador() {
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const captchaRef = useRef<CaptchaVerificacionHandle | null>(null);
   const [archivo, setArchivo] = useState<File | null>(null);
   const [captchaToken, setCaptchaToken] = useState("");
   const [arrastrando, setArrastrando] = useState(false);
@@ -52,13 +53,14 @@ export function FormularioValidador() {
     setResultado(null);
 
     try {
-      const respuesta = await validarComprobanteFiscal({ archivo: archivo as File, captchaToken });
+      const respuesta = await enviarSolicitudValidacionComprobante({ archivo: archivo as File, captchaToken });
       const nuevoResultado = normalizarResultadoValidador(respuesta);
       setResultado(nuevoResultado);
     } catch (error) {
       setMensajeError(obtenerMensajeError(error));
     } finally {
       setCargando(false);
+      captchaRef.current?.reiniciar();
     }
   };
 
@@ -128,7 +130,7 @@ export function FormularioValidador() {
           )}
         </Box>
 
-        <CaptchaVerificacion value={captchaToken} onChange={setCaptchaToken} />
+        <CaptchaVerificacion ref={captchaRef} value={captchaToken} onChange={setCaptchaToken} onError={setMensajeError} />
 
         <input ref={inputRef} type="file" accept=".xml,text/xml,application/xml" hidden onChange={manejarInput} />
 

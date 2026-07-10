@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import { Box, Checkbox, Typography } from "@mui/material";
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import { Alert, Box } from "@mui/material";
 
 declare global {
   interface Window {
@@ -8,10 +8,14 @@ declare global {
         container: HTMLElement,
         options: {
           sitekey: string;
+          theme?: "light" | "dark";
+          size?: "normal" | "compact";
           callback: (token: string) => void;
           "expired-callback": () => void;
+          "error-callback": () => void;
         }
       ) => number;
+      getResponse: (widgetId?: number) => string;
       reset: (widgetId?: number) => void;
     };
   }
@@ -20,44 +24,104 @@ declare global {
 interface CaptchaVerificacionProps {
   value: string;
   onChange: (token: string) => void;
+  onError?: (mensaje: string) => void;
+  siteKey?: string;
+  theme?: "light" | "dark";
+  size?: "normal" | "compact";
+}
+
+export interface CaptchaVerificacionHandle {
+  obtenerToken: () => string;
+  reiniciar: () => void;
 }
 
 const RECAPTCHA_SCRIPT_ID = "google-recaptcha-script";
+const RECAPTCHA_SCRIPT_SRC = "https://www.google.com/recaptcha/api.js?render=explicit";
+const MENSAJE_ERROR = "No se pudo cargar reCAPTCHA. Revisa tu conexion e intenta de nuevo.";
 
-export function CaptchaVerificacion({ value, onChange }: CaptchaVerificacionProps) {
-  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined;
+let cargaRecaptcha: Promise<void> | null = null;
+
+function cargarScriptRecaptcha() {
+  if (window.grecaptcha?.render) {
+    return Promise.resolve();
+  }
+
+  if (cargaRecaptcha) {
+    return cargaRecaptcha;
+  }
+
+  cargaRecaptcha = new Promise((resolve, reject) => {
+    let script = document.getElementById(RECAPTCHA_SCRIPT_ID) as HTMLScriptElement | null;
+
+    const resolverCarga = () => {
+      if (window.grecaptcha?.render) {
+        resolve();
+        return;
+      }
+
+      reject(new Error(MENSAJE_ERROR));
+    };
+
+    const resolverError = () => reject(new Error(MENSAJE_ERROR));
+
+    if (!script) {
+      script = document.createElement("script");
+      script.id = RECAPTCHA_SCRIPT_ID;
+      script.src = RECAPTCHA_SCRIPT_SRC;
+      script.async = true;
+      script.defer = true;
+      document.body.appendChild(script);
+    }
+
+    script.addEventListener("load", resolverCarga, { once: true });
+    script.addEventListener("error", resolverError, { once: true });
+  });
+
+  return cargaRecaptcha;
+}
+
+export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, CaptchaVerificacionProps>(
+  function CaptchaVerificacion(
+    {
+      value,
+      onChange,
+      onError,
+      siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined,
+      theme = "light",
+      size = "normal",
+    },
+    ref
+  ) {
   const contenedorRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<number | null>(null);
   const [scriptListo, setScriptListo] = useState(false);
+  const [mensajeError, setMensajeError] = useState("");
 
   useEffect(() => {
     if (!siteKey) {
       return;
     }
 
-    if (window.grecaptcha) {
-      setScriptListo(true);
-      return;
-    }
+    let montado = true;
+    setMensajeError("");
 
-    let script = document.getElementById(RECAPTCHA_SCRIPT_ID) as HTMLScriptElement | null;
-
-    if (!script) {
-      script = document.createElement("script");
-      script.id = RECAPTCHA_SCRIPT_ID;
-      script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
-      script.async = true;
-      script.defer = true;
-      document.body.appendChild(script);
-    }
-
-    const manejarCarga = () => setScriptListo(true);
-    script.addEventListener("load", manejarCarga);
+    cargarScriptRecaptcha()
+      .then(() => {
+        if (montado) {
+          setScriptListo(true);
+        }
+      })
+      .catch(() => {
+        if (montado) {
+          setMensajeError(MENSAJE_ERROR);
+          onError?.(MENSAJE_ERROR);
+        }
+      });
 
     return () => {
-      script?.removeEventListener("load", manejarCarga);
+      montado = false;
     };
-  }, [siteKey]);
+  }, [onError, siteKey]);
 
   useEffect(() => {
     if (!siteKey || !scriptListo || !contenedorRef.current || !window.grecaptcha) {
@@ -70,45 +134,52 @@ export function CaptchaVerificacion({ value, onChange }: CaptchaVerificacionProp
 
     widgetIdRef.current = window.grecaptcha.render(contenedorRef.current, {
       sitekey: siteKey,
+      theme,
+      size,
       callback: onChange,
       "expired-callback": () => onChange(""),
+      "error-callback": () => {
+        onChange("");
+        setMensajeError(MENSAJE_ERROR);
+        onError?.(MENSAJE_ERROR);
+      },
     });
-  }, [onChange, scriptListo, siteKey]);
+  }, [onChange, onError, scriptListo, siteKey, size, theme]);
+
+  useImperativeHandle(ref, () => ({
+    obtenerToken: () => {
+      if (widgetIdRef.current === null || !window.grecaptcha) {
+        return value;
+      }
+
+      return window.grecaptcha.getResponse(widgetIdRef.current);
+    },
+    reiniciar: () => {
+      if (widgetIdRef.current !== null && window.grecaptcha) {
+        window.grecaptcha.reset(widgetIdRef.current);
+      }
+
+      onChange("");
+    },
+  }), [onChange, value]);
 
   if (siteKey) {
-    return <Box ref={contenedorRef} sx={{ display: "table", mx: "auto", minHeight: 78 }} />;
+    return (
+      <Box sx={{ display: "grid", justifyContent: "center", justifyItems: "center", minHeight: 78, my: 2 }}>
+        <Box ref={contenedorRef} />
+        {mensajeError && !onError && (
+          <Alert severity="error" sx={{ mt: 1.5, textAlign: "left" }}>
+            {mensajeError}
+          </Alert>
+        )}
+      </Box>
+    );
   }
 
   return (
-    <Box
-      sx={{
-        width: 302,
-        minHeight: 76,
-        mx: "auto",
-        my: 2,
-        border: "1px solid #d5d5d5",
-        bgcolor: "#fafafa",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        px: 1.5,
-      }}
-    >
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-        <Checkbox checked={Boolean(value)} onChange={(event) => onChange(event.target.checked ? "dev-captcha" : "")} />
-        <Typography sx={{ fontFamily: "var(--fuente-regular)", fontSize: 14, color: "#222" }}>
-          No soy un robot
-        </Typography>
-      </Box>
-
-      <Box sx={{ textAlign: "center", color: "#777" }}>
-        <Typography sx={{ fontFamily: "var(--fuente-regular)", fontSize: 18, lineHeight: 1 }}>
-          ↻
-        </Typography>
-        <Typography sx={{ fontFamily: "var(--fuente-regular)", fontSize: 10 }}>
-          reCAPTCHA
-        </Typography>
-      </Box>
-    </Box>
+    <Alert severity="error" sx={{ my: 2, textAlign: "left" }}>
+      Falta configurar VITE_RECAPTCHA_SITE_KEY.
+    </Alert>
   );
-}
+  }
+);

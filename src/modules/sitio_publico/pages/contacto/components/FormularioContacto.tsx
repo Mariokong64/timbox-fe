@@ -1,11 +1,11 @@
-import { useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
 import { Alert, Box, Button, TextField } from "@mui/material";
 import { AlertaProceso } from "../../../components/AlertaProceso";
-import { enviarFormularioContacto } from "../api/contactoApi";
+import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
+import { enviarSolicitudContacto } from "../servicio/enviarSolicitudContacto";
 import {
   contactoInicial,
   hayErroresContacto,
-  limpiarFormularioContacto,
   obtenerMensajeErrorContacto,
   validarFormularioContacto,
   type ContactoFormularioValores,
@@ -91,8 +91,10 @@ function CampoContacto({
 }
 
 export function FormularioContacto() {
+  const captchaRef = useRef<CaptchaVerificacionHandle | null>(null);
   const [valores, setValores] = useState<ContactoFormularioValores>(contactoInicial);
   const [errores, setErrores] = useState<ErroresContacto>({});
+  const [captchaToken, setCaptchaToken] = useState("");
   const [enviando, setEnviando] = useState(false);
   const [mensajeError, setMensajeError] = useState("");
   const [mensajeExito, setMensajeExito] = useState("");
@@ -117,18 +119,24 @@ export function FormularioContacto() {
       return;
     }
 
+    if (!captchaToken) {
+      setMensajeError("Confirma el captcha antes de enviar el mensaje.");
+      return;
+    }
+
     setEnviando(true);
     setMensajeError("");
     setMensajeExito("");
 
     try {
-      await enviarFormularioContacto(limpiarFormularioContacto(valores));
+      await enviarSolicitudContacto({ valores, captchaToken });
       setMensajeExito("Tu mensaje se envió correctamente.");
       setValores(contactoInicial);
     } catch (error) {
       setMensajeError(obtenerMensajeErrorContacto(error));
     } finally {
       setEnviando(false);
+      captchaRef.current?.reiniciar();
     }
   };
 
@@ -224,6 +232,15 @@ export function FormularioContacto() {
           >
             Enviar
           </Button>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "center" }, mt: 0 }}>
+          <CaptchaVerificacion
+            ref={captchaRef}
+            value={captchaToken}
+            onChange={setCaptchaToken}
+            onError={setMensajeError}
+          />
         </Box>
 
         {(mensajeError || mensajeExito) && (

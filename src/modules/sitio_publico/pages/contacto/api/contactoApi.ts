@@ -1,7 +1,16 @@
 import { timboxApi } from "../../../../../api/timboxApi";
-import type { ContactoFormularioValores } from "../servicio/contactoServicio";
 
-export async function enviarFormularioContacto(datos: ContactoFormularioValores): Promise<unknown> {
-  const { data } = await timboxApi.post("/contacto", datos);
+export interface ContactoPayloadApi {
+  nombre: string;
+  correo: string;
+  telefono: string;
+  rfc: string;
+  mensaje: string;
+  captchaToken: string;
+}
+
+export async function enviarContacto(payload: ContactoPayloadApi): Promise<unknown> {
+  const { data } = await timboxApi.post("/contacto", payload);
+
   return data;
 }
