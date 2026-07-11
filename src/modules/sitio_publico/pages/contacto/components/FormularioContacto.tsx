@@ -1,12 +1,13 @@
 import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
-import { Alert, Box, Button, TextField } from "@mui/material";
-import { AlertaProceso } from "../../../components/AlertaProceso";
+import { Box, Button, TextField } from "@mui/material";
+import { AlertasServicio, type TipoAlertaServicio } from "../../../components/AlertasServicio";
 import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
 import { enviarSolicitudContacto } from "../servicio/enviarSolicitudContacto";
 import {
   contactoInicial,
   hayErroresContacto,
   obtenerMensajeErrorContacto,
+  validarCampoContacto,
   validarFormularioContacto,
   type ContactoFormularioValores,
   type ErroresContacto,
@@ -22,6 +23,16 @@ const estiloCampo = {
   },
   "& .MuiInputBase-input": {
     py: 0.75,
+  },
+  "& .MuiInputBase-input:-webkit-autofill": {
+    WebkitBoxShadow: "0 0 0 100px var(--azul-timbox) inset",
+    WebkitTextFillColor: "var(--blanco-timbox)",
+    caretColor: "var(--blanco-timbox)",
+    transition: "background-color 9999s ease-out 0s",
+  },
+  "& textarea.MuiInputBase-input": {
+    lineHeight: 1.35,
+    resize: "none",
   },
   "& .MuiInput-underline::before": {
     borderBottomColor: "var(--texto-blanco-medio)",
@@ -46,6 +57,7 @@ type CampoContactoProps = {
   error?: string;
   multiline?: boolean;
   minRows?: number;
+  maxRows?: number;
 };
 
 function CampoContacto({
@@ -56,6 +68,7 @@ function CampoContacto({
   error,
   multiline = false,
   minRows,
+  maxRows,
 }: CampoContactoProps) {
   return (
     <Box>
@@ -84,6 +97,7 @@ function CampoContacto({
         fullWidth
         multiline={multiline}
         minRows={minRows}
+        maxRows={maxRows}
         sx={estiloCampo}
       />
     </Box>
@@ -96,16 +110,35 @@ export function FormularioContacto() {
   const [errores, setErrores] = useState<ErroresContacto>({});
   const [captchaToken, setCaptchaToken] = useState("");
   const [enviando, setEnviando] = useState(false);
-  const [mensajeError, setMensajeError] = useState("");
-  const [mensajeExito, setMensajeExito] = useState("");
+  const [alerta, setAlerta] = useState<{
+    abierta: boolean;
+    tipo: TipoAlertaServicio;
+    titulo: string;
+    descripcion?: string;
+  }>({
+    abierta: false,
+    tipo: "info",
+    titulo: "",
+  });
+
+  const cerrarAlerta = () => {
+    setAlerta((actual) => ({ ...actual, abierta: false }));
+  };
 
   const cambiarCampo =
     (campo: keyof ContactoFormularioValores) =>
     (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      setValores((actual) => ({ ...actual, [campo]: event.target.value }));
-      setErrores((actual) => ({ ...actual, [campo]: undefined }));
-      setMensajeError("");
-      setMensajeExito("");
+      const valor = event.target.value;
+
+      setValores((actual) => {
+        setErrores((erroresActuales) => ({
+          ...erroresActuales,
+          [campo]: validarCampoContacto(campo, valor, actual),
+        }));
+
+        return { ...actual, [campo]: valor };
+      });
+      cerrarAlerta();
     };
 
   const enviar = async (event: FormEvent<HTMLFormElement>) => {
@@ -115,38 +148,56 @@ export function FormularioContacto() {
     setErrores(nuevosErrores);
 
     if (hayErroresContacto(nuevosErrores)) {
-      setMensajeError("Revisa los campos marcados antes de enviar.");
-      return;
-    }
-
-    if (!captchaToken) {
-      setMensajeError("Confirma el captcha antes de enviar el mensaje.");
+      setAlerta({
+        abierta: true,
+        tipo: "error",
+        titulo: "Revisa el formulario",
+        descripcion: "Corrige los campos marcados antes de enviar.",
+      });
       return;
     }
 
     setEnviando(true);
-    setMensajeError("");
-    setMensajeExito("");
+    cerrarAlerta();
 
     try {
-      await enviarSolicitudContacto({ valores, captchaToken });
-      setMensajeExito("Tu mensaje se envió correctamente.");
+      const tokenCaptcha = await captchaRef.current?.ejecutar();
+
+      if (!tokenCaptcha) {
+        throw new Error("No se pudo confirmar el captcha.");
+      }
+
+      await enviarSolicitudContacto({ valores, captchaToken: tokenCaptcha });
+      setAlerta({
+        abierta: true,
+        tipo: "success",
+        titulo: "Mensaje enviado",
+        descripcion: "Tu solicitud de contacto se registro correctamente.",
+      });
       setValores(contactoInicial);
+      setErrores({});
     } catch (error) {
-      setMensajeError(obtenerMensajeErrorContacto(error));
+      setAlerta({
+        abierta: true,
+        tipo: "error",
+        titulo: "No se pudo enviar",
+        descripcion: obtenerMensajeErrorContacto(error),
+      });
     } finally {
       setEnviando(false);
       captchaRef.current?.reiniciar();
+      setCaptchaToken("");
     }
   };
 
   return (
     <>
-      <AlertaProceso
-        abierta={enviando}
-        titulo="Enviando contacto"
-        descripcion="Procesando formulario"
-        cargando
+      <AlertasServicio
+        abierta={enviando || alerta.abierta}
+        tipo={enviando ? "loading" : alerta.tipo}
+        titulo={enviando ? "Enviando contacto" : alerta.titulo}
+        descripcion={enviando ? "Procesando formulario" : alerta.descripcion}
+        onCerrar={enviando ? undefined : cerrarAlerta}
       />
 
       <Box
@@ -207,7 +258,8 @@ export function FormularioContacto() {
           onChange={cambiarCampo("mensaje")}
           error={errores.mensaje}
           multiline
-          minRows={2}
+          minRows={1}
+          maxRows={5}
         />
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", pt: 0.5 }}>
@@ -234,20 +286,20 @@ export function FormularioContacto() {
           </Button>
         </Box>
 
-        <Box sx={{ display: "flex", justifyContent: { xs: "center", md: "center" }, mt: 0 }}>
-          <CaptchaVerificacion
-            ref={captchaRef}
-            value={captchaToken}
-            onChange={setCaptchaToken}
-            onError={setMensajeError}
-          />
-        </Box>
-
-        {(mensajeError || mensajeExito) && (
-          <Alert severity={mensajeError ? "error" : "success"} sx={{ mt: 1 }}>
-            {mensajeError || mensajeExito}
-          </Alert>
-        )}
+        <CaptchaVerificacion
+          ref={captchaRef}
+          value={captchaToken}
+          onChange={setCaptchaToken}
+          onError={(mensaje) => {
+            setAlerta({
+              abierta: true,
+              tipo: "error",
+              titulo: "Captcha no disponible",
+              descripcion: mensaje,
+            });
+          }}
+          size="invisible"
+        />
       </Box>
     </>
   );

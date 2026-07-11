@@ -9,17 +9,21 @@ declare global {
         options: {
           sitekey: string;
           theme?: "light" | "dark";
-          size?: "normal" | "compact";
+          size?: RecaptchaSize;
+          badge?: "bottomright" | "bottomleft" | "inline";
           callback: (token: string) => void;
           "expired-callback": () => void;
           "error-callback": () => void;
         }
       ) => number;
+      execute: (widgetId?: number) => void;
       getResponse: (widgetId?: number) => string;
       reset: (widgetId?: number) => void;
     };
   }
 }
+
+type RecaptchaSize = "normal" | "compact" | "invisible";
 
 interface CaptchaVerificacionProps {
   value: string;
@@ -27,10 +31,12 @@ interface CaptchaVerificacionProps {
   onError?: (mensaje: string) => void;
   siteKey?: string;
   theme?: "light" | "dark";
-  size?: "normal" | "compact";
+  size?: RecaptchaSize;
+  badge?: "bottomright" | "bottomleft" | "inline";
 }
 
 export interface CaptchaVerificacionHandle {
+  ejecutar: () => Promise<string>;
   obtenerToken: () => string;
   reiniciar: () => void;
 }
@@ -89,11 +95,14 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
       siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY as string | undefined,
       theme = "light",
       size = "normal",
+      badge = "bottomright",
     },
     ref
   ) {
   const contenedorRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<number | null>(null);
+  const resolverEjecucionRef = useRef<((token: string) => void) | null>(null);
+  const rechazarEjecucionRef = useRef<((error: Error) => void) | null>(null);
   const [scriptListo, setScriptListo] = useState(false);
   const [mensajeError, setMensajeError] = useState("");
 
@@ -136,17 +145,53 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
       sitekey: siteKey,
       theme,
       size,
-      callback: onChange,
-      "expired-callback": () => onChange(""),
+      badge,
+      callback: (token) => {
+        onChange(token);
+        resolverEjecucionRef.current?.(token);
+        resolverEjecucionRef.current = null;
+        rechazarEjecucionRef.current = null;
+      },
+      "expired-callback": () => {
+        onChange("");
+        rechazarEjecucionRef.current?.(new Error("El captcha expiro."));
+        resolverEjecucionRef.current = null;
+        rechazarEjecucionRef.current = null;
+      },
       "error-callback": () => {
         onChange("");
         setMensajeError(MENSAJE_ERROR);
         onError?.(MENSAJE_ERROR);
+        rechazarEjecucionRef.current?.(new Error(MENSAJE_ERROR));
+        resolverEjecucionRef.current = null;
+        rechazarEjecucionRef.current = null;
       },
     });
-  }, [onChange, onError, scriptListo, siteKey, size, theme]);
+  }, [badge, onChange, onError, scriptListo, siteKey, size, theme]);
 
   useImperativeHandle(ref, () => ({
+    ejecutar: () => new Promise((resolve, reject) => {
+      if (widgetIdRef.current === null || !window.grecaptcha) {
+        reject(new Error(MENSAJE_ERROR));
+        return;
+      }
+
+      if (size !== "invisible") {
+        const token = window.grecaptcha.getResponse(widgetIdRef.current);
+
+        if (token) {
+          resolve(token);
+          return;
+        }
+
+        reject(new Error("Confirma el captcha antes de continuar."));
+        return;
+      }
+
+      resolverEjecucionRef.current = resolve;
+      rechazarEjecucionRef.current = reject;
+      window.grecaptcha.execute(widgetIdRef.current);
+    }),
     obtenerToken: () => {
       if (widgetIdRef.current === null || !window.grecaptcha) {
         return value;
@@ -161,11 +206,11 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
 
       onChange("");
     },
-  }), [onChange, value]);
+  }), [onChange, size, value]);
 
   if (siteKey) {
     return (
-      <Box sx={{ display: "grid", justifyContent: "center", justifyItems: "center", minHeight: 78, my: 2 }}>
+      <Box sx={{ display: "grid", justifyContent: "center", justifyItems: "center", minHeight: size === "invisible" ? 0 : 78, my: size === "invisible" ? 0 : 2 }}>
         <Box ref={contenedorRef} />
         {mensajeError && !onError && (
           <Alert severity="error" sx={{ mt: 1.5, textAlign: "left" }}>

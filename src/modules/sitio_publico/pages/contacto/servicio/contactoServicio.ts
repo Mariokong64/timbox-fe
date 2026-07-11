@@ -48,6 +48,19 @@ export function validarFormularioContacto(datos: ContactoFormularioValores): Err
   return errores;
 }
 
+export function validarCampoContacto(
+  campo: keyof ContactoFormularioValores,
+  valor: string,
+  datos: ContactoFormularioValores
+): string | undefined {
+  const datosActualizados = {
+    ...datos,
+    [campo]: valor,
+  };
+
+  return validarFormularioContacto(datosActualizados)[campo];
+}
+
 export function hayErroresContacto(errores: ErroresContacto): boolean {
   return Object.keys(errores).length > 0;
 }

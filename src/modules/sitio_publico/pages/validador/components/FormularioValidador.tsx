@@ -1,6 +1,6 @@
 import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { Alert, Box, Button, Link, Typography } from "@mui/material";
-import { AlertaProceso } from "../../../components/AlertaProceso";
+import { AlertasServicio } from "../../../components/AlertasServicio";
 import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
 import { enviarSolicitudValidacionComprobante } from "../servicio/enviarSolicitudValidador";
 import {
@@ -66,11 +66,11 @@ export function FormularioValidador() {
 
   return (
     <>
-      <AlertaProceso
+      <AlertasServicio
         abierta={cargando}
+        tipo="loading"
         titulo="Validando Comprobante"
         descripcion="Iniciando Validación"
-        cargando
       />
 
       <Box
@@ -192,9 +192,7 @@ export function FormularioValidador() {
         )}
       </Box>
 
-      {resultado && (
-        <ResultadoValidadorVista resultado={resultado} />
-      )}
+      {resultado && <ResultadoValidadorVista resultado={resultado} />}
     </>
   );
 }

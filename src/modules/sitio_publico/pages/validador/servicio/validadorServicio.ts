@@ -1,4 +1,4 @@
-const TAMANO_MAXIMO_XML = 5 * 1024 * 1024;
+const TAMANO_MAXIMO_XML = 6 * 1024 * 1024;
 
 export interface FilaTablaResultado {
   atributo: string;
@@ -36,7 +36,7 @@ export function validarArchivoXml(archivo: File | null): string | null {
   }
 
   if (archivo.size > TAMANO_MAXIMO_XML) {
-    return "El XML no debe pesar mas de 5 MB.";
+    return "El XML no debe pesar más de 6 MB.";
   }
 
   return null;

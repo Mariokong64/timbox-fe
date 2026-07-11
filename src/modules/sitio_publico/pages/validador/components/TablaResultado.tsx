@@ -1,6 +1,7 @@
 import { Box, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import RemoveIcon from "@mui/icons-material/Remove";
 import type { FilaTablaResultado } from "../servicio/validadorServicio";
 
 interface TablaResultadoProps {
@@ -54,7 +55,9 @@ export function TablaResultado({ columnas, filas, mostrarEstatus = false }: Tabl
               </TableCell>
               {mostrarEstatus && (
                 <TableCell sx={{ width: 76 }}>
-                  {fila.estatus === false ? (
+                  {fila.estatus === undefined ? (
+                    <RemoveIcon sx={{ color: "#8a94a3", fontSize: 22, fontWeight: 700 }} />
+                  ) : fila.estatus === false ? (
                     <CloseIcon sx={{ color: "red", fontSize: 22, fontWeight: 700 }} />
                   ) : (
                     <CheckIcon sx={{ color: "green", fontSize: 22, fontWeight: 700 }} />
