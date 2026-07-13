@@ -1,6 +1,6 @@
-import { useRef, useState, type ChangeEvent, type FormEvent } from "react";
+import { useRef, useState, type ChangeEvent } from "react";
 import { Box, Button, TextField } from "@mui/material";
-import { AlertasServicio, type TipoAlertaServicio } from "../../../components/AlertasServicio";
+import { AlertasServicio, type TipoAlertaServicio } from "../../../../../shared/components/AlertasServicio";
 import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
 import { enviarSolicitudContacto } from "../servicio/enviarSolicitudContacto";
 import {
@@ -141,9 +141,7 @@ export function FormularioContacto() {
       cerrarAlerta();
     };
 
-  const enviar = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const enviarFormulario = async () => {
     const nuevosErrores = validarFormularioContacto(valores);
     setErrores(nuevosErrores);
 
@@ -203,7 +201,10 @@ export function FormularioContacto() {
       <Box
         component="form"
         noValidate
-        onSubmit={enviar}
+        onSubmit={(event) => {
+          event.preventDefault();
+          void enviarFormulario();
+        }}
         sx={{
           width: "100%",
           maxWidth: 835,

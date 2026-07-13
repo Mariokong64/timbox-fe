@@ -1,6 +1,6 @@
 import { useRef, useState, type ChangeEvent, type DragEvent } from "react";
 import { Alert, Box, Button, Link, Typography } from "@mui/material";
-import { AlertasServicio } from "../../../components/AlertasServicio";
+import { AlertasServicio } from "../../../../../shared/components/AlertasServicio";
 import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
 import { enviarSolicitudValidacionComprobante } from "../servicio/enviarSolicitudValidador";
 import {

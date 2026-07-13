@@ -1,6 +1,7 @@
 import {Box, Link, Typography} from '@mui/material';
 import FacebookRoundedIcon from '@mui/icons-material/FacebookRounded';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import {Link as RouterLink} from 'react-router-dom';
 import iconoTimbox from '../../../shared/assets/icono_timbox.svg';
 import {columnasFooter} from '../constants/navegacionPublica';
 
@@ -22,7 +23,23 @@ export function FooterPublico() {
                     alignItems: 'center'
                 }}
             >
-                <Box component="img" src={iconoTimbox} alt="" sx={{width: 32, mx: {xs: 'auto', sm: 0}, mb: {xs: 2, sm: 0}}} />
+                <Box
+                    component={RouterLink}
+                    to="/login"
+                    aria-label="Ir al login de Timbox"
+                    sx={{
+                        width: 32,
+                        mx: {xs: 'auto', sm: 0},
+                        mb: {xs: 2, sm: 0},
+                        display: 'inline-flex',
+                        transition: 'transform 180ms ease',
+                        '&:hover': {
+                            transform: 'translateY(-1px)'
+                        }
+                    }}
+                >
+                    <Box component="img" src={iconoTimbox} alt="" sx={{width: 32, display: 'block'}} />
+                </Box>
 
                 {columnasFooter.map((columna, indice) => (
                     <Box component="ul" key={indice} sx={{listStyle: 'none', p: 0, m: 0, textAlign: {xs: 'center', sm: 'left'}}}>

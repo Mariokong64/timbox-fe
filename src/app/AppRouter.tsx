@@ -1,5 +1,9 @@
 // src/app/AppRouter.tsx
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { RutaPrivada } from "../modules/sitio_privado/components/RutaPrivada";
+import { LayoutPrivado } from "../modules/sitio_privado/layout/LayoutPrivado";
+import { Login } from "../modules/sitio_privado/login/vista/Login";
+import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/DashboardPrivado";
 import { PublicLayout } from "../modules/sitio_publico/layout/PublicLayout";
 import { Contacto } from "../modules/sitio_publico/pages/contacto/Contacto";
 import { Empresa } from "../modules/sitio_publico/pages/empresa/Empresa";
@@ -34,6 +38,12 @@ export function AppRouter() {
           <Route path="/timbrar-zip" element={<TimbrarZip />} />
         </Route>
         <Route path="/contacto" element={<Contacto />} />
+        <Route path="/login" element={<Login />} />
+        <Route element={<RutaPrivada />}>
+          <Route path="/privado" element={<LayoutPrivado />}>
+            <Route index element={<DashboardPrivado />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
