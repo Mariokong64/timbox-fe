@@ -21,7 +21,7 @@ function obtenerBasePrivada(): string {
   return "http://localhost:3000/api/private";
 }
 
-const apiPrivada = axios.create({
+export const apiPrivada = axios.create({
   baseURL: obtenerBasePrivada(),
   timeout: 10000,
 });

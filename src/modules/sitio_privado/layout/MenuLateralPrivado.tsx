@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { Box, IconButton, Tooltip, Typography } from "@mui/material";
-import ChevronLeftRoundedIcon from "@mui/icons-material/ChevronLeftRounded";
-import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
+import ViewSidebarRoundedIcon from "@mui/icons-material/ViewSidebarRounded";
 import iconoTimbox from "../../../shared/assets/icono_timbox.svg";
 import { LogoTimboxConLetras } from "../../../shared/components/LogoTimboxConLetras";
 import { opcionesMenuPrivado } from "./opcionesMenuPrivado";
@@ -30,15 +29,18 @@ export function MenuLateralPrivado({ abierto, onAlternar }: MenuLateralPrivadoPr
         transition: "width 220ms ease, padding 220ms ease",
         boxShadow: "8px 0 22px rgba(0, 0, 0, 0.12)",
         overflow: "hidden",
+        display: "grid",
+        gridTemplateRows: { xs: "auto auto auto", md: "auto 1fr auto" },
+        rowGap: { xs: 1.5, md: 0 },
       }}
     >
       <Box
         sx={{
           minHeight: 82,
-          display: "grid",
-          gridTemplateColumns: abierto ? "1fr 38px" : "1fr",
-          alignItems: "start",
-          gap: 1,
+          display: "flex",
+          alignItems: "flex-start",
+          mt: { xs: 0.5, md: 1 },
+          justifyContent: abierto ? "flex-start" : "center",
         }}
       >
         {abierto ? (
@@ -60,28 +62,9 @@ export function MenuLateralPrivado({ abierto, onAlternar }: MenuLateralPrivadoPr
             <Box component="img" src={iconoTimbox} alt="" sx={{ width: 34, display: "block" }} />
           </Box>
         )}
-
-        <Tooltip title={abierto ? "Contraer menú" : "Abrir menú"} placement="right">
-          <IconButton
-            type="button"
-            aria-label={abierto ? "Contraer menú" : "Abrir menú"}
-            onClick={onAlternar}
-            sx={{
-              justifySelf: abierto ? "end" : "center",
-              mt: 0.4,
-              color: "var(--blanco-timbox)",
-              bgcolor: "rgba(255, 255, 255, 0.08)",
-              "&:hover": {
-                bgcolor: "rgba(255, 255, 255, 0.16)",
-              },
-            }}
-          >
-            {abierto ? <ChevronLeftRoundedIcon /> : <ChevronRightRoundedIcon />}
-          </IconButton>
-        </Tooltip>
       </Box>
 
-      <Box component="nav" sx={{ display: "grid", gap: 1.3, mt: { xs: 1, md: 6 } }}>
+      <Box component="nav" sx={{ display: "grid", alignContent: "start", gap: 1.3, mt: { xs: 1, md: 6 } }}>
         {opcionesMenuPrivado.map((opcion) => {
           const Icono = opcion.icono;
 
@@ -142,6 +125,40 @@ export function MenuLateralPrivado({ abierto, onAlternar }: MenuLateralPrivadoPr
             </Tooltip>
           );
         })}
+      </Box>
+
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: abierto ? "flex-end" : "center",
+          alignItems: "center",
+          pt: { xs: 1, md: 2 },
+          pb: { xs: 0.5, md: 1.2 },
+        }}
+      >
+        <Tooltip title={abierto ? "Contraer menú" : "Abrir menú"} placement="right">
+          <IconButton
+            type="button"
+            aria-label={abierto ? "Contraer menú" : "Abrir menú"}
+            onClick={onAlternar}
+            sx={{
+              width: 42,
+              height: 42,
+              borderRadius: "6px",
+              color: "rgba(255, 255, 255, 0.86)",
+              bgcolor: "rgba(255, 255, 255, 0.08)",
+              border: "1px solid rgba(255, 255, 255, 0.14)",
+              transition: "background-color 180ms ease, color 180ms ease, transform 180ms ease",
+              "&:hover": {
+                bgcolor: "rgba(255, 255, 255, 0.16)",
+                color: "var(--blanco-timbox)",
+                transform: "translateY(-1px)",
+              },
+            }}
+          >
+            <ViewSidebarRoundedIcon sx={{ fontSize: 24 }} />
+          </IconButton>
+        </Tooltip>
       </Box>
     </Box>
   );
