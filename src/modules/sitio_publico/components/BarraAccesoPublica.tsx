@@ -71,13 +71,13 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                 }}
             >
                 {/* Línea superior */}
-                <Box
+                {/* <Box
                     sx={{
                         height: '1px',
                         width: '100%',
                         backgroundColor: colorLinea
                     }}
-                />
+                /> */}
 
                 {/* Contenido */}
                 <Box
@@ -90,7 +90,7 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                     }}
                 >
                     {/* Línea vertical central */}
-                    <Box
+                    {/* <Box
                         sx={{
                             position: 'absolute',
                             left: '50%',
@@ -100,15 +100,17 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                             backgroundColor: colorLinea,
                             transform: 'translateX(-50%)'
                         }}
-                    />
+                    /> */}
 
                     {[
-                        {texto: 'Regístrate', url: enlacesExternos.registro},
-                        {texto: 'Inicio de sesión', url: enlacesExternos.inicioSesion}
+                        // {texto: 'Regístrate', url: enlacesExternos.registro},
+                        // {texto: 'Inicio de sesión', url: enlacesExternos.inicioSesion}
+                        {texto: '', url: enlacesExternos.registro},
+                        {texto: '', url: enlacesExternos.inicioSesion}
                     ].map((enlace) => (
                         <Link
                             key={enlace.texto}
-                            href={enlace.url}
+                            // href={enlace.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             underline="none"
@@ -124,9 +126,9 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                                 fontWeight: 500,
                                 lineHeight: 1,
                                 zIndex: 1,
-                                '&:hover': {
-                                    color: colorLinkHover
-                                }
+                                // '&:hover': {
+                                //     color: colorLinkHover
+                                // }
                             }}
                         >
                             {enlace.texto}
@@ -135,13 +137,13 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                 </Box>
 
                 {/* Línea inferior */}
-                <Box
+                {/* <Box
                     sx={{
                         height: '1px',
                         width: '100%',
                         backgroundColor: colorLinea
                     }}
-                />
+                /> */}
             </Box>
         </Box>
     );
