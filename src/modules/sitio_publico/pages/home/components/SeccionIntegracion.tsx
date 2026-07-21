@@ -47,7 +47,7 @@ export function SeccionIntegracion() {
             Equipos de trabajo especializados con hardware y software de última
             generación.
           </Typography>
-          <EnlaceConFlecha texto="Ver más" href="/integracion" separado />
+          <EnlaceConFlecha texto="Ver más" href="/integradores" separado />
         </Box>
       </Box>
 

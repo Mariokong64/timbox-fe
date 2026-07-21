@@ -26,12 +26,15 @@ export function FooterPublico() {
                 <Box
                     component={RouterLink}
                     to="/login"
-                    aria-label="Ir al login de Timbox"
+                    aria-label="Ir al panel administrativo"
                     sx={{
-                        width: 32,
                         mx: {xs: 'auto', sm: 0},
                         mb: {xs: 2, sm: 0},
                         display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        color: 'var(--texto-footer-claro)',
+                        textDecoration: 'none',
                         transition: 'transform 180ms ease',
                         '&:hover': {
                             transform: 'translateY(-1px)'
@@ -39,6 +42,16 @@ export function FooterPublico() {
                     }}
                 >
                     <Box component="img" src={iconoTimbox} alt="" sx={{width: 32, display: 'block'}} />
+                    <Typography
+                        component="span"
+                        sx={{
+                            fontFamily: 'var(--fuente-regular)',
+                            fontSize: 17,
+                            color: 'inherit'
+                        }}
+                    >
+                        Panel Administrativo
+                    </Typography>
                 </Box>
 
                 {columnasFooter.map((columna, indice) => (
@@ -125,7 +138,7 @@ export function FooterPublico() {
                     </Link>
 
                     <Link
-                        href="mailto:soporte@timbox.com.mx"
+                        href="/soporte"
                         color="inherit"
                         underline="hover"
                         sx={{
@@ -144,7 +157,7 @@ export function FooterPublico() {
 
                 <Box sx={{display: {xs: 'none', md: 'flex'}, gap: 2}}>
                     <Link
-                        href="https://www.facebook.com/TimboxPAC/"
+                        // href="https://www.facebook.com/TimboxPAC/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="Facebook de Timbox"
@@ -162,7 +175,7 @@ export function FooterPublico() {
                     </Link>
 
                     <Link
-                        href="https://www.linkedin.com/company/timbox/"
+                        // href="https://www.linkedin.com/company/timbox/"
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label="LinkedIn de Timbox"
