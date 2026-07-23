@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import fondoHome from "../../../../../shared/assets/fondo_home.png";
+import fondoHome from "../../../../../shared/assets/fondo_home.webp";
 import { EnlaceConFlecha } from "../../../components/EnlaceConFlecha";
 
 export function HeroInicio() {

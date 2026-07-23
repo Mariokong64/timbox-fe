@@ -1,5 +1,5 @@
 import { Box, Link, Typography } from "@mui/material";
-import imagenDudasDefault from "../assets/Componente-32.png";
+import imagenDudasDefault from "../assets/Componente-32.webp";
 
 type ContactoDudasSoporteProps = {
   imagen?: string;

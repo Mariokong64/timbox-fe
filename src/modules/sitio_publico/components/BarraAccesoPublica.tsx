@@ -14,13 +14,13 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
     ? "var(--texto-footer-claro)"
     : "var(--texto-blanco-fuerte)";
 
-  const colorLinkHover = usarHeaderOscuro
-    ? "var(--azul-timbox)"
-    : "var(--blanco-timbox)";
+//   const colorLinkHover = usarHeaderOscuro
+//     ? "var(--azul-timbox)"
+//     : "var(--blanco-timbox)";
 
-  const colorLinea = usarHeaderOscuro
-    ? "var(--borde-azul-medio)"
-    : "var(--blanco-timbox)";
+//   const colorLinea = usarHeaderOscuro
+//     ? "var(--borde-azul-medio)"
+//     : "var(--blanco-timbox)";
 
 
     return (

@@ -1,4 +1,4 @@
-import imagenDudasUno from "../../assets/Componente-35.png";
+import imagenDudasUno from "../../assets/Componente-35.webp";
 
 export const menuMaterialApoyo = [
   { texto: "Generar CFDI", to: "/generar-cfdi/" },

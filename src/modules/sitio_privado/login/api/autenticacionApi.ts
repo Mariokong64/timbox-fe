@@ -3,6 +3,7 @@ import axios from "axios";
 export interface CredencialesLogin {
   usuario: string;
   contrasena: string;
+  captchaToken: string;
 }
 
 function quitarDiagonalFinal(valor: string): string {

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import desarrollador from "../../../../../shared/assets/desarrollador_timbox.png";
+import desarrollador from "../../../../../shared/assets/desarrollador_timbox.webp";
 
 export function HeroIntegracion() {
   return (

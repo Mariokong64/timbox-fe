@@ -1,18 +1,24 @@
-import { useEffect, useMemo, useState, type ChangeEvent } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ChangeEvent } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
+  Alert,
   Box,
   Button,
   IconButton,
   InputAdornment,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
-import rubikTimbox from "../../../../shared/assets/rubik_timbox.png";
+import rubikTimbox from "../../../../shared/assets/rubik_timbox.webp";
 import { AlertasServicio, type TipoAlertaServicio } from "../../../../shared/components/AlertasServicio";
 import { LogoTimboxConLetras } from "../../../../shared/components/LogoTimboxConLetras";
+import {
+  CaptchaVerificacion,
+  type CaptchaVerificacionHandle,
+} from "../../../sitio_publico/components/CaptchaVerificacion";
 import {
   formularioLoginValido,
   iniciarSesion,
@@ -90,6 +96,10 @@ export function Login() {
   const [mostrarContrasena, setMostrarContrasena] = useState(false);
   const [cargando, setCargando] = useState(false);
   const [alerta, setAlerta] = useState<AlertaLogin>(alertaInicial);
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [mensajeCaptcha, setMensajeCaptcha] = useState("");
+  const captchaRef = useRef<CaptchaVerificacionHandle | null>(null);
+  const captchaCompacto = useMediaQuery("(max-width:400px)");
 
   const formularioTieneDatos = useMemo(
     () => Boolean(formulario.usuario.trim() || formulario.contrasena.trim()),
@@ -101,6 +111,14 @@ export function Login() {
       navigate(destino, { replace: true });
     }
   }, [destino, navigate]);
+
+  const actualizarCaptcha = useCallback((token: string) => {
+    setCaptchaToken(token);
+
+    if (token) {
+      setMensajeCaptcha("");
+    }
+  }, []);
 
   const actualizarCampo =
     (campo: keyof FormularioLogin) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -131,6 +149,17 @@ export function Login() {
       return;
     }
 
+    if (!captchaToken) {
+      setMensajeCaptcha("Confirma que no eres un robot antes de continuar.");
+      setAlerta({
+        abierta: true,
+        tipo: "error",
+        titulo: "Falta la verificación",
+        descripcion: "Completa el captcha para iniciar sesión.",
+      });
+      return;
+    }
+
     setCargando(true);
     setAlerta({
       abierta: true,
@@ -140,7 +169,10 @@ export function Login() {
     });
 
     try {
-      await iniciarSesion(formulario);
+      await iniciarSesion({
+        ...formulario,
+        captchaToken,
+      });
       setAlerta({
         abierta: true,
         tipo: "success",
@@ -149,6 +181,7 @@ export function Login() {
       });
       navigate(destino, { replace: true });
     } catch (error) {
+      captchaRef.current?.reiniciar();
       setAlerta({
         abierta: true,
         tipo: "error",
@@ -291,6 +324,31 @@ export function Login() {
                 },
               }}
             />
+          </Box>
+
+          <Box>
+            <CaptchaVerificacion
+              ref={captchaRef}
+              value={captchaToken}
+              onChange={actualizarCaptcha}
+              onError={setMensajeCaptcha}
+              size={captchaCompacto ? "compact" : "normal"}
+              theme="dark"
+            />
+
+            {mensajeCaptcha && (
+              <Alert
+                severity="error"
+                sx={{
+                  mt: -1,
+                  fontFamily: "var(--fuente-regular)",
+                  fontSize: 13,
+                  textAlign: "left",
+                }}
+              >
+                {mensajeCaptcha}
+              </Alert>
+            )}
           </Box>
 
           <Button

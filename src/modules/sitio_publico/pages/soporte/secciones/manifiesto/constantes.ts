@@ -1,5 +1,5 @@
-import imagenDudasDos from "../../assets/Componente-34.png";
-import imagenDudasUno from "../../assets/Componente-35.png";
+import imagenDudasDos from "../../assets/Componente-34.webp";
+import imagenDudasUno from "../../assets/Componente-35.webp";
 
 export const menuManifiesto = [
   { texto: "Firmar Manifiesto", to: "/firmar-manifiesto/" },

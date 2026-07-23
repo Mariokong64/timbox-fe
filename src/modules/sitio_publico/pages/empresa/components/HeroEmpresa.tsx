@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import banderaTimbox from "../../../../../shared/assets/bandera_timbox.png";
+import banderaTimbox from "../../../../../shared/assets/bandera_timbox.webp";
 
 export function HeroEmpresa() {
   return (

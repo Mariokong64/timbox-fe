@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import rubikTimbox from "../../../../../shared/assets/rubik_timbox.png";
+import rubikTimbox from "../../../../../shared/assets/rubik_timbox.webp";
 import { EnlaceConFlecha } from "../../../components/EnlaceConFlecha";
 import { enlacesExternos } from "../../../constants/navegacionPublica";
 

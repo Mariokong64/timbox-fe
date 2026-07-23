@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import piezasMano from "../../../../../shared/assets/piezas_mano_timbox.png";
+import piezasMano from "../../../../../shared/assets/piezas_mano_timbox.webp";
 
 export function HeroSoluciones() {
   return (

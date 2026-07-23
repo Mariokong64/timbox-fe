@@ -1,8 +1,8 @@
-import { useRef, useState, type ChangeEvent } from "react";
+import { useState, type ChangeEvent } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import { AlertasServicio, type TipoAlertaServicio } from "../../../../../shared/components/AlertasServicio";
-import { CaptchaVerificacion, type CaptchaVerificacionHandle } from "../../../components/CaptchaVerificacion";
 import { enviarSolicitudContacto } from "../servicio/enviarSolicitudContacto";
+import { ModalCaptchaContacto } from "./ModalCaptchaContacto";
 import {
   contactoInicial,
   hayErroresContacto,
@@ -105,10 +105,9 @@ function CampoContacto({
 }
 
 export function FormularioContacto() {
-  const captchaRef = useRef<CaptchaVerificacionHandle | null>(null);
   const [valores, setValores] = useState<ContactoFormularioValores>(contactoInicial);
   const [errores, setErrores] = useState<ErroresContacto>({});
-  const [captchaToken, setCaptchaToken] = useState("");
+  const [captchaAbierto, setCaptchaAbierto] = useState(false);
   const [enviando, setEnviando] = useState(false);
   const [alerta, setAlerta] = useState<{
     abierta: boolean;
@@ -141,7 +140,7 @@ export function FormularioContacto() {
       cerrarAlerta();
     };
 
-  const enviarFormulario = async () => {
+  const solicitarConfirmacionCaptcha = () => {
     const nuevosErrores = validarFormularioContacto(valores);
     setErrores(nuevosErrores);
 
@@ -155,17 +154,17 @@ export function FormularioContacto() {
       return;
     }
 
+    cerrarAlerta();
+    setCaptchaAbierto(true);
+  };
+
+  const enviarFormulario = async (captchaToken: string) => {
+    setCaptchaAbierto(false);
     setEnviando(true);
     cerrarAlerta();
 
     try {
-      const tokenCaptcha = await captchaRef.current?.ejecutar();
-
-      if (!tokenCaptcha) {
-        throw new Error("No se pudo confirmar el captcha.");
-      }
-
-      await enviarSolicitudContacto({ valores, captchaToken: tokenCaptcha });
+      await enviarSolicitudContacto({ valores, captchaToken });
       setAlerta({
         abierta: true,
         tipo: "success",
@@ -183,8 +182,6 @@ export function FormularioContacto() {
       });
     } finally {
       setEnviando(false);
-      captchaRef.current?.reiniciar();
-      setCaptchaToken("");
     }
   };
 
@@ -198,12 +195,20 @@ export function FormularioContacto() {
         onCerrar={enviando ? undefined : cerrarAlerta}
       />
 
+      <ModalCaptchaContacto
+        abierto={captchaAbierto}
+        onCerrar={() => setCaptchaAbierto(false)}
+        onVerificado={(token) => {
+          void enviarFormulario(token);
+        }}
+      />
+
       <Box
         component="form"
         noValidate
         onSubmit={(event) => {
           event.preventDefault();
-          void enviarFormulario();
+          solicitarConfirmacionCaptcha();
         }}
         sx={{
           width: "100%",
@@ -266,7 +271,7 @@ export function FormularioContacto() {
         <Box sx={{ display: "flex", justifyContent: "flex-end", pt: 0.5 }}>
           <Button
             type="submit"
-            disabled={enviando}
+            disabled={enviando || captchaAbierto}
             variant="outlined"
             sx={{
               minWidth: 124,
@@ -286,21 +291,6 @@ export function FormularioContacto() {
             Enviar
           </Button>
         </Box>
-
-        <CaptchaVerificacion
-          ref={captchaRef}
-          value={captchaToken}
-          onChange={setCaptchaToken}
-          onError={(mensaje) => {
-            setAlerta({
-              abierta: true,
-              tipo: "error",
-              titulo: "Captcha no disponible",
-              descripcion: mensaje,
-            });
-          }}
-          size="invisible"
-        />
       </Box>
     </>
   );

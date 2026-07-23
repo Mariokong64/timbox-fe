@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import logoSat from "../../../shared/assets/logo_SAT.png";
+import logoSat from "../../../shared/assets/logo_SAT.webp";
 
 const LOGO_SAT_WIDTH = 150;
 const LOGO_SAT_HEIGHT = 226.65;

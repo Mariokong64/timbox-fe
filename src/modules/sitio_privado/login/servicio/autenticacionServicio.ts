@@ -185,6 +185,7 @@ export async function iniciarSesion(credenciales: CredencialesLogin): Promise<Se
   const respuesta = await enviarCredencialesLogin({
     usuario: credenciales.usuario.trim(),
     contrasena: credenciales.contrasena,
+    captchaToken: credenciales.captchaToken,
   });
   const sesion = normalizarSesion(respuesta);
 

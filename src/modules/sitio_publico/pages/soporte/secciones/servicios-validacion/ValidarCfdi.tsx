@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import imagenDudasDos from "../../assets/Componente-34.png";
-import imagenDudasUno from "../../assets/Componente-35.png";
+import imagenDudasDos from "../../assets/Componente-34.webp";
+import imagenDudasUno from "../../assets/Componente-35.webp";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";

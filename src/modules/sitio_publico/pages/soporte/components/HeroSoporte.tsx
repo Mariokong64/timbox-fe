@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import documentacionTimbox from "../../../../../shared/assets/documentacion_timbox.png";
+import documentacionTimbox from "../../../../../shared/assets/documentacion_timbox.webp";
 
 export function HeroSoporte() {
   return (

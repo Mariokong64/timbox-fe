@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
-import edificios from "../../../../shared/assets/Edificios.png";
+import edificios from "../../../../shared/assets/Edificios.webp";
 import { MenuLateralPublico } from "../../components/MenuLateralPublico";
 import { FormularioContacto } from "./components/FormularioContacto";
 import { PanelContacto } from "./components/PanelContacto";
