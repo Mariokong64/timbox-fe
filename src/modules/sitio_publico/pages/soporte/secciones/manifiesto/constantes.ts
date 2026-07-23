@@ -1,0 +1,93 @@
+import imagenDudasDos from "../../assets/Componente-34.png";
+import imagenDudasUno from "../../assets/Componente-35.png";
+
+export const menuManifiesto = [
+  { texto: "Firmar Manifiesto", to: "/firmar-manifiesto/" },
+  { texto: "Firmar Manifiesto Sello", to: "/firmar-manifiesto-sello/" },
+];
+
+export const imagenesDudasManifiesto = {
+  uno: imagenDudasUno,
+  dos: imagenDudasDos,
+};
+
+export const urlManifiesto = {
+  pruebas: "https://staging.ws.timbox.com.mx/manifiesto/wsdl",
+  produccion: "https://sistema.timbox.com.mx/manifiesto/wsdl",
+};
+
+export const firmaManifiesto = "Citvy13pOqqFaCeY5xaazjiGreIpMd1N/rhG5683pmijr/32AuXT3fEakMY3OgfKXqZE9QKqLOMO7Eyvo+R+h6Set/304O9X0RMJVCPObQfdMmfZOAzNKvBE71NAHgYObASxiCaRY6UXZycPovQvJo4xIr4O49m2Lu90bT8sbX7qMSYeoLyqpyPGbqs53ckw7pr9nZ5mx3IT0QoqtWWtDwjwfbWQIsuVRgztcNA+587USkx3DNf849G3lnC/FocA650UOQPdVA13Mb1tYeXSdO4dMQ5/ZQ3g2osw6W/vqtHHEwLZnWroqLCa2sCeaqTs4cDlKt2Ge2qt/uRpY3T1tA==";
+
+export const certificadoManifiesto = `MIIGBDCCA+ygAwIBAgIUMzAwMDEwMDAwMDA0MDAwMDI0MTcwDQYJKoZIhvcNAQEL
+BQAwggErMQ8wDQYDVQQDDAZBQyBVQVQxLjAsBgNVBAoMJVNFUlZJQ0lPIERFIEFE
+TUlOSVNUUkFDSU9OIFRSSUJVVEFSSUExGjAYBgNVBAsMEVNBVC1JRVMgQXV0aG9y
+aXR5MSgwJgYJKoZIhvcNAQkBFhlvc2Nhci5tYXJ0aW5lekBzYXQuZ29iLm14MR0w
+GwYDVQQJDBQzcmEgY2VycmFkYSBkZSBjYWRpejEOMAwGA1UEEQwFMDYzNzAxCzAJ
+BgNVBAYTAk1YMRkwFwYDVQQIDBBDSVVEQUQgREUgTUVYSUNPMREwDwYDVQQHDAhD
+T1lPQUNBTjERMA8GA1UELRMIMi41LjQuNDUxJTAjBgkqhkiG9w0BCQITFnJlc3Bv
+bnNhYmxlOiBBQ0RNQS1TQVQwHhcNMTkwNjE0MjEwNTE1WhcNMjMwNjEzMjEwNTE1
+WjCB+TEnMCUGA1UEAxMeRVNDVUVMQSBLRU1QRVIgVVJHQVRFIFNBIERFIENWMScw
+JQYDVQQpEx5FU0NVRUxBIEtFTVBFUiBVUkdBVEUgU0EgREUgQ1YxJzAlBgNVBAoT
+HkVTQ1VFTEEgS0VNUEVSIFVSR0FURSBTQSBERSBDVjELMAkGA1UEBhMCTVgxKDAm
+BgkqhkiG9w0BCQEWGVNBVHBydWViYXNAcHJ1ZWJhcy5nb2IubXgxJTAjBgNVBC0T
+HEVLVTkwMDMxNzNDOSAvIFhJUUI4OTExMTZRRTQxHjAcBgNVBAUTFSAvIFhJUUI4
+OTExMTZNR1JNWlIwNTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAIOG
+nb6RqDyBhK3RDspzJCf5m4gx+lkCzQTvNEphr2GfZ3XyFHDnMeP4+IPz8XdZzQ8W
+Sjd7JeOr5ef/9omLp4Xd6PCh83WmiTZniNPluctYs6WGDGcm/GCAlp4iIyunXX5T
+JvMAje8Qv8LIm+EmitE/5+OcfPLhDQA/9D34L3D8adoIuUg8UyjK3M8dj62hAkBR
+DUF/0Z4zPhAPX/BER7lEdZRcDrTo1M0eq8SM09+Q7ItXkMYIBf9Q3JDHfpOnD4Jb
+AJ4dK60ZkUQI0xo+G6is4EAXv02liSRCIfEvlJrZHwGZOUaRccfj2fhRLob90Jbm
+l4NKCURGboijoIuhTiMCAwEAAaNPME0wDAYDVR0TAQH/BAIwADALBgNVHQ8EBAMC
+A9gwEQYJYIZIAYb4QgEBBAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMEBggrBgEF
+BQcDAjANBgkqhkiG9w0BAQsFAAOCAgEAr9uInaTMf6UqST5xpEonsbOeqdnyQsG1
+ZiYLKw7lnjMjkYkrenManFXkpxHUeWw8Y/4y48iNcmrs1AH+Gd7ZdOJ3XIqIEy0C
+/SM4GemRx+YMjfsif24dxTN1fD8cU86W1Y56e3rDfgsR9yT/sGmxqvkUN3sQElyD
+2+qhUZUydK7i03bWIG5fyzGIi15YBhzE6ALuX8po2coUlwQV830zRBPGDkcomejs
+fKPjYKQ+yzUtwO+8Klr1PUHmdlaG7Gv4llWLNvKm21qAgxjMkiKHLp1Cr66W1ahk
+s8I8VqsLarSKDzGf42VstQpO0hLV1cWXk920nl+n4htYgE7KDQwpioZXFeXCd9Ki
+ZcEREn/gvHi6nq6awPJS7k6hBPFEAtbmzwykQ30MNdtHwUXRKAf1yru9VYGIs38E
+lZyU8C6JJ0MPx/f/N56yHYOYKtYD++STWgXjHD0c/RPV5j1nhjPFhRMHZAuxOwQx
+ky28MQak+pd7OF5cDJiGYfDQZ7G+riGkhodIGS+jmexWQn0tpoZt8U+Ay7L8P7fd
+qcV9P58AMz4Eie3VrPs2LfpbhNpD/26AvgbkE4Iz4HAOdW9AH1im3Ae8+nWuICnb
+WcmExqcRqykM1U7MXkOV23L3jtdvDKcP+uCudwL+9Iit6K5pCGvqw7e/uCK0/Oyh
+tyxgA0LDS2A=`;
+
+export const llaveManifiesto = `MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCDhp2+kag8gYSt
+0Q7KcyQn+ZuIMfpZAs0E7zRKYa9hn2d18hRw5zHj+PiD8/F3Wc0PFko3eyXjq+Xn
+//aJi6eF3ejwofN1pok2Z4jT5bnLWLOlhgxnJvxggJaeIiMrp11+UybzAI3vEL/C
+yJvhJorRP+fjnHzy4Q0AP/Q9+C9w/GnaCLlIPFMoytzPHY+toQJAUQ1Bf9GeMz4Q
+D1/wREe5RHWUXA606NTNHqvEjNPfkOyLV5DGCAX/UNyQx36Tpw+CWwCeHSutGZFE
+CNMaPhuorOBAF79NpYkkQiHxL5Sa2R8BmTlGkXHH49n4US6G/dCW5peDSglERm6I
+o6CLoU4jAgMBAAECggEAVsCE7XyvhfE77VX2NoyJraBS+RtV8D4LspSAXgtenbqB
+iGc7Glk0LBU8/fP6MenWenwOSdf9XtU0GLlZCNJHleGP0qBPsCs/V9YkhveAe+Ku
+45+uMJ+jWZeXQQhtQE7tOPRpvWCBPc1DXpvpTTGZ4HkRX60JMT5F0ANe+zznNdMl
+gN+YgAbf+RxeP2w6dZOmzmXqUIL+CQ3oJxBM+11fF3NKow9fC83eYrfMgJsH+J+h
+cofjuDdvUr6llqBLBlLa2ATaGqf6Y3bEDyf2jsitwLzQJ7S8WpFgvbgcXh8oNNDn
+uqFAG9w8oBonSfd8Zrlv1t/EWLXc/loqgPr9JhV3AQKBgQC4n69rn63w9YMTumDN
+oaA3pykA35UHTPRqqdqvXcIBe5P1MHtSKl7DNY93pN5Qsu6e/ev2VKwXnnuGi85Q
+NANE1SlfK59sLbzXnZmLux4joaXX6U9g1H/serRE9hP3IDSo1S72mBkFn6FvFu0i
+LhlOjKxZl7Lq4NIJQTWS/UKCgQKBgQC2X8znKKbUniaeb7GnjtSOWGL/+Q/1+01s
+PwEBlx7FutFgEgtmSfI1vOFR4u8sex+j9m/oQp0z5e9+FOekPvMpDcmC5DcW91Vu
+jQW0emzIaQl0lRRHnhjmqnYMp0aSseJgEAq0+VA8wPceudBdEN+W1L8I3DiMZ4W1
+Bt5qIEE2owKBgAjwSkj2qTBCYr9AxdEO4zfukvCk4o1A75B+esUE0BDMT+SOHVpk
+DMR8wl5zkAPuNdlix9rcTJy0IpzoBewiKIpbm64s6YIOUNdLnRSD0bi96c6jUCGL
+CEqFwlaYZ20OlR4bfDOaN5PrH6DGRmLiQn1oGCwaSSJQEjs6egKM2nyBAoGAIXib
+pqEzXTpZZCKjvFjecfGO2ePgJgklQISfrqcJosiSvMsTBIb1yR8NS3YW51cBi5oj
+F8GCEJBW0BEOInrbLeG15iv0YGasa0m+jk0Zwf5lGdxyiGJft5X5bIEW1r2HCpJn
+JKfNLhlMQXtg3nPGVWxeU0X3qu0lAQBtuZSJ43kCgYEAllkpoVu6a2YSc/yZWxPl
+Kg7WjySsQQt3tLbf69i8kosXlz8XiAwzkT1rilIBfGo7i/29xjkJJ13zjl16cKNM
+1JRhABTCDRqEEV7aQxoRTI71UAKtqAf0k4Ji3MYSD7k2LkPMv2I6Pc83dE1T7DUm
+OxxzqFBkL0KK4V2jvIdu1yE=`;
+
+export const erroresManifiesto = [
+  ["MAN001", "Los datos de autentificación enviados son incorrectos."],
+  ["MAN002", "Su plan ha caducado, favor de contratar un nuevo plan."],
+  ["MAN003", "Parámetro RFC inválido"],
+  ["MAN004", "Parámetro Email inválido"],
+  ["MAN005", "Parámetro Razon Social inválido"],
+  ["MAN006", "Parámetro Certificado PEM inválido"],
+  ["MAN007", "Parámetro Llave PEM inválido"],
+  ["MAN008", "El certificado utilizado es un CSD, se requiere el certificado FIEL."],
+  ["MAN009", "El certificado del emisor no corresponde al RFC"],
+  ["MAN999", "Error de comunicación con el servicio."],
+];

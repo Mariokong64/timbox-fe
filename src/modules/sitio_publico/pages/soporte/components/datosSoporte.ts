@@ -28,7 +28,7 @@ export const gruposSoporte: GrupoSoporte[] = [
       { texto: "Generar Certificado", href: "/generar-certificado/" },
       { texto: "Generar Sello", href: "/generar-sello/" },
       { texto: "RFC's Ambiente de Pruebas SAT", href: "/rfcs-ambiente-de-pruebas-sat/" },
-      { texto: "Ejemplos", href: "/timbox-integracion/" },
+      { texto: "Ejemplos", href: "/integraciones" },
     ],
   },
   {

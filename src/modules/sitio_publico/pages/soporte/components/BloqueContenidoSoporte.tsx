@@ -2,25 +2,27 @@ import { Box, Typography } from "@mui/material";
 import type { ReactNode } from "react";
 
 type BloqueContenidoSoporteProps = {
-  titulo: string;
+  titulo?: string;
   children: ReactNode;
 };
 
 export function BloqueContenidoSoporte({ titulo, children }: BloqueContenidoSoporteProps) {
   return (
     <Box sx={{ mb: { xs: 4.5, md: 3.2 } }}>
-      <Typography
-        component="h3"
-        sx={{
-          mb: 2,
-          fontFamily: "var(--fuente-regular)",
-          fontSize: { xs: 24, md: 30 },
-          fontWeight: 700,
-          lineHeight: 1.1,
-        }}
-      >
-        {titulo}
-      </Typography>
+      {titulo && (
+        <Typography
+          component="h3"
+          sx={{
+            mb: 2,
+            fontFamily: "var(--fuente-regular)",
+            fontSize: { xs: 24, md: 30 },
+            fontWeight: 700,
+            lineHeight: 1.1,
+          }}
+        >
+          {titulo}
+        </Typography>
+      )}
       <Box
         sx={{
           fontFamily: "var(--fuente-ligera)",

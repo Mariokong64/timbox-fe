@@ -9,7 +9,43 @@ import { MenuLateralPublico } from "../components/MenuLateralPublico";
 export function PublicLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false);
   const { pathname } = useLocation();
-  const rutasDocumentacionSoporte = ["/timbrar-cfdi", "/timbrar-cfdi-4-0", "/timbrar-referencia", "/timbrar-zip"];
+  const rutasDocumentacionSoporte = [
+    "/timbrar-cfdi",
+    "/timbrar-cfdi-4-0",
+    "/timbrar-referencia",
+    "/timbrar-zip",
+    "/cancelar-cfdi/",
+    "/cancelar-cfdi-seguro/",
+    "/consultar-estatus/",
+    "/consultar-documento-relacionado/",
+    "/consultar-peticiones-pendientes/",
+    "/procesar-respuesta/",
+    "/buscar-cfdis/",
+    "/buscar-acuse-recepcion/",
+    "/recuperar-comprobante/",
+    "/recuperar-comprobante-referencia/",
+    "/obtener-consumo/",
+    "/timbrar-retenciones/",
+    "/cancelar-retenciones/",
+    "/cancelar-masivo-retenciones/",
+    "/consultar-acuse-cancelacion/",
+    "/validar-cfdi/",
+    "/firmar-manifiesto/",
+    "/firmar-manifiesto-sello/",
+    "/generar-cfdi/",
+    "/generar-cfdi-retenciones/",
+    "/generar-certificado/",
+    "/generar-sello/",
+    "/rfcs-ambiente-de-pruebas-sat/",
+    "/layout-que-es/",
+    "/layout-cfdi-4-0/",
+    "/layout-nomina/",
+    "/layout-que-es-windows/",
+    "/layout-windows/",
+    "/layout-rep-windows/",
+    "/layout-comercio-windows/",
+    "/layout-windows-cartaporte/",
+  ];
   const rutasConHeaderOscuro = ["/planes", ...rutasDocumentacionSoporte];
   const esRutaDocumentacionSoporte = rutasDocumentacionSoporte.includes(pathname);
   const modoHeader = menuAbierto || !rutasConHeaderOscuro.includes(pathname) ? "claro" : "oscuro";

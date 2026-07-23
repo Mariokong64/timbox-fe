@@ -60,8 +60,9 @@ export function BloqueCodigoSoporte({ codigo }: BloqueCodigoSoporteProps) {
       sx={{
         my: { xs: 2.5, md: 2 },
         p: { xs: 2.2, md: 1.25 },
-        maxHeight: 520,
-        overflow: "auto",
+        height: "auto",
+        overflowX: "auto",
+        overflowY: "visible",
         bgcolor: "#20231d",
         color: coloresXml.texto,
         border: 0,

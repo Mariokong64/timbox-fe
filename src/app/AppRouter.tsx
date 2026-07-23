@@ -18,6 +18,37 @@ import { Soluciones } from "../modules/sitio_publico/pages/soluciones/Soluciones
 import { Soporte } from "../modules/sitio_publico/pages/soporte/Soporte";
 import { TimbrarCfdi } from "../modules/sitio_publico/pages/soporte/secciones/timbrar/TimbrarCfdi";
 import { TimbrarCfdi40 } from "../modules/sitio_publico/pages/soporte/secciones/timbrar/TimbrarCfdi4.0";
+import { CancelarCfdi } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/CancelarCfdi";
+import { CancelarCfdiSeguro } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/CancelarCfdiSeguro";
+import { ConsultarDocumentoRelacionado } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/ConsultarDocumentoRelacionado";
+import { ConsultarEstatus } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/ConsultarEstatus";
+import { ConsultarPeticionesPendientes } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/ConsultarPeticionesPendientes";
+import { ProcesarRespuesta } from "../modules/sitio_publico/pages/soporte/secciones/cancelar/ProcesarRespuesta";
+import { BuscarAcuseRecepcion } from "../modules/sitio_publico/pages/soporte/secciones/utilerias/BuscarAcuseRecepcion";
+import { BuscarCfdis } from "../modules/sitio_publico/pages/soporte/secciones/utilerias/BuscarCfdis";
+import { ObtenerConsumo } from "../modules/sitio_publico/pages/soporte/secciones/utilerias/ObtenerConsumo";
+import { RecuperarComprobante } from "../modules/sitio_publico/pages/soporte/secciones/utilerias/RecuperarComprobante";
+import { RecuperarComprobanteReferencia } from "../modules/sitio_publico/pages/soporte/secciones/utilerias/RecuperarComprobanteReferencia";
+import { CancelarMasivoRetenciones } from "../modules/sitio_publico/pages/soporte/secciones/retenciones/CancelarMasivoRetenciones";
+import { CancelarRetenciones } from "../modules/sitio_publico/pages/soporte/secciones/retenciones/CancelarRetenciones";
+import { ConsultarAcuseCancelacion } from "../modules/sitio_publico/pages/soporte/secciones/retenciones/ConsultarAcuseCancelacion";
+import { TimbrarRetenciones } from "../modules/sitio_publico/pages/soporte/secciones/retenciones/TimbrarRetenciones";
+import { ValidarCfdi } from "../modules/sitio_publico/pages/soporte/secciones/servicios-validacion/ValidarCfdi";
+import { FirmarManifiesto } from "../modules/sitio_publico/pages/soporte/secciones/manifiesto/FirmarManifiesto";
+import { FirmarManifiestoSello } from "../modules/sitio_publico/pages/soporte/secciones/manifiesto/FirmarManifiestoSello";
+import { GenerarCertificado } from "../modules/sitio_publico/pages/soporte/secciones/generacion-cfdi/GenerarCertificado";
+import { GenerarCfdi } from "../modules/sitio_publico/pages/soporte/secciones/generacion-cfdi/GenerarCfdi";
+import { GenerarCfdiRetenciones } from "../modules/sitio_publico/pages/soporte/secciones/generacion-cfdi/GenerarCfdiRetenciones";
+import { GenerarSello } from "../modules/sitio_publico/pages/soporte/secciones/generacion-cfdi/GenerarSello";
+import { RfcsAmbientePruebasSat } from "../modules/sitio_publico/pages/soporte/secciones/rfcs-ambiente-pruebas-sat/RfcsAmbientePruebasSat";
+import { TxtCfdi40 } from "../modules/sitio_publico/pages/soporte/secciones/integracion-txt/TxtCfdi40";
+import { TxtNomina } from "../modules/sitio_publico/pages/soporte/secciones/integracion-txt/TxtNomina";
+import { TxtQueEs } from "../modules/sitio_publico/pages/soporte/secciones/integracion-txt/TxtQueEs";
+import { LayoutCartaPorteWindows } from "../modules/sitio_publico/pages/soporte/secciones/layout-windows/LayoutCartaPorteWindows";
+import { LayoutCfdiWindows } from "../modules/sitio_publico/pages/soporte/secciones/layout-windows/LayoutCfdiWindows";
+import { LayoutComercioWindows } from "../modules/sitio_publico/pages/soporte/secciones/layout-windows/LayoutComercioWindows";
+import { LayoutQueEsWindows } from "../modules/sitio_publico/pages/soporte/secciones/layout-windows/LayoutQueEsWindows";
+import { LayoutRepWindows } from "../modules/sitio_publico/pages/soporte/secciones/layout-windows/LayoutRepWindows";
 import { TimbrarRefencia } from "../modules/sitio_publico/pages/soporte/secciones/timbrar/TimbrarRefencia";
 import { TimbrarZip } from "../modules/sitio_publico/pages/soporte/secciones/timbrar/TimbrarZip";
 import { Validador } from "../modules/sitio_publico/pages/validador/Validador";
@@ -30,6 +61,7 @@ export function AppRouter() {
           <Route path="/" element={<HomePage />} />
           <Route path="/planes" element={<Planes />} />
           <Route path="/integradores" element={<Integracion />} />
+          <Route path="/integraciones" element={<Integracion />} />
           <Route path="/soluciones" element={<Soluciones />} />
           <Route path="/validador" element={<Validador />} />
           <Route path="/empresa" element={<Empresa />} />
@@ -40,6 +72,37 @@ export function AppRouter() {
           <Route path="/timbrar-cfdi-4-0" element={<TimbrarCfdi40 />} />
           <Route path="/timbrar-referencia" element={<TimbrarRefencia />} />
           <Route path="/timbrar-zip" element={<TimbrarZip />} />
+          <Route path="/cancelar-cfdi/" element={<CancelarCfdi />} />
+          <Route path="/cancelar-cfdi-seguro/" element={<CancelarCfdiSeguro />} />
+          <Route path="/consultar-estatus/" element={<ConsultarEstatus />} />
+          <Route path="/consultar-documento-relacionado/" element={<ConsultarDocumentoRelacionado />} />
+          <Route path="/consultar-peticiones-pendientes/" element={<ConsultarPeticionesPendientes />} />
+          <Route path="/procesar-respuesta/" element={<ProcesarRespuesta />} />
+          <Route path="/buscar-cfdis/" element={<BuscarCfdis />} />
+          <Route path="/buscar-acuse-recepcion/" element={<BuscarAcuseRecepcion />} />
+          <Route path="/recuperar-comprobante/" element={<RecuperarComprobante />} />
+          <Route path="/recuperar-comprobante-referencia/" element={<RecuperarComprobanteReferencia />} />
+          <Route path="/obtener-consumo/" element={<ObtenerConsumo />} />
+          <Route path="/timbrar-retenciones/" element={<TimbrarRetenciones />} />
+          <Route path="/cancelar-retenciones/" element={<CancelarRetenciones />} />
+          <Route path="/cancelar-masivo-retenciones/" element={<CancelarMasivoRetenciones />} />
+          <Route path="/consultar-acuse-cancelacion/" element={<ConsultarAcuseCancelacion />} />
+          <Route path="/validar-cfdi/" element={<ValidarCfdi />} />
+          <Route path="/firmar-manifiesto/" element={<FirmarManifiesto />} />
+          <Route path="/firmar-manifiesto-sello/" element={<FirmarManifiestoSello />} />
+          <Route path="/generar-cfdi/" element={<GenerarCfdi />} />
+          <Route path="/generar-cfdi-retenciones/" element={<GenerarCfdiRetenciones />} />
+          <Route path="/generar-certificado/" element={<GenerarCertificado />} />
+          <Route path="/generar-sello/" element={<GenerarSello />} />
+          <Route path="/rfcs-ambiente-de-pruebas-sat/" element={<RfcsAmbientePruebasSat />} />
+          <Route path="/layout-que-es/" element={<TxtQueEs />} />
+          <Route path="/layout-cfdi-4-0/" element={<TxtCfdi40 />} />
+          <Route path="/layout-nomina/" element={<TxtNomina />} />
+          <Route path="/layout-que-es-windows/" element={<LayoutQueEsWindows />} />
+          <Route path="/layout-windows/" element={<LayoutCfdiWindows />} />
+          <Route path="/layout-rep-windows/" element={<LayoutRepWindows />} />
+          <Route path="/layout-comercio-windows/" element={<LayoutComercioWindows />} />
+          <Route path="/layout-windows-cartaporte/" element={<LayoutCartaPorteWindows />} />
           <Route path="*" element={<PaginaNoEncontradaPublica />} />
         </Route>
         <Route path="/contacto" element={<Contacto />} />
