@@ -1,8 +1,9 @@
 import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { Alert, Box } from "@mui/material";
+import { Alert, Box, Button, CircularProgress, Typography } from "@mui/material";
 
 declare global {
   interface Window {
+    __timboxRecaptchaLista?: () => void;
     grecaptcha?: {
       render: (
         container: HTMLElement,
@@ -42,7 +43,10 @@ export interface CaptchaVerificacionHandle {
 }
 
 const RECAPTCHA_SCRIPT_ID = "google-recaptcha-script";
-const RECAPTCHA_SCRIPT_SRC = "https://www.google.com/recaptcha/api.js?render=explicit";
+const RECAPTCHA_CALLBACK = "__timboxRecaptchaLista";
+const RECAPTCHA_SCRIPT_SRC =
+  `https://www.google.com/recaptcha/api.js?onload=${RECAPTCHA_CALLBACK}&render=explicit&hl=es`;
+const RECAPTCHA_TIMEOUT_MS = 15000;
 const MENSAJE_ERROR = "No se pudo cargar reCAPTCHA. Revisa tu conexion e intenta de nuevo.";
 
 let cargaRecaptcha: Promise<void> | null = null;
@@ -56,19 +60,49 @@ function cargarScriptRecaptcha() {
     return cargaRecaptcha;
   }
 
-  cargaRecaptcha = new Promise((resolve, reject) => {
+  cargaRecaptcha = new Promise<void>((resolve, reject) => {
     let script = document.getElementById(RECAPTCHA_SCRIPT_ID) as HTMLScriptElement | null;
+    let finalizado = false;
 
-    const resolverCarga = () => {
-      if (window.grecaptcha?.render) {
+    const limpiarEscuchas = () => {
+      window.clearInterval(intervaloId);
+      window.clearTimeout(timeoutId);
+
+      script?.removeEventListener("load", comprobarDisponibilidad);
+      script?.removeEventListener("error", resolverError);
+    };
+
+    const finalizar = (error?: Error) => {
+      if (finalizado) {
+        return;
+      }
+
+      finalizado = true;
+      limpiarEscuchas();
+
+      if (!error) {
         resolve();
         return;
       }
 
-      reject(new Error(MENSAJE_ERROR));
+      if (!window.grecaptcha?.render) {
+        script?.remove();
+      }
+
+      reject(error);
     };
 
-    const resolverError = () => reject(new Error(MENSAJE_ERROR));
+    function comprobarDisponibilidad() {
+      if (window.grecaptcha?.render) {
+        finalizar();
+      }
+    }
+
+    function resolverError() {
+      finalizar(new Error(MENSAJE_ERROR));
+    }
+
+    window.__timboxRecaptchaLista = comprobarDisponibilidad;
 
     if (!script) {
       script = document.createElement("script");
@@ -76,11 +110,22 @@ function cargarScriptRecaptcha() {
       script.src = RECAPTCHA_SCRIPT_SRC;
       script.async = true;
       script.defer = true;
-      document.body.appendChild(script);
     }
 
-    script.addEventListener("load", resolverCarga, { once: true });
+    script.addEventListener("load", comprobarDisponibilidad);
     script.addEventListener("error", resolverError, { once: true });
+
+    const intervaloId = window.setInterval(comprobarDisponibilidad, 100);
+    const timeoutId = window.setTimeout(resolverError, RECAPTCHA_TIMEOUT_MS);
+
+    if (!script.isConnected) {
+      document.head.appendChild(script);
+    }
+
+    comprobarDisponibilidad();
+  }).catch((error) => {
+    cargaRecaptcha = null;
+    throw error;
   });
 
   return cargaRecaptcha;
@@ -104,7 +149,9 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
   const resolverEjecucionRef = useRef<((token: string) => void) | null>(null);
   const rechazarEjecucionRef = useRef<((error: Error) => void) | null>(null);
   const [scriptListo, setScriptListo] = useState(false);
+  const [cargandoScript, setCargandoScript] = useState(Boolean(siteKey));
   const [mensajeError, setMensajeError] = useState("");
+  const [intentoCarga, setIntentoCarga] = useState(0);
 
   useEffect(() => {
     if (!siteKey) {
@@ -112,16 +159,20 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
     }
 
     let montado = true;
+    setCargandoScript(true);
+    setScriptListo(false);
     setMensajeError("");
 
     cargarScriptRecaptcha()
       .then(() => {
         if (montado) {
           setScriptListo(true);
+          setCargandoScript(false);
         }
       })
       .catch(() => {
         if (montado) {
+          setCargandoScript(false);
           setMensajeError(MENSAJE_ERROR);
           onError?.(MENSAJE_ERROR);
         }
@@ -130,7 +181,7 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
     return () => {
       montado = false;
     };
-  }, [onError, siteKey]);
+  }, [intentoCarga, onError, siteKey]);
 
   useEffect(() => {
     if (!siteKey || !scriptListo || !contenedorRef.current || !window.grecaptcha) {
@@ -208,14 +259,53 @@ export const CaptchaVerificacion = forwardRef<CaptchaVerificacionHandle, Captcha
     },
   }), [onChange, size, value]);
 
+  const reintentarCarga = () => {
+    setMensajeError("");
+    onError?.("");
+    setIntentoCarga((actual) => actual + 1);
+  };
+
   if (siteKey) {
     return (
       <Box sx={{ display: "grid", justifyContent: "center", justifyItems: "center", minHeight: size === "invisible" ? 0 : 78, my: size === "invisible" ? 0 : 2 }}>
+        {cargandoScript && size !== "invisible" && (
+          <Box
+            role="status"
+            sx={{
+              minHeight: 78,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 1.25,
+              color: "text.secondary",
+            }}
+          >
+            <CircularProgress size={20} color="inherit" />
+            <Typography sx={{ fontSize: 14 }}>
+              Cargando verificación...
+            </Typography>
+          </Box>
+        )}
+
         <Box ref={contenedorRef} />
-        {mensajeError && !onError && (
-          <Alert severity="error" sx={{ mt: 1.5, textAlign: "left" }}>
-            {mensajeError}
-          </Alert>
+
+        {mensajeError && (
+          <Box sx={{ display: "grid", justifyItems: "center", gap: 0.5 }}>
+            {!onError && (
+              <Alert severity="error" sx={{ mt: 1.5, textAlign: "left" }}>
+                {mensajeError}
+              </Alert>
+            )}
+
+            <Button
+              type="button"
+              size="small"
+              onClick={reintentarCarga}
+              sx={{ textTransform: "none" }}
+            >
+              Reintentar verificación
+            </Button>
+          </Box>
         )}
       </Box>
     );
