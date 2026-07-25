@@ -8,18 +8,17 @@ type EstadoRutaPrivada = "validando" | "permitida" | "bloqueada";
 
 export function RutaPrivada() {
   const location = useLocation();
-  const [estado, setEstado] = useState<EstadoRutaPrivada>("validando");
+  const [estado, setEstado] = useState<EstadoRutaPrivada>(() =>
+    obtenerSesionGuardada() ? "validando" : "bloqueada"
+  );
 
   useEffect(() => {
     let activo = true;
     const sesion = obtenerSesionGuardada();
 
     if (!sesion) {
-      setEstado("bloqueada");
-      return;
+      return undefined;
     }
-
-    setEstado("validando");
 
     validarSesionPrivada()
       .then(() => {
@@ -38,7 +37,7 @@ export function RutaPrivada() {
     return () => {
       activo = false;
     };
-  }, [location.pathname]);
+  }, []);
 
   if (estado === "validando") {
     return (

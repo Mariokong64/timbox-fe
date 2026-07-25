@@ -96,6 +96,10 @@ function leerLista(origen: Record<string, unknown>, llave: string): unknown[] {
   return Array.isArray(valor) ? valor : [];
 }
 
+function normalizarOrigen(valor: string): string {
+  return valor.trim().toLowerCase() === "chatbot" ? "Chat" : valor;
+}
+
 function normalizarMetrica(valor: unknown): MetricaDashboard | null {
   if (!esRegistro(valor)) {
     return null;
@@ -128,7 +132,7 @@ function normalizarSolicitudReciente(valor: unknown): SolicitudRecienteDashboard
     nombre: leerTexto(valor, "nombre"),
     correo: leerTexto(valor, "correo"),
     estatus: leerTexto(valor, "estatus"),
-    origen: leerTexto(valor, "origen"),
+    origen: normalizarOrigen(leerTexto(valor, "origen")),
     fechaRegistro: leerTexto(valor, "fechaRegistro"),
   };
 
@@ -165,7 +169,12 @@ function normalizarResumen(respuesta: unknown): ResumenDashboard {
       enAtencion: leerNumero(contacto, "enAtencion"),
       descartadas: leerNumero(contacto, "descartadas"),
       porEstatus: normalizarMetricas(leerLista(contacto, "porEstatus")),
-      porOrigen: normalizarMetricas(leerLista(contacto, "porOrigen")),
+      porOrigen: normalizarMetricas(leerLista(contacto, "porOrigen")).map(
+        (metrica) => ({
+          ...metrica,
+          etiqueta: normalizarOrigen(metrica.etiqueta),
+        })
+      ),
       porDia: normalizarSerie(leerLista(contacto, "porDia")),
       recientes: normalizarRecientes(leerLista(contacto, "recientes")),
     },

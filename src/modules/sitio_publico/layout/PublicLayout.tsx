@@ -5,6 +5,7 @@ import { AccionesFlotantes } from "../components/AccionesFlotantes";
 import { BarraAccesoPublica } from "../components/BarraAccesoPublica";
 import { FooterPublico } from "../components/FooterPublico";
 import { MenuLateralPublico } from "../components/MenuLateralPublico";
+import { ChatFlotante } from "../components/chat";
 
 export function PublicLayout() {
   const [menuAbierto, setMenuAbierto] = useState(false);
@@ -67,6 +68,7 @@ export function PublicLayout() {
         onCerrar={cerrarMenu}
       />
       <AccionesFlotantes />
+      <ChatFlotante />
 
       <Box component="main">
         <Outlet />

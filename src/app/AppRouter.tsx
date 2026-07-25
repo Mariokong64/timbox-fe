@@ -1,5 +1,5 @@
 // src/app/AppRouter.tsx
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ModuloNoImplementadoPrivado } from "../modules/sitio_privado/components/ModuloNoImplementadoPrivado";
 import { RutaPrivada } from "../modules/sitio_privado/components/RutaPrivada";
 import { LayoutPrivado } from "../modules/sitio_privado/layout/LayoutPrivado";
@@ -7,6 +7,7 @@ import { Login } from "../modules/sitio_privado/login/vista/Login";
 import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/vista/DashboardPrivado";
 import { PerfilPrivado } from "../modules/sitio_privado/pages/perfil/vista/PerfilPrivado";
 import { Usuarios } from "../modules/sitio_privado/pages/usuarios/Usuarios";
+import { SolicitudesContacto } from "../modules/sitio_privado/pages/solicitudes/vista/SolicitudesContacto";
 import { PaginaNoEncontradaPublica } from "../modules/sitio_publico/components/PaginaNoEncontradaPublica";
 import { PublicLayout } from "../modules/sitio_publico/layout/PublicLayout";
 import { Contacto } from "../modules/sitio_publico/pages/contacto/Contacto";
@@ -112,7 +113,11 @@ export function AppRouter() {
           <Route path="/privado" element={<LayoutPrivado />}>
             <Route index element={<DashboardPrivado />} />
             <Route path="contenidos" element={<ModuloNoImplementadoPrivado />} />
-            <Route path="solicitudes" element={<ModuloNoImplementadoPrivado />} />
+            <Route path="solicitudes" element={<SolicitudesContacto />} />
+            <Route
+              path="chats"
+              element={<Navigate to="/privado/solicitudes?origen=chat" replace />}
+            />
             <Route path="usuarios" element={<Usuarios />} />
             <Route path="*" element={<ModuloNoImplementadoPrivado />} />
           </Route>
