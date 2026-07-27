@@ -8,6 +8,7 @@ import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/vista
 import { PerfilPrivado } from "../modules/sitio_privado/pages/perfil/vista/PerfilPrivado";
 import { Usuarios } from "../modules/sitio_privado/pages/usuarios/Usuarios";
 import { SolicitudesContacto } from "../modules/sitio_privado/pages/solicitudes/vista/SolicitudesContacto";
+import { GestionContenidos } from "../modules/sitio_privado/pages/contenidos/vista/GestionContenidos";
 import { PaginaNoEncontradaPublica } from "../modules/sitio_publico/components/PaginaNoEncontradaPublica";
 import { PublicLayout } from "../modules/sitio_publico/layout/PublicLayout";
 import { Contacto } from "../modules/sitio_publico/pages/contacto/Contacto";
@@ -112,7 +113,7 @@ export function AppRouter() {
           <Route path="/privado/perfil" element={<PerfilPrivado />} />
           <Route path="/privado" element={<LayoutPrivado />}>
             <Route index element={<DashboardPrivado />} />
-            <Route path="contenidos" element={<ModuloNoImplementadoPrivado />} />
+            <Route path="contenidos" element={<GestionContenidos />} />
             <Route path="solicitudes" element={<SolicitudesContacto />} />
             <Route
               path="chats"
