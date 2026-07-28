@@ -1,6 +1,6 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { DudasCancelar, EnlacesCancelacion } from "./ElementosComunes";
 import { erroresPeticionReceptor, menuCancelar, regexUuid } from "./constantes";
@@ -98,7 +98,7 @@ const respuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/en
 
 export function ConsultarDocumentoRelacionado() {
   return (
-    <LayoutDocumentacionSoporte categoria="Cancelar" titulo="Método Consultar_Documento_Relacionado" menu={menuCancelar} activo="/consultar-documento-relacionado/">
+    <LayoutDocumentacionPublica categoria="Cancelar" titulo="Método Consultar_Documento_Relacionado" menu={menuCancelar} activo="/consultar-documento-relacionado/">
       <EnlacesCancelacion />
       <BloqueContenidoSoporte titulo="Consumo de créditos"><p>Por cada petición: 1 crédito.</p></BloqueContenidoSoporte>
       <BloqueContenidoSoporte titulo="Petición al servicio"><p>El servicio de “consultar_documento_relacionado” se utiliza para realizar la consulta al servicio del SAT para revisar si el documento a consultar tiene documentos relacionados.</p></BloqueContenidoSoporte>
@@ -111,6 +111,6 @@ export function ConsultarDocumentoRelacionado() {
       <BloqueContenidoSoporte titulo="Ejemplo de respuesta del servicio"><p>A continuación mostramos la respuesta que regresa el servicio, en donde se mostraran los UUID’s que tenga documentos relacionados.</p><BloqueCodigoSoporte codigo={respuesta} /></BloqueContenidoSoporte>
       <BloqueContenidoSoporte titulo="Mensajes recibidos de la petición al servicio"><p>Esta tabla muestra los códigos que obtendremos una vez realizada la petición de consulta cfdi relacionados.</p><TablaSoporte columnas={["Código", "Descripción"]} filas={[["2000", "Existen cfdi relacionados al folio fiscal."], ["2001", "No existen cfdi relacionados al folio fiscal."], ["2002", "El folio fiscal no pertenece al receptor."], ["1101", "No existen peticiones para el RFC Receptor."]]} /></BloqueContenidoSoporte>
       <BloqueContenidoSoporte titulo="Códigos de error a nivel petición"><p>Los siguientes códigos de error se generarán a nivel general de la solicitud de cancelación:</p><TablaSoporte columnas={["Código", "Descripción"]} filas={erroresPeticionReceptor.map(([codigo, descripcion]) => [codigo, descripcion.replace("receptor.", "Receptor").replace("receptor", "Receptor").replace(/\.$/, "")])} /></BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

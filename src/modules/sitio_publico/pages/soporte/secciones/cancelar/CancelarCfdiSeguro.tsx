@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasCancelar, menuCancelar, urlCancelacion } from "./constantes";
 
@@ -65,7 +65,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function CancelarCfdiSeguro() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Cancelar"
       titulo="Método Cancelar_CFDI_Seguro"
       menu={menuCancelar}
@@ -187,6 +187,6 @@ export function CancelarCfdiSeguro() {
           de pruebas.
         </p>
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

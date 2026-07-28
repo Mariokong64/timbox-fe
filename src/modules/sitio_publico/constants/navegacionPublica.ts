@@ -32,8 +32,8 @@ export const columnasFooter: EnlaceFooter[][] = [
     { texto: "Políticas", url: "/politicas" },
   ],
   [
-    { texto: "Aviso de privacidad integral", url: "/aviso-privacidad" },
-    { texto: "Ayuda", url: "/ayuda" },
+    { texto: "Aviso de privacidad integral", url: "/aviso-privacidad-integral" },
+    { texto: "Ayuda", url: "/contacto" },
     { texto: "Política de protección de datos", url: "/proteccion-datos" },
     { texto: "Acuerdo Niveles de Servicios", url: "/niveles-servicio" },
   ],

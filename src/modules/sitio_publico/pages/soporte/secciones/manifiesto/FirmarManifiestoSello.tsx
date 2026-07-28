@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasManifiesto, menuManifiesto, urlManifiesto } from "./constantes";
 import { ejemploPeticionManifiestoSello, ejemploRespuestaManifiestoSello } from "./ejemplos";
@@ -58,7 +58,7 @@ const detalleCadenaInvalida = (
 
 export function FirmarManifiestoSello() {
   return (
-    <LayoutDocumentacionSoporte categoria="Manifiesto" titulo="Método Firmar_Manifiesto_Sello" menu={menuManifiesto} activo="/firmar-manifiesto-sello/">
+    <LayoutDocumentacionPublica categoria="Manifiesto" titulo="Método Firmar_Manifiesto_Sello" menu={menuManifiesto} activo="/firmar-manifiesto-sello/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlManifiesto.pruebas}>{urlManifiesto.pruebas}</a></p>
         <p>Producción: <a href={urlManifiesto.produccion}>{urlManifiesto.produccion}</a></p>
@@ -142,6 +142,6 @@ export function FirmarManifiestoSello() {
           ["MAN999", "Error de comunicación con el servicio."],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

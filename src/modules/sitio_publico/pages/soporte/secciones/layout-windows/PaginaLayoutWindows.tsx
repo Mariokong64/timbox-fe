@@ -1,7 +1,7 @@
 /* eslint-disable no-irregular-whitespace */
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { categoriaLayoutWindows, obtenerMenuLayoutWindows } from "./constantes";
 import { TablaLayoutWindows, type CeldaLayoutWindows } from "./TablaLayoutWindows";
 
@@ -51,7 +51,7 @@ export function PaginaLayoutWindows({
       : <div><strong>Nomenclatura</strong></div>;
 
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria={categoriaLayoutWindows}
       titulo={titulo}
       menu={obtenerMenuLayoutWindows(activo)}
@@ -95,7 +95,7 @@ export function PaginaLayoutWindows({
           {bloqueVacio !== undefined && <BloqueCodigoSoporte codigo={bloqueVacio} />}
         </BloqueContenidoSoporte>
       )}
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }
 

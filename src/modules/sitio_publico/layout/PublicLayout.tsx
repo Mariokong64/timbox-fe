@@ -47,8 +47,27 @@ export function PublicLayout() {
     "/layout-comercio-windows/",
     "/layout-windows-cartaporte/",
   ];
-  const rutasConHeaderOscuro = ["/planes", ...rutasDocumentacionSoporte];
-  const esRutaDocumentacionSoporte = rutasDocumentacionSoporte.includes(pathname);
+  const rutasDocumentacionPoliticas = [
+    "/terminos-condiciones",
+    "/aviso-privacidad",
+    "/preguntas-frecuentes",
+    "/faq-aplicativo-gratuito",
+    "/web-service",
+    "/niveles-servicio",
+    "/acuerdo-niveles-de-servicios",
+    "/proteccion-datos",
+    "/policaclasificacion",
+    "/derechos-arco",
+    "/procedimientoarco",
+    "/aviso-privacidad-integral",
+    "/avisioprivacidad",
+  ];
+  const rutasDocumentacionPublica = [
+    ...rutasDocumentacionSoporte,
+    ...rutasDocumentacionPoliticas,
+  ];
+  const rutasConHeaderOscuro = ["/planes", "/politicas", ...rutasDocumentacionPublica];
+  const esRutaDocumentacionPublica = rutasDocumentacionPublica.includes(pathname);
   const modoHeader = menuAbierto || !rutasConHeaderOscuro.includes(pathname) ? "claro" : "oscuro";
 
   const abrirMenu = () => {
@@ -74,7 +93,7 @@ export function PublicLayout() {
         <Outlet />
       </Box>
 
-      {!esRutaDocumentacionSoporte && <FooterPublico />}
+      {!esRutaDocumentacionPublica && <FooterPublico />}
     </Box>
   );
 }

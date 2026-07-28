@@ -1,11 +1,11 @@
 /* eslint-disable no-irregular-whitespace */
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { categoriaIntegracionTxt, menuIntegracionTxtQueEs } from "./constantes";
 
 export function TxtQueEs() {
   return (
-    <LayoutDocumentacionSoporte categoria={categoriaIntegracionTxt} titulo="TXT ¿Qué es?" menu={menuIntegracionTxtQueEs} activo="/layout-que-es/">
+    <LayoutDocumentacionPublica categoria={categoriaIntegracionTxt} titulo="TXT ¿Qué es?" menu={menuIntegracionTxtQueEs} activo="/layout-que-es/">
       <BloqueContenidoSoporte titulo="¿Qué es el Servicio de TXT de Timbox?">
         <p>Es un servicio que genera y sella los XML’s desde una aplicación de Windows, diseñado para aquellos sistemas que no tienen integrado el proceso de construcción y sellado de comprobantes fiscales digitales a través de internet (CFDI) y que buscan consumir un servicio de timbrado de manera practica. Timbox desarrollo este servicio basado en archivos de texto como entrada de datos y que una vez procesados deposita el comprobante timbrado en formato XML con su correspondiente PDF.</p>
       </BloqueContenidoSoporte>
@@ -35,6 +35,6 @@ export function TxtQueEs() {
           <li>Windows Server 2008+/Windows Vista o posterior.</li>
         </ol>
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

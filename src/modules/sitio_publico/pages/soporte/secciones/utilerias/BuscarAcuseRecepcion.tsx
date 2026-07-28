@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasUtilerias, menuUtilerias, regexUuid, urlTimbrado } from "./constantes";
 
@@ -69,7 +69,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function BuscarAcuseRecepcion() {
   return (
-    <LayoutDocumentacionSoporte categoria="Utilerías" titulo="Método Buscar_Acuse_Recepción" menu={menuUtilerias} activo="/buscar-acuse-recepcion/">
+    <LayoutDocumentacionPublica categoria="Utilerías" titulo="Método Buscar_Acuse_Recepción" menu={menuUtilerias} activo="/buscar-acuse-recepcion/">
       <BloqueContenidoSoporte titulo="Proceso para Buscar Acuses de Recepción">
         <p>Para realizar una búsqueda de algún(os) acuse(s) debe tener en cuenta que solo obtendrá los acuses que tengamos registrados en nuestras bases de datos, en caso de que se requiera el acuse de algún UUID que haya sido emitido por otro PAC no se podrá obtener el acuse usando nuestro servicio.</p>
         <p>A continuación listamos las consideraciones para el uso del servicio:</p>
@@ -147,6 +147,6 @@ export function BuscarAcuseRecepcion() {
           ["ACR999", "Error de comunicación con el servicio de búsqueda de acuses."],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

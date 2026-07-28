@@ -3,7 +3,7 @@ import { Box } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import {
   columnasAtributos,
@@ -58,7 +58,7 @@ const filasTotales = [
 
 export function GenerarCfdiRetenciones() {
   return (
-    <LayoutDocumentacionSoporte categoria="Material de apoyo" titulo="Generar CFDI Retenciones" menu={menuMaterialApoyo} activo="/generar-cfdi-retenciones/">
+    <LayoutDocumentacionPublica categoria="Material de apoyo" titulo="Generar CFDI Retenciones" menu={menuMaterialApoyo} activo="/generar-cfdi-retenciones/">
       <BloqueContenidoSoporte titulo="¿Qué debemos considerar para generar un comprobante de CFDI retenciones e información de pagos?">
         <p>Los CFDI deben ser generados bajo el estándar XSD base y los XSD complementarios que requiera, validando su forma y sintaxis en el archivo con extensión XML, siendo éste el único formato para poder representar y almacenar comprobantes de manera electrónica o digital.</p>
         <BloqueCodigoSoporte codigo={namespaceRetenciones} />
@@ -99,6 +99,6 @@ export function GenerarCfdiRetenciones() {
       <BloqueContenidoSoporte titulo="¿Cuáles son los atributos requeridos en el nodo Totales?">
         <TablaSoporte columnas={columnasAtributos} filas={filasTotales} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

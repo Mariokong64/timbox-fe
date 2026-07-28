@@ -1,5 +1,5 @@
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 
 const rutaRfcsPruebas = "/rfcs-ambiente-de-pruebas-sat/";
@@ -48,7 +48,7 @@ const urlCertificados = "http://omawww.sat.gob.mx/tramitesyservicios/Paginas/doc
 
 export function RfcsAmbientePruebasSat() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="RFC's Ambiente de Pruebas SAT"
       titulo="RFC’s Ambiente de Pruebas SAT"
       menu={menuRfcsPruebas}
@@ -78,6 +78,6 @@ export function RfcsAmbientePruebasSat() {
       <BloqueContenidoSoporte titulo="Descarga los certificados en el siguiente enlace">
         <p><a href={urlCertificados}>{urlCertificados}</a></p>
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

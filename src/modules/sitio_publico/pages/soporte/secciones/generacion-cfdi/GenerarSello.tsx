@@ -2,7 +2,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { imagenDudasMaterialApoyo, menuMaterialApoyo } from "./constantes";
 import {
   cadenaOriginal33,
@@ -67,7 +67,7 @@ function EjemploSello({ version }: EjemploSelloProps) {
 
 export function GenerarSello() {
   return (
-    <LayoutDocumentacionSoporte categoria="Material de apoyo" titulo="Generar Sello" menu={menuMaterialApoyo} activo="/generar-sello/">
+    <LayoutDocumentacionPublica categoria="Material de apoyo" titulo="Generar Sello" menu={menuMaterialApoyo} activo="/generar-sello/">
       <BloqueContenidoSoporte titulo="¿Qué es el sello?">
         <p>El sello es el resultado de la firma de la cadena original obtenida del Comprobante Fiscal Digital por Internet en base64. El propósito del sello es emitir comprobantes y acreditar al creador del comprobante fiscal digital con autenticidad, integridad, verificables y no repudiables por el emisor. Para poder generar el sello es necesario tener el resultado de la cadena original que es obtenido del xml del comprobante a sellar, también es necesario los certificados de sello digital (.cer y .key) convertidos a “pem”.</p>
         <p>El sello contiene la información del emisor e información del comprobante codificada, que si dicho comprobante por algún motivo sufre cambios y no se vuelve a generar un sello nuevo, nos arrojará error al tratar de realizar el timbrado.</p>
@@ -111,6 +111,6 @@ export function GenerarSello() {
 
       <EjemploSello version="3.3" />
       <EjemploSello version="4.0" />
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

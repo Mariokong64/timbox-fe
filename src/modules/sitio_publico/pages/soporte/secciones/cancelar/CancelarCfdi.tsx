@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasCancelar, menuCancelar, regexUuid, urlCancelacion } from "./constantes";
 
@@ -70,7 +70,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function CancelarCfdi() {
   return (
-    <LayoutDocumentacionSoporte categoria="Cancelar" titulo="Método Cancelar CFDI" menu={menuCancelar} activo="/cancelar-cfdi/">
+    <LayoutDocumentacionPublica categoria="Cancelar" titulo="Método Cancelar CFDI" menu={menuCancelar} activo="/cancelar-cfdi/">
       <BloqueContenidoSoporte titulo="Proceso de Cancelación">
         <p>A partir del 01 de enero de 2022 el SAT modificó el esquema para la cancelación de CFDI’s. A continuación se muestra toda la información relevante y relacionada al proceso de cancelación.</p>
       </BloqueContenidoSoporte>
@@ -130,6 +130,6 @@ export function CancelarCfdi() {
 
       <BloqueContenidoSoporte titulo="Códigos a nivel folio"><p>Los siguientes códigos de error se repetirán tantas veces como se repita el nodo folios en la solicitud:</p><TablaSoporte columnas={["Código", "Descripción"]} filas={[["201", "Solicitud de cancelación recibida"], ["202", "UUID Previamente cancelado"], ["203", "UUID no corresponde al RFC del Emisor"], ["204", "UUID no aplicable para cancelación"], ["205", "UUID No existe"], ["206", "UUID no corresponde a un CFDI del Sector Primario"], ["207", "No se especificó el motivo de cancelación o el motivo no es válido"], ["208", "Folio Sustitución invalido"], ["209", "Folio Sustitución no requerido"], ["210", "La fecha de solicitud de cancelación es mayor a la fecha de declaración"], ["211", "La fecha de solicitud de cancelación límite para factura global"], ["212", "Relación no válida o inexistente"], ["300", "Usuario No Válido"], ["301", "XML Mal Formado"], ["302", "Sello Mal Formado"], ["304", "Certificado Revocado o Caduco"], ["305", "Certificado Inválido"], ["309", "Certificado Inválido"], ["310", "CSD Inválido"], ["CANC104", "UUID no corresponde al RFC del Receptor"], ["CANC105", "Total no corresponde al CFDI"]]} /></BloqueContenidoSoporte>
       <BloqueContenidoSoporte titulo="Códigos de error a nivel petición"><p>Los siguientes códigos de error se generarán a nivel general de la solicitud de cancelación:</p><TablaSoporte columnas={["Código", "Descripción"]} filas={[["CANC001", "Los datos de autentificación enviados son incorrectos"], ["CANC002", "Se han agotado la cantidad de timbres"], ["CANC003", "Parámetro inválido"], ["CANC301", "El XML recibido no contiene una estructura válida"], ["CANC302", "La llave_pem es una llave inválida"], ["CANC303", "El certificado de sellos no corresponde al emisor"], ["CANC304", "El certificado no se encuentra en la lista de LCO del SAT"], ["CANC305", "La fecha de cancelación no esta dentro de la vigencia de CSD del Emisor"], ["CANC306", "El certificado utilizado es de tipo FIEL No es un CSD"], ["CANC307", "El Certificado no fue expedido por el SAT"], ["CANC308", "Llave privada no corresponde a certificado"], ["CANC309", "El certificado de producción no se puede utilizar en ambiente de pruebas"], ["CANC501", "Hay 499 o más UUIDS en una sola petición"], ["CANC998", "Error de comunicación con el servicio del SAT, se genero un timeout en la petición al servicio del SAT"], ["CANC999", "Error de comunicación con el servicio de cancelación"]]} /><p><strong>CANC309:</strong> Solo aplica para el ambiente de pruebas. Es importante mencionar que para obtener la cancelación exitosa es necesario realizar todo el ciclo desde el timbrado y la cancelación con los certificados de pruebas.</p></BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

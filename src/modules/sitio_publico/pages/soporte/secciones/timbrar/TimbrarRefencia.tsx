@@ -2,7 +2,7 @@ import { Link, Typography } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import {
   erroresPeticionReferencia,
@@ -53,7 +53,7 @@ const ejemploRespuestaReferencia = `<soap:Envelope
 
 export function TimbrarRefencia() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Timbrar"
       titulo="Método Timbrar CFDI"
       menu={menuTimbrar}
@@ -138,6 +138,6 @@ export function TimbrarRefencia() {
       </BloqueContenidoSoporte>
 
       <ContactoDudasSoporte imagen={imagenesDudasTimbrar.cuatro} />
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

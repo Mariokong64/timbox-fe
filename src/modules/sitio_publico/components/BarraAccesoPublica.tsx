@@ -109,7 +109,7 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                         {texto: '', url: enlacesExternos.inicioSesion}
                     ].map((enlace) => (
                         <Link
-                            key={enlace.texto}
+                            key={enlace.url}
                             // href={enlace.url}
                             target="_blank"
                             rel="noopener noreferrer"

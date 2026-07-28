@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasCancelar, menuCancelar, urlCancelacion } from "./constantes";
 
@@ -100,7 +100,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function ConsultarPeticionesPendientes() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Cancelar"
       titulo="Método Consultar_Peticiones_Pendientes"
       menu={menuCancelar}
@@ -175,6 +175,6 @@ export function ConsultarPeticionesPendientes() {
           ["CANC999", "Error de comunicación con el servicio de cancelación"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

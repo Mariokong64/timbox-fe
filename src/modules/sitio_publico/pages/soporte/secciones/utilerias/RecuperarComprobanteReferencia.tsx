@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasUtilerias, menuUtilerias, urlTimbrado } from "./constantes";
 import { crearCfdiRecuperado } from "./ejemplosComprobantes";
@@ -52,7 +52,7 @@ ${sangrarXml(cfdiRecuperado)}
 
 export function RecuperarComprobanteReferencia() {
   return (
-    <LayoutDocumentacionSoporte categoria="Utilerías" titulo="Método Recuperar_Comprobante_Referencia" menu={menuUtilerias} activo="/recuperar-comprobante-referencia/">
+    <LayoutDocumentacionPublica categoria="Utilerías" titulo="Método Recuperar_Comprobante_Referencia" menu={menuUtilerias} activo="/recuperar-comprobante-referencia/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlTimbrado.pruebas40}>{urlTimbrado.pruebas40}</a></p>
         <p>Producción: <a href={urlTimbrado.produccion40}>{urlTimbrado.produccion40}</a></p>
@@ -109,6 +109,6 @@ export function RecuperarComprobanteReferencia() {
           ["RCR999", "Error de comunicación con el servicio de recuperación de comprobantes con External_id"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

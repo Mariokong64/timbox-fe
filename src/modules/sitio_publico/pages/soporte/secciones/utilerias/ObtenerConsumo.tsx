@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasUtilerias, menuUtilerias, urlTimbrado } from "./constantes";
 
@@ -31,7 +31,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function ObtenerConsumo() {
   return (
-    <LayoutDocumentacionSoporte categoria="Utilerías" titulo="Método Obtener_Consumo" menu={menuUtilerias} activo="/obtener-consumo/">
+    <LayoutDocumentacionPublica categoria="Utilerías" titulo="Método Obtener_Consumo" menu={menuUtilerias} activo="/obtener-consumo/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas 3.3: <a href={urlTimbrado.pruebas33}>{urlTimbrado.pruebas33}</a></p>
         <p>Pruebas 4.0: <a href={urlTimbrado.pruebas40}>{urlTimbrado.pruebas40}</a></p>
@@ -87,6 +87,6 @@ export function ObtenerConsumo() {
           ["CON999", "Error de comunicación con el servicio de obtener_consumo"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

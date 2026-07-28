@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import {
   certificadoPemRetenciones,
@@ -51,7 +51,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function CancelarRetenciones() {
   return (
-    <LayoutDocumentacionSoporte categoria="Retenciones" titulo="Método Cancelar_Retencion" menu={menuRetenciones} activo="/cancelar-retenciones/">
+    <LayoutDocumentacionPublica categoria="Retenciones" titulo="Método Cancelar_Retencion" menu={menuRetenciones} activo="/cancelar-retenciones/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlRetenciones.pruebas}>{urlRetenciones.pruebas}</a></p>
         <p>Producción: <a href={urlRetenciones.produccion}>{urlRetenciones.produccion}</a></p>
@@ -109,6 +109,6 @@ export function CancelarRetenciones() {
       <BloqueContenidoSoporte titulo="Códigos de error a nivel folio petición">
         <TablaSoporte columnas={["Código", "Descripción"]} filas={erroresCancelacionRetenciones} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

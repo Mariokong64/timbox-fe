@@ -1,9 +1,9 @@
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { menuTimbrar } from "./constantes";
 
 export function TimbrarZip() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Timbrar"
       titulo="Método Timbrar ZIP"
       menu={menuTimbrar}

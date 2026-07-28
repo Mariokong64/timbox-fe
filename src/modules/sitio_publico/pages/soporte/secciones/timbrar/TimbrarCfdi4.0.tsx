@@ -2,7 +2,7 @@ import { Box, Link, Typography } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import {
   erroresPeticionCfdi,
@@ -78,7 +78,7 @@ const ejemploRespuestaCfdi40 = `<soap:Envelope
 
 export function TimbrarCfdi40() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Timbrar"
       titulo="Método Timbrar CFDI 4.0"
       menu={menuTimbrar}
@@ -213,6 +213,6 @@ export function TimbrarCfdi40() {
       </BloqueContenidoSoporte>
 
       <ContactoDudasSoporte imagen={imagenesDudasTimbrar.cuatro} />
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

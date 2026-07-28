@@ -7,21 +7,35 @@ export type ItemMenuDocumentacion = {
   to: string;
 };
 
-type LayoutDocumentacionSoporteProps = {
+type EnlaceRaizDocumentacion = {
+  texto: string;
+  to: string;
+};
+
+type LayoutDocumentacionPublicaProps = {
   categoria: string;
   titulo: string;
   menu: ItemMenuDocumentacion[];
   activo: string;
+  enlaceRaiz?: EnlaceRaizDocumentacion;
+  mostrarTitulo?: boolean;
   children?: ReactNode;
 };
 
-export function LayoutDocumentacionSoporte({
+const enlaceRaizPredeterminado: EnlaceRaizDocumentacion = {
+  texto: "Soporte",
+  to: "/soporte",
+};
+
+export function LayoutDocumentacionPublica({
   categoria,
   titulo,
   menu,
   activo,
+  enlaceRaiz = enlaceRaizPredeterminado,
+  mostrarTitulo = true,
   children,
-}: LayoutDocumentacionSoporteProps) {
+}: LayoutDocumentacionPublicaProps) {
   return (
     <Box
       component="section"
@@ -59,11 +73,11 @@ export function LayoutDocumentacionSoporte({
         >
           <Link
             component={RouterLink}
-            to="/soporte"
+            to={enlaceRaiz.to}
             underline="none"
             sx={{ color: "inherit", "&:hover": { color: "var(--rojo-timbox)" } }}
           >
-            Soporte
+            {enlaceRaiz.texto}
           </Link>
           <Box component="span" sx={{ color: "rgba(21, 33, 47, 0.42)" }}>
             &gt;
@@ -153,20 +167,22 @@ export function LayoutDocumentacionSoporte({
               },
             }}
           >
-            <Typography
-              component="h2"
-              sx={{
-                mb: { xs: 3.5, md: "27px" },
-                pb: { xs: 0, md: "26px" },
-                borderBottom: { xs: 0, md: "1px solid rgba(21, 33, 47, 0.08)" },
-                fontFamily: "var(--fuente-regular)",
-                fontSize: { xs: 31, md: 31 },
-                fontWeight: 700,
-                lineHeight: 1.08,
-              }}
-            >
-              {titulo}
-            </Typography>
+            {mostrarTitulo && (
+              <Typography
+                component="h2"
+                sx={{
+                  mb: { xs: 3.5, md: "27px" },
+                  pb: { xs: 0, md: "26px" },
+                  borderBottom: { xs: 0, md: "1px solid rgba(21, 33, 47, 0.08)" },
+                  fontFamily: "var(--fuente-regular)",
+                  fontSize: { xs: 31, md: 31 },
+                  fontWeight: 700,
+                  lineHeight: 1.08,
+                }}
+              >
+                {titulo}
+              </Typography>
+            )}
             {children}
           </Box>
         </Box>

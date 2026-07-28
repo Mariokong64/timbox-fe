@@ -2,7 +2,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { imagenDudasMaterialApoyo, menuMaterialApoyo } from "./constantes";
 import {
   certificadoAtributo,
@@ -15,7 +15,7 @@ import {
 
 export function GenerarCertificado() {
   return (
-    <LayoutDocumentacionSoporte categoria="Material de apoyo" titulo="Generar Certificado" menu={menuMaterialApoyo} activo="/generar-certificado/">
+    <LayoutDocumentacionPublica categoria="Material de apoyo" titulo="Generar Certificado" menu={menuMaterialApoyo} activo="/generar-certificado/">
       <BloqueContenidoSoporte titulo="¿Qué es el Certificado de Sello Digital (CSD)?">
         <p>Archivo digital otorgado por el Servicio de Administración Tributaria (SAT) para el uso específico de la generación de CFDI’s. El CSD se encuntra compuesto por los siguientes elementos:</p>
         <ul>
@@ -60,6 +60,6 @@ export function GenerarCertificado() {
         <p>En el siguiente ejemplo muestra el resultado del Nocertificado</p>
         <BloqueCodigoSoporte codigo={numeroCertificado} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

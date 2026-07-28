@@ -1,11 +1,11 @@
 /* eslint-disable no-irregular-whitespace */
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { categoriaLayoutWindows, obtenerMenuLayoutWindows } from "./constantes";
 
 export function LayoutQueEsWindows() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria={categoriaLayoutWindows}
       titulo="Layout ¿Qué es?"
       menu={obtenerMenuLayoutWindows("/layout-que-es-windows/")}
@@ -40,7 +40,7 @@ export function LayoutQueEsWindows() {
           <li>Windows Server 2008+/Windows Vista o posterior.</li>
         </ol>
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }
 

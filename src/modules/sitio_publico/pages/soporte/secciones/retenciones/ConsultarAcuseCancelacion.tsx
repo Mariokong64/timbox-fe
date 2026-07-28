@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { codigosFolioRetenciones, imagenesDudasRetenciones, menuRetenciones, urlRetenciones } from "./constantes";
 
@@ -42,7 +42,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function ConsultarAcuseCancelacion() {
   return (
-    <LayoutDocumentacionSoporte categoria="Retenciones" titulo="Método Consulta_Acuse_Cancelación" menu={menuRetenciones} activo="/consultar-acuse-cancelacion/">
+    <LayoutDocumentacionPublica categoria="Retenciones" titulo="Método Consulta_Acuse_Cancelación" menu={menuRetenciones} activo="/consultar-acuse-cancelacion/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlRetenciones.pruebas}>{urlRetenciones.pruebas}</a></p>
         <p>Producción: <a href={urlRetenciones.produccion}>{urlRetenciones.produccion}</a></p>
@@ -100,6 +100,6 @@ export function ConsultarAcuseCancelacion() {
           ["CCR999", "Error de comunicación con el servicio de consulta de acuse de cancelación"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

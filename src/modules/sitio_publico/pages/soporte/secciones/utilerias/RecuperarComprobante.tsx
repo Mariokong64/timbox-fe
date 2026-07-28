@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasUtilerias, menuUtilerias, regexUuid, urlTimbrado } from "./constantes";
 import { crearCfdiRecuperado } from "./ejemplosComprobantes";
@@ -54,7 +54,7 @@ ${sangrarXml(cfdiRecuperado)}
 
 export function RecuperarComprobante() {
   return (
-    <LayoutDocumentacionSoporte categoria="Utilerías" titulo="Método Recuperar_Comprobante" menu={menuUtilerias} activo="/recuperar-comprobante/">
+    <LayoutDocumentacionPublica categoria="Utilerías" titulo="Método Recuperar_Comprobante" menu={menuUtilerias} activo="/recuperar-comprobante/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlTimbrado.pruebas40}>{urlTimbrado.pruebas40}</a></p>
         <p>Producción: <a href={urlTimbrado.produccion40}>{urlTimbrado.produccion40}</a></p>
@@ -113,6 +113,6 @@ export function RecuperarComprobante() {
           ["RCS999", "Error de comunicación con el servicio de recuperación de comprobantes"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

@@ -16,6 +16,15 @@ import { Empresa } from "../modules/sitio_publico/pages/empresa/Empresa";
 import { HomePage } from "../modules/sitio_publico/pages/home/HomePage";
 import { Integracion } from "../modules/sitio_publico/pages/integracion/Integracion";
 import { Planes } from "../modules/sitio_publico/pages/planes/Planes";
+import { Politicas } from "../modules/sitio_publico/pages/politicas/Politicas";
+import { AcuerdoNivelesServicio } from "../modules/sitio_publico/pages/politicas/secciones/acuerdo-niveles-servicio/AcuerdoNivelesServicio";
+import { AvisoPrivacidad } from "../modules/sitio_publico/pages/politicas/secciones/aviso-privacidad/AvisoPrivacidad";
+import { AvisoPrivacidadIntegral } from "../modules/sitio_publico/pages/politicas/secciones/aviso-privacidad-integral/AvisoPrivacidadIntegral";
+import { DerechosArco } from "../modules/sitio_publico/pages/politicas/secciones/derechos-arco/DerechosArco";
+import { PoliticaProteccionDatos } from "../modules/sitio_publico/pages/politicas/secciones/politica-proteccion-datos/PoliticaProteccionDatos";
+import { FaqAplicativoGratuito } from "../modules/sitio_publico/pages/politicas/secciones/preguntas-frecuentes/faq-aplicativo-gratuito/FaqAplicativoGratuito";
+import { WebService } from "../modules/sitio_publico/pages/politicas/secciones/preguntas-frecuentes/web-service/WebService";
+import { TerminosYCondiciones } from "../modules/sitio_publico/pages/politicas/secciones/terminos-y-condiciones/TerminosYCondiciones";
 import { Soluciones } from "../modules/sitio_publico/pages/soluciones/Soluciones";
 import { Soporte } from "../modules/sitio_publico/pages/soporte/Soporte";
 import { TimbrarCfdi } from "../modules/sitio_publico/pages/soporte/secciones/timbrar/TimbrarCfdi";
@@ -68,6 +77,20 @@ export function AppRouter() {
           <Route path="/validador" element={<Validador />} />
           <Route path="/empresa" element={<Empresa />} />
           <Route path="/soporte" element={<Soporte />} />
+          <Route path="/politicas" element={<Politicas />} />
+          <Route path="/terminos-condiciones" element={<TerminosYCondiciones />} />
+          <Route path="/aviso-privacidad" element={<AvisoPrivacidad />} />
+          <Route path="/preguntas-frecuentes" element={<FaqAplicativoGratuito />} />
+          <Route path="/faq-aplicativo-gratuito" element={<FaqAplicativoGratuito />} />
+          <Route path="/web-service" element={<WebService />} />
+          <Route path="/niveles-servicio" element={<AcuerdoNivelesServicio />} />
+          <Route path="/acuerdo-niveles-de-servicios" element={<AcuerdoNivelesServicio />} />
+          <Route path="/proteccion-datos" element={<PoliticaProteccionDatos />} />
+          <Route path="/policaclasificacion" element={<PoliticaProteccionDatos />} />
+          <Route path="/derechos-arco" element={<DerechosArco />} />
+          <Route path="/procedimientoarco" element={<DerechosArco />} />
+          <Route path="/aviso-privacidad-integral" element={<AvisoPrivacidadIntegral />} />
+          <Route path="/avisioprivacidad" element={<AvisoPrivacidadIntegral />} />
           {/* Rutas de las páginas de soporte */}
           {/* Timbrar */}
           <Route path="/timbrar-cfdi" element={<TimbrarCfdi />} />

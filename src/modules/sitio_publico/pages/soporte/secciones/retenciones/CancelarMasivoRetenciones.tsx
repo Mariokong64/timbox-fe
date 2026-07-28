@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { certificadoPemRetenciones, erroresCancelacionRetenciones, imagenesDudasRetenciones, llavePemRetenciones, menuRetenciones, sangrarPem, urlRetenciones } from "./constantes";
 
@@ -41,7 +41,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function CancelarMasivoRetenciones() {
   return (
-    <LayoutDocumentacionSoporte categoria="Retenciones" titulo="Método Cancelar_Masivo" menu={menuRetenciones} activo="/cancelar-masivo-retenciones/">
+    <LayoutDocumentacionPublica categoria="Retenciones" titulo="Método Cancelar_Masivo" menu={menuRetenciones} activo="/cancelar-masivo-retenciones/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlRetenciones.pruebas}>{urlRetenciones.pruebas}</a></p>
         <p>Producción: <a href={urlRetenciones.produccion}>{urlRetenciones.produccion}</a></p>
@@ -93,6 +93,6 @@ export function CancelarMasivoRetenciones() {
       <BloqueContenidoSoporte titulo="Códigos de error a nivel petición">
         <TablaSoporte columnas={["Código", "Descripción"]} filas={erroresCancelacionRetenciones} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

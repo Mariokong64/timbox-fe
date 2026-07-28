@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasCancelar, menuCancelar, regexUuid, urlCancelacion } from "./constantes";
 import { certificadoPem, llavePem } from "./ConsultarPeticionesPendientes";
@@ -52,7 +52,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function ProcesarRespuesta() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Cancelar"
       titulo="Método Procesar_Respuesta"
       menu={menuCancelar}
@@ -145,6 +145,6 @@ export function ProcesarRespuesta() {
           ["CANC999", "Error de comunicación con el servicio de cancelación"],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

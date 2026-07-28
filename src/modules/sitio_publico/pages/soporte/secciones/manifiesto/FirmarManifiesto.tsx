@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { erroresManifiesto, imagenesDudasManifiesto, menuManifiesto, urlManifiesto } from "./constantes";
 import { ejemploPeticionManifiesto, ejemploRespuestaManifiesto } from "./ejemplos";
@@ -28,7 +28,7 @@ const certificado = (
 
 export function FirmarManifiesto() {
   return (
-    <LayoutDocumentacionSoporte categoria="Manifiesto" titulo="Método Firmar_Manifiesto" menu={menuManifiesto} activo="/firmar-manifiesto/">
+    <LayoutDocumentacionPublica categoria="Manifiesto" titulo="Método Firmar_Manifiesto" menu={menuManifiesto} activo="/firmar-manifiesto/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlManifiesto.pruebas}>{urlManifiesto.pruebas}</a></p>
         <p>Producción: <a href={urlManifiesto.produccion}>{urlManifiesto.produccion}</a></p>
@@ -85,6 +85,6 @@ export function FirmarManifiesto() {
         <p>En la siguiente sección se listan los códigos de error que puede regresar el servicio de firmar manifiesto a nivel petición:</p>
         <TablaSoporte columnas={["Código", "Descripción"]} filas={erroresManifiesto} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

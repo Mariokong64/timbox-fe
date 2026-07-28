@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { certificadoPemRetenciones, imagenesDudasRetenciones, menuRetenciones, urlRetenciones } from "./constantes";
 
@@ -67,7 +67,7 @@ const erroresTimbrado = [
 
 export function TimbrarRetenciones() {
   return (
-    <LayoutDocumentacionSoporte categoria="Retenciones" titulo="Método Timbrar_Retencion" menu={menuRetenciones} activo="/timbrar-retenciones/">
+    <LayoutDocumentacionPublica categoria="Retenciones" titulo="Método Timbrar_Retencion" menu={menuRetenciones} activo="/timbrar-retenciones/">
       <BloqueContenidoSoporte titulo="Esquema de Factura de Retenciones e Información de Pagos">
         <p>La factura de retenciones e información de pagos es un documento distinto a una factura ya que no es un comprobante de ingreso, egreso o traslado.</p>
         <p>Se integra por conjunto de datos generales, a los cuales se les puede incorporar un complemento.</p>
@@ -123,6 +123,6 @@ export function TimbrarRetenciones() {
         <p>El siguiente lista se muestra los códigos de error proporcionados por el SAT.</p>
         <TablaSoporte columnas={["Código", "Descripción"]} filas={erroresTimbrado} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

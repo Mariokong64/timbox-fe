@@ -3,7 +3,7 @@ import { imagenesDudasTimbrar, menuTimbrar } from "./constantes";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 
 const ejemploPeticion = `<soapenv:Envelope
@@ -47,7 +47,7 @@ const ejemploRespuesta = `<soap:Envelope
 
 export function TimbrarCfdi() {
   return (
-    <LayoutDocumentacionSoporte
+    <LayoutDocumentacionPublica
       categoria="Timbrar"
       titulo="Método Timbrar CFDI"
       menu={menuTimbrar}
@@ -194,6 +194,6 @@ export function TimbrarCfdi() {
       </BloqueContenidoSoporte>
 
       <ContactoDudasSoporte imagen={imagenesDudasTimbrar.cuatro} />
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

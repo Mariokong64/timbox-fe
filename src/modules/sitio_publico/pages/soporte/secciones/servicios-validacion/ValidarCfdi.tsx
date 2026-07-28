@@ -4,7 +4,7 @@ import imagenDudasUno from "../../assets/Componente-35.webp";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { ejemploPeticionValidar, ejemploRespuestaErrorValidar, ejemploRespuestaExitosaValidar } from "./ejemplos";
 
@@ -37,7 +37,7 @@ const detalleMatriz = (descripcion: string, enlace: string, textoEnlace: string)
 
 export function ValidarCfdi() {
   return (
-    <LayoutDocumentacionSoporte categoria="Servicios de validación" titulo="Método Validar_CFDI" menu={menuServiciosValidacion} activo="/validar-cfdi/">
+    <LayoutDocumentacionPublica categoria="Servicios de validación" titulo="Método Validar_CFDI" menu={menuServiciosValidacion} activo="/validar-cfdi/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={enlacePruebas}>{enlacePruebas}</a></p>
         <p>Producción: <a href={enlaceProduccion}>{enlaceProduccion}</a></p>
@@ -131,6 +131,6 @@ export function ValidarCfdi() {
           ["CRP101 – CRP239", detalleMatriz("Matriz de validaciones del Complemento para Recepción de Pagos", "http://omawww.sat.gob.mx/tramitesyservicios/Paginas/recepcion_de_pagos.htm", "Recepción de Pagos")],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

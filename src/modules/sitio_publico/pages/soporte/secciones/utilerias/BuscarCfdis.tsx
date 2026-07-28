@@ -1,7 +1,7 @@
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
 import { ContactoDudasSoporte } from "../../components/ContactoDudasSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import { TablaSoporte } from "../../components/TablaSoporte";
 import { imagenesDudasUtilerias, menuUtilerias, regexRfc, regexUuid, urlTimbrado } from "./constantes";
 
@@ -61,7 +61,7 @@ const ejemploRespuesta = `<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/
 
 export function BuscarCfdis() {
   return (
-    <LayoutDocumentacionSoporte categoria="Utilerías" titulo="Método Buscar_ CFDI’s" menu={menuUtilerias} activo="/buscar-cfdis/">
+    <LayoutDocumentacionPublica categoria="Utilerías" titulo="Método Buscar_ CFDI’s" menu={menuUtilerias} activo="/buscar-cfdis/">
       <BloqueContenidoSoporte titulo="Enlaces al servicio">
         <p>Pruebas: <a href={urlTimbrado.pruebas40}>{urlTimbrado.pruebas40}</a></p>
         <p>Producción: <a href={urlTimbrado.produccion40}>{urlTimbrado.produccion40}</a></p>
@@ -166,6 +166,6 @@ export function BuscarCfdis() {
           ["BCS999", "Error de comunicación con el servicio de búsqueda de cfdis."],
         ]} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }

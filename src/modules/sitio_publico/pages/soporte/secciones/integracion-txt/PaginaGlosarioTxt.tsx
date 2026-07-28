@@ -2,7 +2,7 @@
 import type { ReactNode } from "react";
 import { BloqueCodigoSoporte } from "../../components/BloqueCodigoSoporte";
 import { BloqueContenidoSoporte } from "../../components/BloqueContenidoSoporte";
-import { LayoutDocumentacionSoporte } from "../../components/LayoutDocumentacionSoporte";
+import { LayoutDocumentacionPublica } from "../../../../components/LayoutDocumentacionPublica";
 import {
   categoriaIntegracionTxt,
   menuIntegracionTxtCfdi,
@@ -36,7 +36,7 @@ export function PaginaGlosarioTxt({
   const menu = esNomina ? menuIntegracionTxtNomina : menuIntegracionTxtCfdi;
 
   return (
-    <LayoutDocumentacionSoporte categoria={categoriaIntegracionTxt} titulo={titulo} menu={menu} activo={activo}>
+    <LayoutDocumentacionPublica categoria={categoriaIntegracionTxt} titulo={titulo} menu={menu} activo={activo}>
       {introduccion && <BloqueContenidoSoporte>{introduccion}</BloqueContenidoSoporte>}
 
       <BloqueContenidoSoporte titulo="Glosario de Nodos">
@@ -70,6 +70,6 @@ export function PaginaGlosarioTxt({
       <BloqueContenidoSoporte titulo="Comprobante completo">
         <BloqueCodigoSoporte codigo={ejemploCompleto} />
       </BloqueContenidoSoporte>
-    </LayoutDocumentacionSoporte>
+    </LayoutDocumentacionPublica>
   );
 }
