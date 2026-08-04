@@ -1,4 +1,5 @@
 import {
+  cerrarSolicitudFormularioApi,
   eliminarSolicitudChatApi,
   enviarMensajeSolicitudChatApi,
   finalizarSolicitudChatApi,
@@ -12,6 +13,7 @@ import type {
   EstadoFiltroSolicitud,
   MensajeSolicitudChat,
   OrigenSolicitud,
+  ResultadoGuardarRespuestaFormulario,
   RespuestaSolicitudFormulario,
   RemitenteSolicitudChat,
   SolicitudChatDetalle,
@@ -230,8 +232,19 @@ export async function obtenerSolicitudFormulario(
 export async function guardarRespuestaSolicitudFormulario(
   id: string,
   respuesta: string
-): Promise<void> {
-  await guardarRespuestaSolicitudFormularioApi(id, respuesta.trim());
+): Promise<ResultadoGuardarRespuestaFormulario> {
+  const resultado = datos(
+    await guardarRespuestaSolicitudFormularioApi(id, respuesta.trim())
+  );
+
+  return {
+    correoEnviado:
+      esRegistro(resultado) && resultado.correoEnviado === true,
+  };
+}
+
+export async function cerrarSolicitudFormulario(id: string): Promise<void> {
+  await cerrarSolicitudFormularioApi(id);
 }
 
 export async function obtenerSolicitudChat(

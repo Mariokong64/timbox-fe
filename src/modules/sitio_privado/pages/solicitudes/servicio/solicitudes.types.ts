@@ -47,6 +47,10 @@ export interface RespuestaSolicitudFormulario {
   nombreUsuario: string;
 }
 
+export interface ResultadoGuardarRespuestaFormulario {
+  correoEnviado: boolean;
+}
+
 export type RemitenteSolicitudChat = "visitante" | "agente" | "sistema";
 
 export interface MensajeSolicitudChat {

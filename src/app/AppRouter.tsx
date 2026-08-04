@@ -133,9 +133,9 @@ export function AppRouter() {
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/login" element={<Login />} />
         <Route element={<RutaPrivada />}>
-          <Route path="/privado/perfil" element={<PerfilPrivado />} />
           <Route path="/privado" element={<LayoutPrivado />}>
             <Route index element={<DashboardPrivado />} />
+            <Route path="perfil" element={<PerfilPrivado />} />
             <Route path="contenidos" element={<GestionContenidos />} />
             <Route path="solicitudes" element={<SolicitudesContacto />} />
             <Route

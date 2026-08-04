@@ -3,12 +3,15 @@ import type { CredencialesLogin } from "../api/autenticacionApi";
 
 const TOKEN_STORAGE_KEY = "token";
 const USUARIO_STORAGE_KEY = "usuarioTimbox";
+export const EVENTO_USUARIO_SESION_ACTUALIZADO =
+  "timbox:usuario-sesion-actualizado";
 
 export interface UsuarioSesion {
   id: string;
   usuario: string;
   nombre: string;
   correo: string;
+  fotoPerfil: string | null;
 }
 
 export interface SesionUsuario {
@@ -77,6 +80,7 @@ function normalizarUsuario(valor: unknown): UsuarioSesion {
     usuario: leerTexto(valor, "usuario"),
     nombre: leerTexto(valor, "nombre"),
     correo: leerTexto(valor, "correo"),
+    fotoPerfil: leerTexto(valor, "fotoPerfil") || null,
   };
 
   if (!usuario.id || !usuario.usuario) {
@@ -137,6 +141,11 @@ export function formularioLoginValido(errores: ErroresLogin): boolean {
 export function guardarSesion(sesion: SesionUsuario): void {
   localStorage.setItem(TOKEN_STORAGE_KEY, sesion.token);
   localStorage.setItem(USUARIO_STORAGE_KEY, JSON.stringify(sesion.usuario));
+}
+
+export function actualizarUsuarioSesion(usuario: UsuarioSesion): void {
+  localStorage.setItem(USUARIO_STORAGE_KEY, JSON.stringify(usuario));
+  window.dispatchEvent(new Event(EVENTO_USUARIO_SESION_ACTUALIZADO));
 }
 
 export function cerrarSesion(): void {

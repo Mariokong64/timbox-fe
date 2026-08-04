@@ -14,10 +14,12 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import PhoneRoundedIcon from "@mui/icons-material/PhoneRounded";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
-import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
+import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
+import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import {
+  cerrarSolicitudFormulario,
   guardarRespuestaSolicitudFormulario,
   obtenerErrorSolicitudes,
   obtenerSolicitudFormulario,
@@ -76,6 +78,11 @@ function Dato({
   );
 }
 
+interface Confirmacion {
+  mensaje: string;
+  severidad: "success" | "warning";
+}
+
 interface DetalleSolicitudFormularioProps {
   id: string;
   onActualizarLista: () => void;
@@ -93,8 +100,9 @@ export function DetalleSolicitudFormulario({
   const [error, setError] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState("");
   const [guardando, setGuardando] = useState(false);
+  const [cerrando, setCerrando] = useState(false);
   const [errorGuardado, setErrorGuardado] = useState<string | null>(null);
-  const [confirmacion, setConfirmacion] = useState<string | null>(null);
+  const [confirmacion, setConfirmacion] = useState<Confirmacion | null>(null);
 
   useEffect(() => {
     let vigente = true;
@@ -134,17 +142,40 @@ export function DetalleSolicitudFormulario({
     setConfirmacion(null);
 
     try {
-      await guardarRespuestaSolicitudFormulario(id, contenido);
+      const resultado = await guardarRespuestaSolicitudFormulario(id, contenido);
       setSolicitud(await obtenerSolicitudFormulario(id));
       setRespuesta("");
-      setConfirmacion(
-        "La respuesta quedó guardada. Todavía no se envió ningún correo electrónico."
-      );
+      setConfirmacion({
+        mensaje: resultado.correoEnviado
+          ? "La respuesta quedó guardada y se envió por correo electrónico."
+          : "La respuesta quedó guardada, pero el correo electrónico no pudo enviarse.",
+        severidad: resultado.correoEnviado ? "success" : "warning",
+      });
       onActualizarLista();
     } catch (errorActual) {
       setErrorGuardado(obtenerErrorSolicitudes(errorActual));
     } finally {
       setGuardando(false);
+    }
+  };
+
+  const cerrar = async () => {
+    if (cerrando || guardando) {
+      return;
+    }
+
+    setCerrando(true);
+    setErrorGuardado(null);
+    setConfirmacion(null);
+
+    try {
+      await cerrarSolicitudFormulario(id);
+      setSolicitud(await obtenerSolicitudFormulario(id));
+      onActualizarLista();
+    } catch (errorActual) {
+      setErrorGuardado(obtenerErrorSolicitudes(errorActual));
+    } finally {
+      setCerrando(false);
     }
   };
 
@@ -205,6 +236,24 @@ export function DetalleSolicitudFormulario({
           estado={solicitud.estadoAtencion}
           etiqueta={solicitud.estatus}
         />
+        {solicitud.estadoAtencion !== "cerrada" && (
+          <Button
+            color="success"
+            variant="outlined"
+            startIcon={
+              cerrando ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                <CheckCircleRoundedIcon />
+              )
+            }
+            disabled={cerrando || guardando}
+            onClick={() => void cerrar()}
+            sx={{ flex: "0 0 auto", textTransform: "none" }}
+          >
+            Cerrar solicitud
+          </Button>
+        )}
       </Stack>
 
       <Box sx={{ minHeight: 0, overflowY: "auto", p: { xs: 2, md: 2.5 } }}>
@@ -394,8 +443,8 @@ export function DetalleSolicitudFormulario({
               </Alert>
             )}
             {confirmacion && (
-              <Alert severity="success" sx={{ mt: 1.25 }}>
-                {confirmacion}
+              <Alert severity={confirmacion.severidad} sx={{ mt: 1.25 }}>
+                {confirmacion.mensaje}
               </Alert>
             )}
 
@@ -415,8 +464,7 @@ export function DetalleSolicitudFormulario({
                   fontSize: 11.5,
                 }}
               >
-                Se guardará en la base de datos, pero todavía no se enviará por
-                correo.
+                Se guardará en la base de datos y se enviará al correo registrado.
               </Typography>
               <Button
                 type="submit"
@@ -425,7 +473,7 @@ export function DetalleSolicitudFormulario({
                   guardando ? (
                     <CircularProgress size={16} color="inherit" />
                   ) : (
-                    <SaveRoundedIcon />
+                    <SendRoundedIcon />
                   )
                 }
                 disabled={guardando || !respuesta.trim()}
@@ -436,7 +484,7 @@ export function DetalleSolicitudFormulario({
                   "&:hover": { bgcolor: "#c73520" },
                 }}
               >
-                Guardar respuesta
+                Enviar respuesta
               </Button>
             </Stack>
           </Box>

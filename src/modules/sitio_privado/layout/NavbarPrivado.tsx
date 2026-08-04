@@ -1,18 +1,27 @@
-import { useMemo, useState, type MouseEvent } from "react";
+import { useEffect, useMemo, useState, type MouseEvent } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, Divider, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
+import { Avatar, Box, Divider, ListItemIcon, Menu, MenuItem, Typography } from "@mui/material";
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
-import { cerrarSesion, obtenerSesionGuardada } from "../login/servicio/autenticacionServicio";
+import {
+  cerrarSesion,
+  EVENTO_USUARIO_SESION_ACTUALIZADO,
+  obtenerSesionGuardada,
+} from "../login/servicio/autenticacionServicio";
+import { obtenerFotoPerfil } from "../pages/perfil/servicio/perfilServicio";
 
 export function NavbarPrivado() {
   const navigate = useNavigate();
-  const sesion = obtenerSesionGuardada();
+  const [usuario, setUsuario] = useState(
+    () => obtenerSesionGuardada()?.usuario ?? null
+  );
+  const [fotoUrl, setFotoUrl] = useState<string | null>(null);
+  const [versionFoto, setVersionFoto] = useState(0);
   const [menuCuenta, setMenuCuenta] = useState<HTMLElement | null>(null);
   const menuAbierto = Boolean(menuCuenta);
   const iniciales = useMemo(() => {
-    const nombre = sesion?.usuario.nombre || sesion?.usuario.usuario || "U";
+    const nombre = usuario?.nombre || usuario?.usuario || "U";
 
     return nombre
       .split(" ")
@@ -20,7 +29,54 @@ export function NavbarPrivado() {
       .slice(0, 2)
       .map((parte) => parte[0]?.toUpperCase())
       .join("");
-  }, [sesion]);
+  }, [usuario]);
+
+  useEffect(() => {
+    const actualizarUsuario = () => {
+      const usuarioActualizado = obtenerSesionGuardada()?.usuario ?? null;
+      setUsuario(usuarioActualizado);
+      if (!usuarioActualizado?.fotoPerfil) setFotoUrl(null);
+      setVersionFoto((version) => version + 1);
+    };
+
+    window.addEventListener(
+      EVENTO_USUARIO_SESION_ACTUALIZADO,
+      actualizarUsuario
+    );
+
+    return () => {
+      window.removeEventListener(
+        EVENTO_USUARIO_SESION_ACTUALIZADO,
+        actualizarUsuario
+      );
+    };
+  }, []);
+
+  useEffect(() => {
+    let vigente = true;
+    let urlCreada: string | null = null;
+
+    if (!usuario?.fotoPerfil) {
+      return () => {
+        vigente = false;
+      };
+    }
+
+    void obtenerFotoPerfil()
+      .then((foto) => {
+        if (!vigente) return;
+        urlCreada = URL.createObjectURL(foto);
+        setFotoUrl(urlCreada);
+      })
+      .catch(() => {
+        if (vigente) setFotoUrl(null);
+      });
+
+    return () => {
+      vigente = false;
+      if (urlCreada) URL.revokeObjectURL(urlCreada);
+    };
+  }, [usuario?.fotoPerfil, versionFoto]);
 
   const abrirMenuCuenta = (event: MouseEvent<HTMLElement>) => {
     setMenuCuenta(event.currentTarget);
@@ -86,10 +142,11 @@ export function NavbarPrivado() {
         }}
       >
         <Typography sx={{ fontFamily: "var(--fuente-regular)", fontSize: { xs: 15, md: 18 }, fontWeight: 700 }}>
-          {sesion?.usuario.nombre ?? "Usuario"}
+          {usuario?.nombre ?? "Usuario"}
         </Typography>
 
-        <Box
+        <Avatar
+          src={fotoUrl ?? undefined}
           sx={{
             width: 58,
             height: 58,
@@ -105,7 +162,7 @@ export function NavbarPrivado() {
           }}
         >
           {iniciales || "U"}
-        </Box>
+        </Avatar>
       </Box>
 
       <Menu
@@ -140,10 +197,10 @@ export function NavbarPrivado() {
       >
         <Box sx={{ px: 2, py: 1.1 }}>
           <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 14, fontWeight: 800 }} noWrap>
-            {sesion?.usuario.nombre ?? "Usuario"}
+            {usuario?.nombre ?? "Usuario"}
           </Typography>
           <Typography sx={{ color: "#6b7685", fontFamily: "var(--fuente-regular)", fontSize: 12.5 }} noWrap>
-            {sesion?.usuario.correo ?? "Sin correo"}
+            {usuario?.correo ?? "Sin correo"}
           </Typography>
         </Box>
 

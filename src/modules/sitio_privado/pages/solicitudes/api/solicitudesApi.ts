@@ -33,6 +33,12 @@ export async function guardarRespuestaSolicitudFormularioApi(
   ).data;
 }
 
+export async function cerrarSolicitudFormularioApi(
+  id: string
+): Promise<unknown> {
+  return (await apiPrivada.post(`${RUTA_FORMULARIOS}/${id}/cerrar`)).data;
+}
+
 export async function obtenerSolicitudChatApi(id: string): Promise<unknown> {
   return (await apiPrivada.get(`${RUTA_CHATS}/${id}`)).data;
 }
