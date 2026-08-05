@@ -15,11 +15,11 @@ export const opcionesMenuPrivado: OpcionMenuPrivado[] = [
     ruta: "/privado",
     icono: DashboardRoundedIcon,
   },
-  {
-    texto: "Contenidos",
-    ruta: "/privado/contenidos",
-    icono: ArticleRoundedIcon,
-  },
+  // {
+  //   texto: "Contenidos",
+  //   ruta: "/privado/contenidos",
+  //   icono: ArticleRoundedIcon,
+  // },
   {
     texto: "Solicitudes",
     ruta: "/privado/solicitudes",

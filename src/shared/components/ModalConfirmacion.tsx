@@ -72,8 +72,8 @@ export function ModalConfirmacion({
         </IconButton>
       </DialogTitle>
 
-      <DialogContent sx={{ px: 3, pt: 3, pb: 1.5 }}>
-        <Box sx={{ display: "grid", gridTemplateColumns: "42px 1fr", gap: 1.5, alignItems: "start" }}>
+      <DialogContent sx={{ px: 3, pt: "24px !important", pb: 2.25 }}>
+        <Box sx={{ display: "grid", gridTemplateColumns: "42px 1fr", gap: 2, alignItems: "start" }}>
           <Box
             sx={{
               width: 42,
@@ -87,13 +87,20 @@ export function ModalConfirmacion({
           >
             <WarningAmberRoundedIcon />
           </Box>
-          <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 15.5 }}>
+          <Typography
+            sx={{
+              color: "var(--azul-timbox)",
+              fontFamily: "var(--fuente-regular)",
+              fontSize: 15.5,
+              lineHeight: 1.55,
+            }}
+          >
             {descripcion}
           </Typography>
         </Box>
       </DialogContent>
 
-      <DialogActions sx={{ px: 3, pb: 2.4, gap: 1 }}>
+      <DialogActions sx={{ px: 3, pt: 1, pb: 2.5, gap: 1 }}>
         <Button
           type="button"
           onClick={onCancelar}

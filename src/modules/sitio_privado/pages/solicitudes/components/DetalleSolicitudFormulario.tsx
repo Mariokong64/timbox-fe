@@ -18,6 +18,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { ModalConfirmacion } from "../../../../../shared/components/ModalConfirmacion";
 import {
   cerrarSolicitudFormulario,
   guardarRespuestaSolicitudFormulario,
@@ -101,6 +102,7 @@ export function DetalleSolicitudFormulario({
   const [respuesta, setRespuesta] = useState("");
   const [guardando, setGuardando] = useState(false);
   const [cerrando, setCerrando] = useState(false);
+  const [confirmarCierre, setConfirmarCierre] = useState(false);
   const [errorGuardado, setErrorGuardado] = useState<string | null>(null);
   const [confirmacion, setConfirmacion] = useState<Confirmacion | null>(null);
 
@@ -170,9 +172,11 @@ export function DetalleSolicitudFormulario({
 
     try {
       await cerrarSolicitudFormulario(id);
+      setConfirmarCierre(false);
       setSolicitud(await obtenerSolicitudFormulario(id));
       onActualizarLista();
     } catch (errorActual) {
+      setConfirmarCierre(false);
       setErrorGuardado(obtenerErrorSolicitudes(errorActual));
     } finally {
       setCerrando(false);
@@ -248,7 +252,7 @@ export function DetalleSolicitudFormulario({
               )
             }
             disabled={cerrando || guardando}
-            onClick={() => void cerrar()}
+            onClick={() => setConfirmarCierre(true)}
             sx={{ flex: "0 0 auto", textTransform: "none" }}
           >
             Cerrar solicitud
@@ -490,6 +494,21 @@ export function DetalleSolicitudFormulario({
           </Box>
         )}
       </Box>
+      <ModalConfirmacion
+        abierto={confirmarCierre}
+        titulo="Cerrar solicitud"
+        descripcion={`¿Seguro que quieres cerrar la solicitud de ${solicitud.nombre}? Una vez cerrada, ya no podrás registrar nuevas respuestas.`}
+        textoConfirmar="Cerrar solicitud"
+        cargando={cerrando}
+        onCancelar={() => {
+          if (!cerrando) {
+            setConfirmarCierre(false);
+          }
+        }}
+        onConfirmar={() => {
+          void cerrar();
+        }}
+      />
     </Stack>
   );
 }

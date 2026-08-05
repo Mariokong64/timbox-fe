@@ -16,6 +16,8 @@ import { Empresa } from "../modules/sitio_publico/pages/empresa/Empresa";
 import { HomePage } from "../modules/sitio_publico/pages/home/HomePage";
 import { Integracion } from "../modules/sitio_publico/pages/integracion/Integracion";
 import { Planes } from "../modules/sitio_publico/pages/planes/Planes";
+import { TimbresBajoDemanda } from "../modules/sitio_publico/pages/planes/planes-preguntas-frecuentes/TimbresBajoDemanda";
+import { TimbresPrepago } from "../modules/sitio_publico/pages/planes/planes-preguntas-frecuentes/TimbresPrepago";
 import { Politicas } from "../modules/sitio_publico/pages/politicas/Politicas";
 import { AcuerdoNivelesServicio } from "../modules/sitio_publico/pages/politicas/secciones/acuerdo-niveles-servicio/AcuerdoNivelesServicio";
 import { AvisoPrivacidad } from "../modules/sitio_publico/pages/politicas/secciones/aviso-privacidad/AvisoPrivacidad";
@@ -71,6 +73,8 @@ export function AppRouter() {
         <Route element={<PublicLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/planes" element={<Planes />} />
+          <Route path="/planes/preguntas-frecuentes" element={<TimbresBajoDemanda />} />
+          <Route path="/planes/preguntas-frecuentes/timbres-prepago" element={<TimbresPrepago />} />
           <Route path="/integradores" element={<Integracion />} />
           <Route path="/integraciones" element={<Integracion />} />
           <Route path="/soluciones" element={<Soluciones />} />

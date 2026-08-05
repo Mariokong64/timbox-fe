@@ -18,6 +18,7 @@ import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { ModalConfirmacion } from "../../../../../shared/components/ModalConfirmacion";
 import {
   eliminarSolicitudChat,
   enviarMensajeSolicitudChat,
@@ -144,6 +145,7 @@ export function DetalleSolicitudChat({
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
   const [procesando, setProcesando] = useState(false);
+  const [confirmarFinalizacion, setConfirmarFinalizacion] = useState(false);
   const [confirmarEliminacion, setConfirmarEliminacion] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const finalRef = useRef<HTMLDivElement>(null);
@@ -204,7 +206,7 @@ export function DetalleSolicitudChat({
   const finalizar = () => {
     void ejecutar(async () => {
       await finalizarSolicitudChat(id);
-    });
+    }).finally(() => setConfirmarFinalizacion(false));
   };
 
   const eliminar = async () => {
@@ -324,7 +326,7 @@ export function DetalleSolicitudChat({
             variant="outlined"
             startIcon={<CheckCircleRoundedIcon />}
             disabled={procesando}
-            onClick={finalizar}
+            onClick={() => setConfirmarFinalizacion(true)}
             sx={{
               display: { xs: "none", sm: "inline-flex" },
               textTransform: "none",
@@ -401,6 +403,20 @@ export function DetalleSolicitudChat({
         </Box>
       )}
       </Box>
+
+      <ModalConfirmacion
+        abierto={confirmarFinalizacion}
+        titulo="Finalizar conversación"
+        descripcion={`¿Seguro que quieres finalizar la conversación con ${chat.nombreVisitante}? Una vez finalizada, ya no podrás enviar nuevas respuestas.`}
+        textoConfirmar="Finalizar"
+        cargando={procesando}
+        onCancelar={() => {
+          if (!procesando) {
+            setConfirmarFinalizacion(false);
+          }
+        }}
+        onConfirmar={finalizar}
+      />
 
       <Dialog
         open={confirmarEliminacion}

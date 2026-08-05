@@ -62,9 +62,14 @@ export function PublicLayout() {
     "/aviso-privacidad-integral",
     "/avisioprivacidad",
   ];
+  const rutasPreguntasFrecuentesPlanes = [
+    "/planes/preguntas-frecuentes",
+    "/planes/preguntas-frecuentes/timbres-prepago",
+  ];
   const rutasDocumentacionPublica = [
     ...rutasDocumentacionSoporte,
     ...rutasDocumentacionPoliticas,
+    ...rutasPreguntasFrecuentesPlanes,
   ];
   const rutasConHeaderOscuro = ["/planes", "/politicas", ...rutasDocumentacionPublica];
   const esRutaDocumentacionPublica = rutasDocumentacionPublica.includes(pathname);

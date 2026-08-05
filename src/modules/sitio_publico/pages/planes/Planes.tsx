@@ -40,7 +40,7 @@ export function Planes() {
           bgcolor: "var(--fondo-timbox)",
         }}
       >
-        <RectanguloPlan texto="Preguntas frecuentes" href="/preguntas-frecuentes" />
+        <RectanguloPlan texto="Preguntas frecuentes" href="planes/preguntas-frecuentes" />
         <RectanguloPlan texto="Información general" href="/contacto" />
       </Box>
     </Box>

@@ -162,7 +162,7 @@ export function AccionesFlotantes() {
           }}
         >
           <Link
-            // href="https://www.facebook.com/TimboxPAC/"
+            href="https://www.facebook.com/TimboxPAC/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook de Timbox"
@@ -189,7 +189,7 @@ export function AccionesFlotantes() {
           />
 
           <Link
-            // href="https://www.linkedin.com/company/timbox/"
+            href="https://www.linkedin.com/company/timbox/"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="LinkedIn de Timbox"
