@@ -1,24 +1,25 @@
 import { Box, Typography } from "@mui/material";
 import { TarjetaHerramienta } from "./TarjetaHerramienta";
+import { clavesURL } from "../../../components/urls/servicio/urlsServicio";
 
 const codigoIntegracion = [
-  { texto: ".NET", href: "https://github.com/TimboxIntegracion/timbox-.net" },
-  { texto: "JAVA", href: "https://github.com/TimboxIntegracion/timbox-java" },
-  { texto: "PHP", href: "https://github.com/TimboxIntegracion/timbox-php" },
-  { texto: "PYTHON", href: "https://github.com/TimboxIntegracion/timbox-python" },
-  { texto: "RUBY", href: "https://github.com/TimboxIntegracion/timbox-ruby" },
-  { texto: "WEB DEV", href: "https://github.com/TimboxIntegracion/timbox-webdev" },
-  { texto: "VFOXPRO", href: "https://github.com/TimboxIntegracion/timbox-vfoxpro" },
-  { texto: "VB", href: "https://github.com/TimboxIntegracion/timbox-vb" },
-  { texto: "NodeJS", href: "https://github.com/TimboxIntegracion/NodeJS-WebServiceAPI" },
-  { texto: "Laravel", href: "https://github.com/TimboxIntegracion/Laravel-WebServiceAPI" },
+  { texto: ".NET", clave: clavesURL.integradores.net },
+  { texto: "JAVA", clave: clavesURL.integradores.java },
+  { texto: "PHP", clave: clavesURL.integradores.php },
+  { texto: "PYTHON", clave: clavesURL.integradores.python },
+  { texto: "RUBY", clave: clavesURL.integradores.ruby },
+  { texto: "WEB DEV", clave: clavesURL.integradores.webDev },
+  { texto: "VFOXPRO", clave: clavesURL.integradores.vfoxpro },
+  { texto: "VB", clave: clavesURL.integradores.vb },
+  { texto: "NodeJS", clave: clavesURL.integradores.nodejs },
+  { texto: "Laravel", clave: clavesURL.integradores.laravel },
 ];
 
 const integracionDll = [
-  { texto: "VISUAL C#", href: "https://github.com/TimboxIntegracion/Ejemplo-CSharp-DLL" },
-  { texto: "Visual Basic", href: "https://github.com/TimboxIntegracion/Ejemplo-VB-DLL" },
-  { texto: "FoxPro", href: "https://github.com/TimboxIntegracion/Ejemplo-VFP-DLL" },
-  { texto: "DELPHI", href: "https://github.com/TimboxIntegracion/Ejemplo-Delphi-DLL" },
+  { texto: "VISUAL C#", clave: clavesURL.integradores.visualCsharpDll },
+  { texto: "Visual Basic", clave: clavesURL.integradores.visualBasicDll },
+  { texto: "FoxPro", clave: clavesURL.integradores.foxproDll },
+  { texto: "DELPHI", clave: clavesURL.integradores.delphiDll },
 ];
 
 export function SeccionHerramientas() {

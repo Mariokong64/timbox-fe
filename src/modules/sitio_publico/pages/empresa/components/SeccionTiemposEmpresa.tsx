@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 import rubikTimbox from "../../../../../shared/assets/rubik_timbox.webp";
 import { EnlaceConFlecha } from "../../../components/EnlaceConFlecha";
-import { enlacesExternos } from "../../../constants/navegacionPublica";
+import { clavesURL } from "../../../components/urls/servicio/urlsServicio";
 
 export function SeccionTiemposEmpresa() {
   return (
@@ -52,7 +52,7 @@ export function SeccionTiemposEmpresa() {
             disminuyendo tiempos de respuesta a milisegundos, sí, milisegundos.
           </Typography>
 
-          <EnlaceConFlecha texto="Empieza ahora" href={enlacesExternos.registro} separado />
+          <EnlaceConFlecha texto="Empieza ahora" claveURL={clavesURL.dashboardRegistro} separado />
         </Box>
       </Box>
 

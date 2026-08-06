@@ -3,6 +3,7 @@ import FacebookRoundedIcon from "@mui/icons-material/FacebookRounded";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import ShareIcon from "@mui/icons-material/Share";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
+import { abrirURLPorClave, clavesURL } from "./urls/servicio/urlsServicio";
 
 const estiloContenedor = {
   display: "flex",
@@ -162,9 +163,13 @@ export function AccionesFlotantes() {
           }}
         >
           <Link
-            href="https://www.facebook.com/TimboxPAC/"
+            href="/404"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(evento) => {
+              evento.preventDefault();
+              abrirURLPorClave(clavesURL.facebook);
+            }}
             aria-label="Facebook de Timbox"
             sx={{
               display: "inline-flex",
@@ -189,9 +194,13 @@ export function AccionesFlotantes() {
           />
 
           <Link
-            href="https://www.linkedin.com/company/timbox/"
+            href="/404"
             target="_blank"
             rel="noopener noreferrer"
+            onClick={(evento) => {
+              evento.preventDefault();
+              abrirURLPorClave(clavesURL.linkedin);
+            }}
             aria-label="LinkedIn de Timbox"
             sx={{
               display: "inline-flex",

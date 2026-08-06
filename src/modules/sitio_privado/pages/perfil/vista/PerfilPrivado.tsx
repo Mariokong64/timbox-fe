@@ -19,6 +19,10 @@ import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import {
+  REQUISITOS_CONTRASENA,
+  validarSeguridadContrasena,
+} from "../../../../../shared/validaciones/contrasena";
+import {
   useEffect,
   useMemo,
   useRef,
@@ -236,8 +240,15 @@ export function PerfilPrivado() {
   const cambiarCampoContrasena =
     (campo: keyof FormularioContrasena) =>
     (event: ChangeEvent<HTMLInputElement>) => {
-      setFormulario((actual) => ({ ...actual, [campo]: event.target.value }));
-      setErrores((actuales) => ({ ...actuales, [campo]: "" }));
+      const valor = event.target.value;
+      const error = campo === "contrasenaNueva"
+        ? valor
+          ? validarSeguridadContrasena(valor.trim())
+          : "Ingresa la nueva contraseña."
+        : "";
+
+      setFormulario((actual) => ({ ...actual, [campo]: valor }));
+      setErrores((actuales) => ({ ...actuales, [campo]: error }));
       setAviso(null);
     };
 
@@ -517,7 +528,7 @@ export function PerfilPrivado() {
               value={formulario.contrasenaNueva}
               onChange={cambiarCampoContrasena("contrasenaNueva")}
               error={Boolean(errores.contrasenaNueva)}
-              helperText={errores.contrasenaNueva || "Utiliza al menos 8 caracteres."}
+              helperText={errores.contrasenaNueva || REQUISITOS_CONTRASENA}
               disabled={cambiandoContrasena}
               slotProps={{
                 input: {

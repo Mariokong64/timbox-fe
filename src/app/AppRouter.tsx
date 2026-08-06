@@ -8,7 +8,7 @@ import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/vista
 import { PerfilPrivado } from "../modules/sitio_privado/pages/perfil/vista/PerfilPrivado";
 import { Usuarios } from "../modules/sitio_privado/pages/usuarios/Usuarios";
 import { SolicitudesContacto } from "../modules/sitio_privado/pages/solicitudes/vista/SolicitudesContacto";
-import { GestionContenidos } from "../modules/sitio_privado/pages/contenidos/vista/GestionContenidos";
+import { GestionEnlaces } from "../modules/sitio_privado/pages/enlaces/vista/GestionEnlaces";
 import { PaginaNoEncontradaPublica } from "../modules/sitio_publico/components/PaginaNoEncontradaPublica";
 import { PublicLayout } from "../modules/sitio_publico/layout/PublicLayout";
 import { Contacto } from "../modules/sitio_publico/pages/contacto/Contacto";
@@ -95,8 +95,6 @@ export function AppRouter() {
           <Route path="/procedimientoarco" element={<DerechosArco />} />
           <Route path="/aviso-privacidad-integral" element={<AvisoPrivacidadIntegral />} />
           <Route path="/avisioprivacidad" element={<AvisoPrivacidadIntegral />} />
-          {/* Rutas de las páginas de soporte */}
-          {/* Timbrar */}
           <Route path="/timbrar-cfdi" element={<TimbrarCfdi />} />
           <Route path="/timbrar-cfdi-4-0" element={<TimbrarCfdi40 />} />
           <Route path="/timbrar-referencia" element={<TimbrarRefencia />} />
@@ -140,7 +138,7 @@ export function AppRouter() {
           <Route path="/privado" element={<LayoutPrivado />}>
             <Route index element={<DashboardPrivado />} />
             <Route path="perfil" element={<PerfilPrivado />} />
-            <Route path="contenidos" element={<GestionContenidos />} />
+            <Route path="enlaces" element={<GestionEnlaces />} />
             <Route path="solicitudes" element={<SolicitudesContacto />} />
             <Route
               path="chats"

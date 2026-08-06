@@ -1,3 +1,5 @@
+import { clavesURL } from "../components/urls/servicio/urlsServicio";
+
 export interface OpcionNavegacion {
   texto: string;
   ruta: string;
@@ -5,7 +7,8 @@ export interface OpcionNavegacion {
 
 export interface EnlaceFooter {
   texto: string;
-  url: string;
+  url?: string;
+  claveURL?: string;
 }
 
 export const opcionesMenuPublico: OpcionNavegacion[] = [
@@ -17,13 +20,6 @@ export const opcionesMenuPublico: OpcionNavegacion[] = [
   { texto: "Soporte", ruta: "/soporte" },
   { texto: "Contacto", ruta: "/contacto" },
 ];
-
-export const enlacesExternos = {
-  registro: "https://dashboard.timbox.com.mx/registro",
-  inicioSesion: "https://dashboard.timbox.com.mx/acceso",
-  // registro: "http://grupotum.com:9020/registro",
-  // inicioSesion: "http://grupotum.com:9020/acceso",
-};
 
 export const columnasFooter: EnlaceFooter[][] = [
   [
@@ -40,6 +36,6 @@ export const columnasFooter: EnlaceFooter[][] = [
   [
     { texto: "Términos y condiciones", url: "/terminos-condiciones" },
     { texto: "Preguntas frecuentes", url: "/preguntas-frecuentes" },
-    { texto: "Aplicación Gratuita", url: "https://appgratis.timbox.com.mx/acceso" },
+    { texto: "Aplicación Gratuita", claveURL: clavesURL.aplicacionGratuita },
   ],
 ];

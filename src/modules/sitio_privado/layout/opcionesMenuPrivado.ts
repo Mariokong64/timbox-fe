@@ -1,6 +1,6 @@
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
-import ArticleRoundedIcon from "@mui/icons-material/ArticleRounded";
 import ContactMailRoundedIcon from "@mui/icons-material/ContactMailRounded";
+import LinkRoundedIcon from "@mui/icons-material/LinkRounded";
 import PeopleAltRoundedIcon from "@mui/icons-material/PeopleAltRounded";
 
 export interface OpcionMenuPrivado {
@@ -15,11 +15,11 @@ export const opcionesMenuPrivado: OpcionMenuPrivado[] = [
     ruta: "/privado",
     icono: DashboardRoundedIcon,
   },
-  // {
-  //   texto: "Contenidos",
-  //   ruta: "/privado/contenidos",
-  //   icono: ArticleRoundedIcon,
-  // },
+  {
+    texto: "Enlaces",
+    ruta: "/privado/enlaces",
+    icono: LinkRoundedIcon,
+  },
   {
     texto: "Solicitudes",
     ruta: "/privado/solicitudes",

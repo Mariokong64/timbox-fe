@@ -5,6 +5,7 @@ import {
   obtenerUsuariosApi,
   verificarDisponibilidadUsuarioApi,
 } from "../api/usuariosApi";
+import { validarSeguridadContrasena } from "../../../../../shared/validaciones/contrasena";
 
 export interface UsuarioListado {
   id: string;
@@ -135,13 +136,7 @@ export function validarCampoUsuario(
       return "Campo obligatorio.";
     }
 
-    if (texto.length < 8) {
-      return "Mínimo 8 caracteres.";
-    }
-
-    if (texto.length > 150) {
-      return "Máximo 150 caracteres.";
-    }
+    return validarSeguridadContrasena(texto);
   }
 
   return "";

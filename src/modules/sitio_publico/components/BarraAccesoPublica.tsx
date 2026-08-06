@@ -1,6 +1,6 @@
 import {Box, Link} from '@mui/material';
-import {enlacesExternos} from '../constants/navegacionPublica';
 import {LogoTimboxConLetras} from '../../../shared/components/LogoTimboxConLetras';
+import { abrirURLPorClave, clavesURL } from './urls/servicio/urlsServicio';
 
 type BarraAccesoPublicaProps = {
   modo: "claro" | "oscuro";
@@ -103,14 +103,18 @@ export function BarraAccesoPublica({ modo, onLogoClick }: BarraAccesoPublicaProp
                     />
 
                     {[
-                        {texto: 'Regístrate', url: enlacesExternos.registro},
-                        {texto: 'Inicio de sesión', url: enlacesExternos.inicioSesion}
+                        {texto: 'Regístrate', clave: clavesURL.dashboardRegistro},
+                        {texto: 'Inicio de sesión', clave: clavesURL.dashboardAcceso}
                     ].map((enlace) => (
                         <Link
-                            key={enlace.url}
-                            href={enlace.url}
+                            key={enlace.clave}
+                            href="/404"
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={(evento) => {
+                                evento.preventDefault();
+                                abrirURLPorClave(enlace.clave);
+                            }}
                             underline="none"
                             sx={{
                                 display: 'flex',

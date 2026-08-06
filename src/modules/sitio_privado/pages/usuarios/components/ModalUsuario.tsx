@@ -7,10 +7,14 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
+  InputAdornment,
   TextField,
   Typography,
 } from "@mui/material";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { REQUISITOS_CONTRASENA } from "../../../../../shared/validaciones/contrasena";
 import {
   crearFormularioDesdeUsuario,
   hayErroresUsuario,
@@ -50,6 +54,7 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
   const [errores, setErrores] = useState<ErroresUsuarioFormulario>({});
   const [validandoUsuario, setValidandoUsuario] = useState(false);
   const [usuarioDisponible, setUsuarioDisponible] = useState<boolean | null>(null);
+  const [contrasenaVisible, setContrasenaVisible] = useState(false);
   const timeoutUsuarioRef = useRef<number | null>(null);
 
   useEffect(() => {
@@ -58,6 +63,7 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
       setErrores({});
       setValidandoUsuario(false);
       setUsuarioDisponible(null);
+      setContrasenaVisible(false);
     }
   }, [abierto, usuario]);
 
@@ -183,8 +189,8 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
         </IconButton>
       </DialogTitle>
 
-      <DialogContent sx={{ pt: 3 }}>
-        <Box sx={{ display: "grid", gap: 2.2, pt: 0.5 }}>
+      <DialogContent sx={{ pt: "28px !important" }}>
+        <Box sx={{ display: "grid", gap: 2.2 }}>
           <TextField
             label="Usuario"
             value={formulario.usuario}
@@ -225,8 +231,28 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
               value={formulario.contrasena}
               onChange={cambiarCampo("contrasena")}
               error={Boolean(errores.contrasena)}
-              helperText={errores.contrasena}
-              type="password"
+              helperText={errores.contrasena || REQUISITOS_CONTRASENA}
+              type={contrasenaVisible ? "text" : "password"}
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        type="button"
+                        edge="end"
+                        aria-label={contrasenaVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+                        onClick={() => setContrasenaVisible((visible) => !visible)}
+                      >
+                        {contrasenaVisible ? (
+                          <VisibilityOffOutlinedIcon />
+                        ) : (
+                          <VisibilityOutlinedIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
               fullWidth
               sx={estiloCampo}
             />

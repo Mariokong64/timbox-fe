@@ -1,9 +1,11 @@
 import { Box, Link } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import { abrirURLPorClave } from "./urls/servicio/urlsServicio";
 
 interface EnlaceConFlechaProps {
   texto: string;
-  href: string;
+  href?: string;
+  claveURL?: string;
   claro?: boolean;
   separado?: boolean;
 }
@@ -11,6 +13,7 @@ interface EnlaceConFlechaProps {
 export function EnlaceConFlecha({
   texto,
   href,
+  claveURL,
   claro = false,
   separado = false,
 }: EnlaceConFlechaProps) {
@@ -19,7 +22,13 @@ export function EnlaceConFlecha({
 
   return (
     <Link
-      href={href}
+      href={claveURL ? "/404" : href}
+      target={claveURL ? "_blank" : undefined}
+      rel={claveURL ? "noopener noreferrer" : undefined}
+      onClick={claveURL ? (evento) => {
+        evento.preventDefault();
+        abrirURLPorClave(claveURL);
+      } : undefined}
       underline="none"
       sx={{
         display: "inline-flex",

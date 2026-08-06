@@ -6,6 +6,7 @@ import {
   obtenerPerfilApi,
   type DatosCambioContrasena,
 } from "../api/perfilApi";
+import { validarSeguridadContrasena } from "../../../../../shared/validaciones/contrasena";
 
 export interface PerfilUsuario {
   id: string;
@@ -119,10 +120,10 @@ export function validarFormularioContrasena(
 
   if (!formulario.contrasenaNueva) {
     errores.contrasenaNueva = "Ingresa la nueva contraseña.";
-  } else if (formulario.contrasenaNueva.length < 8) {
-    errores.contrasenaNueva = "Debe tener al menos 8 caracteres.";
-  } else if (formulario.contrasenaNueva.length > 150) {
-    errores.contrasenaNueva = "No debe superar 150 caracteres.";
+  } else {
+    errores.contrasenaNueva = validarSeguridadContrasena(
+      formulario.contrasenaNueva.trim()
+    );
   }
 
   if (!formulario.confirmacionContrasena) {

@@ -1,5 +1,5 @@
 import { Box, Link, Typography } from "@mui/material";
-import { enlacesExternos } from "../../../constants/navegacionPublica";
+import { abrirURLPorClave, clavesURL } from "../../../components/urls/servicio/urlsServicio";
 
 export function SeccionRegistro() {
   return (
@@ -39,9 +39,13 @@ export function SeccionRegistro() {
           Pruébanos y obtén timbres gratis.
         </Typography>
         <Link
-          href={enlacesExternos.registro}
+          href="/404"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(evento) => {
+            evento.preventDefault();
+            abrirURLPorClave(clavesURL.dashboardRegistro);
+          }}
           color="inherit"
           underline="hover"
           sx={{ fontFamily: "var(--fuente-regular)", fontSize: 28 }}

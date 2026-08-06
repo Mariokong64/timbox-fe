@@ -1,6 +1,6 @@
 import { Box, Link, Typography } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { enlacesExternos } from "../../../constants/navegacionPublica";
+import { abrirURLPorClave, clavesURL } from "../../../components/urls/servicio/urlsServicio";
 
 interface TarjetaSolucionProps {
   numero: number;
@@ -71,9 +71,13 @@ export function TarjetaSolucion({
 
       {mostrarRegistro && (
         <Link
-          href={enlacesExternos.registro}
+          href="/404"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(evento) => {
+            evento.preventDefault();
+            abrirURLPorClave(clavesURL.dashboardRegistro);
+          }}
           underline="none"
           sx={{
             mt: "auto",

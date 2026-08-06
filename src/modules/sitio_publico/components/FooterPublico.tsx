@@ -4,6 +4,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import {Link as RouterLink} from 'react-router-dom';
 import iconoTimbox from '../../../shared/assets/icono_timbox.svg';
 import {columnasFooter} from '../constants/navegacionPublica';
+import { abrirURLPorClave, clavesURL } from './urls/servicio/urlsServicio';
 
 export function FooterPublico() {
     return (
@@ -56,26 +57,36 @@ export function FooterPublico() {
 
                 {columnasFooter.map((columna, indice) => (
                     <Box component="ul" key={indice} sx={{listStyle: 'none', p: 0, m: 0, textAlign: {xs: 'center', sm: 'left'}}}>
-                        {columna.map((enlace) => (
-                            <Box component="li" key={enlace.texto} sx={{py: 1}}>
-                                <Link
-                                    href={enlace.url}
-                                    underline="hover"
-                                    color="inherit"
-                                    sx={{
-                                        fontFamily: 'var(--fuente-regular)',
-                                        fontSize: 17,
-                                        color: 'var(--texto-footer-claro)',
-                                        transition: 'color 180ms ease',
-                                        '&:hover': {
-                                            color: 'var(--azul-timbox)'
-                                        }
-                                    }}
-                                >
-                                    {enlace.texto}
-                                </Link>
-                            </Box>
-                        ))}
+                        {columna.map((enlace) => {
+                            const claveURL = enlace.claveURL;
+
+                            return (
+                                <Box component="li" key={enlace.texto} sx={{py: 1}}>
+                                    <Link
+                                        href={claveURL ? '/404' : enlace.url}
+                                        target={claveURL ? '_blank' : undefined}
+                                        rel={claveURL ? 'noopener noreferrer' : undefined}
+                                        onClick={claveURL ? (evento) => {
+                                            evento.preventDefault();
+                                            abrirURLPorClave(claveURL);
+                                        } : undefined}
+                                        underline="hover"
+                                        color="inherit"
+                                        sx={{
+                                            fontFamily: 'var(--fuente-regular)',
+                                            fontSize: 17,
+                                            color: 'var(--texto-footer-claro)',
+                                            transition: 'color 180ms ease',
+                                            '&:hover': {
+                                                color: 'var(--azul-timbox)'
+                                            }
+                                        }}
+                                    >
+                                        {enlace.texto}
+                                    </Link>
+                                </Box>
+                            );
+                        })}
                     </Box>
                 ))}
             </Box>
@@ -157,9 +168,13 @@ export function FooterPublico() {
 
                 <Box sx={{display: {xs: 'none', md: 'flex'}, gap: 2}}>
                     <Link
-                        href="https://www.facebook.com/TimboxPAC/"
+                        href="/404"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(evento) => {
+                            evento.preventDefault();
+                            abrirURLPorClave(clavesURL.facebook);
+                        }}
                         aria-label="Facebook de Timbox"
                         sx={{
                             color: 'var(--texto-blanco-medio)',
@@ -175,9 +190,13 @@ export function FooterPublico() {
                     </Link>
 
                     <Link
-                        href="https://www.linkedin.com/company/timbox/"
+                        href="/404"
                         target="_blank"
                         rel="noopener noreferrer"
+                        onClick={(evento) => {
+                            evento.preventDefault();
+                            abrirURLPorClave(clavesURL.linkedin);
+                        }}
                         aria-label="LinkedIn de Timbox"
                         sx={{
                             color: 'var(--texto-blanco-medio)',

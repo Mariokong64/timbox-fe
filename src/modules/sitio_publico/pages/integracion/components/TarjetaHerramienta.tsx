@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { Box, Collapse, IconButton, Link, Typography } from "@mui/material";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { abrirURLPorClave } from "../../../components/urls/servicio/urlsServicio";
 
 interface EnlaceHerramienta {
   texto: string;
-  href: string;
+  clave: string;
 }
 
 interface TarjetaHerramientaProps {
@@ -89,11 +90,15 @@ export function TarjetaHerramienta({ titulo, enlaces }: TarjetaHerramientaProps)
           }}
         >
           {enlaces.map((enlace) => (
-            <Box component="li" key={enlace.href}>
+            <Box component="li" key={enlace.clave}>
               <Link
-                href={enlace.href}
+                href="/404"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={(evento) => {
+                  evento.preventDefault();
+                  abrirURLPorClave(enlace.clave);
+                }}
                 underline="none"
                 sx={{
                   color: "var(--azul-timbox)",
