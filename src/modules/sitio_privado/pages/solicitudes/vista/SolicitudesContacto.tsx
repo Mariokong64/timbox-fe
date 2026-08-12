@@ -1,5 +1,4 @@
 import {
-  Alert,
   Avatar,
   Box,
   CircularProgress,
@@ -19,6 +18,7 @@ import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import { AlertasServicio } from "../../../../../shared/components/AlertasServicio";
 import { DetalleSolicitudChat } from "../components/DetalleSolicitudChat";
 import { DetalleSolicitudFormulario } from "../components/DetalleSolicitudFormulario";
 import { EstadoSolicitudChip } from "../components/EstadoSolicitudChip";
@@ -27,6 +27,7 @@ import {
   obtenerErrorSolicitudes,
 } from "../servicio/solicitudesServicio";
 import type {
+  AlertaSolicitudes,
   EstadoFiltroSolicitud,
   OrigenSolicitud,
   SolicitudResumen,
@@ -83,7 +84,7 @@ export function SolicitudesContacto() {
   const [solicitudes, setSolicitudes] = useState<SolicitudResumen[]>([]);
   const [seleccionadaId, setSeleccionadaId] = useState<string | null>(null);
   const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [alerta, setAlerta] = useState<AlertaSolicitudes | null>(null);
   const [busqueda, setBusqueda] = useState("");
   const filtrosVisibles =
     origen === "chat" ? [...filtros, filtroInactividad] : filtros;
@@ -117,7 +118,13 @@ export function SolicitudesContacto() {
     );
   };
 
-  const cargarLista = useCallback(async () => {
+  const mostrarAlerta = useCallback((nuevaAlerta: AlertaSolicitudes) => {
+    setAlerta(nuevaAlerta);
+  }, []);
+
+  const cerrarAlerta = useCallback(() => setAlerta(null), []);
+
+  const cargarLista = useCallback(async (mostrarError = true) => {
     try {
       const resultado = await listarSolicitudes(origen, estado);
       setSolicitudes(resultado);
@@ -126,19 +133,24 @@ export function SolicitudesContacto() {
           ? actual
           : null
       );
-      setError(null);
     } catch (errorActual) {
-      setError(obtenerErrorSolicitudes(errorActual));
+      if (mostrarError) {
+        mostrarAlerta({
+          tipo: "error",
+          titulo: "No se pudieron cargar las solicitudes",
+          descripcion: obtenerErrorSolicitudes(errorActual),
+        });
+      }
     } finally {
       setCargando(false);
     }
-  }, [estado, origen]);
+  }, [estado, mostrarAlerta, origen]);
 
   useEffect(() => {
-    const inicio = window.setTimeout(() => void cargarLista(), 0);
+    const inicio = window.setTimeout(() => void cargarLista(true), 0);
     const intervalo =
       origen === "chat"
-        ? window.setInterval(() => void cargarLista(), 5000)
+        ? window.setInterval(() => void cargarLista(false), 5000)
         : null;
 
     return () => {
@@ -161,6 +173,14 @@ export function SolicitudesContacto() {
         overflow: { md: "hidden" },
       }}
     >
+      <AlertasServicio
+        abierta={Boolean(alerta)}
+        tipo={alerta?.tipo}
+        titulo={alerta?.titulo ?? ""}
+        descripcion={alerta?.descripcion}
+        onCerrar={alerta?.tipo === "loading" ? undefined : cerrarAlerta}
+      />
+
       <Stack
         direction={{ xs: "column", md: "row" }}
         sx={{ mb: 2, alignItems: { md: "center" }, gap: 1.5 }}
@@ -192,7 +212,7 @@ export function SolicitudesContacto() {
           <Tooltip title="Actualizar solicitudes">
             <IconButton
               aria-label="Actualizar solicitudes"
-              onClick={() => void cargarLista()}
+              onClick={() => void cargarLista(true)}
               sx={{ color: "var(--azul-timbox)" }}
             >
               <RefreshRoundedIcon />
@@ -344,12 +364,6 @@ export function SolicitudesContacto() {
           }}
         />
       </Stack>
-
-      {error && (
-        <Alert severity="error" sx={{ mb: 1.5 }}>
-          {error}
-        </Alert>
-      )}
 
       <Box
         sx={{
@@ -505,14 +519,16 @@ export function SolicitudesContacto() {
             <DetalleSolicitudFormulario
               key={seleccionadaId}
               id={seleccionadaId}
-              onActualizarLista={() => void cargarLista()}
+              onActualizarLista={() => void cargarLista(false)}
+              onAlerta={mostrarAlerta}
               onVolver={() => setSeleccionadaId(null)}
             />
           ) : (
             <DetalleSolicitudChat
               key={seleccionadaId}
               id={seleccionadaId}
-              onActualizarLista={() => void cargarLista()}
+              onActualizarLista={() => void cargarLista(false)}
+              onAlerta={mostrarAlerta}
               onEliminada={() => setSeleccionadaId(null)}
               onVolver={() => setSeleccionadaId(null)}
             />

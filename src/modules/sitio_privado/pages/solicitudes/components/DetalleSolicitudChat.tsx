@@ -1,5 +1,4 @@
 import {
-  Alert,
   Avatar,
   Box,
   Button,
@@ -27,6 +26,7 @@ import {
   obtenerSolicitudChat,
 } from "../servicio/solicitudesServicio";
 import type {
+  AlertaSolicitudes,
   MensajeSolicitudChat,
   SolicitudChatDetalle,
 } from "../servicio/solicitudes.types";
@@ -131,6 +131,7 @@ function BurbujaMensaje({ mensaje }: { mensaje: MensajeSolicitudChat }) {
 interface DetalleSolicitudChatProps {
   id: string;
   onActualizarLista: () => void;
+  onAlerta: (alerta: AlertaSolicitudes) => void;
   onEliminada: () => void;
   onVolver: () => void;
 }
@@ -138,6 +139,7 @@ interface DetalleSolicitudChatProps {
 export function DetalleSolicitudChat({
   id,
   onActualizarLista,
+  onAlerta,
   onEliminada,
   onVolver,
 }: DetalleSolicitudChatProps) {
@@ -150,20 +152,29 @@ export function DetalleSolicitudChat({
   const [error, setError] = useState<string | null>(null);
   const finalRef = useRef<HTMLDivElement>(null);
 
-  const cargar = useCallback(async () => {
+  const cargar = useCallback(async (mostrarError = false) => {
     try {
       setChat(await obtenerSolicitudChat(id));
       setError(null);
     } catch (errorActual) {
-      setError(obtenerErrorSolicitudes(errorActual));
+      const mensajeError = obtenerErrorSolicitudes(errorActual);
+      setError(mensajeError);
+
+      if (mostrarError) {
+        onAlerta({
+          tipo: "error",
+          titulo: "No se pudo cargar la conversación",
+          descripcion: mensajeError,
+        });
+      }
     } finally {
       setCargando(false);
     }
-  }, [id]);
+  }, [id, onAlerta]);
 
   useEffect(() => {
-    const inicio = window.setTimeout(() => void cargar(), 0);
-    const intervalo = window.setInterval(() => void cargar(), 2500);
+    const inicio = window.setTimeout(() => void cargar(true), 0);
+    const intervalo = window.setInterval(() => void cargar(false), 2500);
 
     return () => {
       window.clearTimeout(inicio);
@@ -175,16 +186,28 @@ export function DetalleSolicitudChat({
     finalRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [chat?.mensajes]);
 
-  const ejecutar = async (accion: () => Promise<void>) => {
+  const ejecutar = async (
+    accion: () => Promise<void>,
+    alertaCarga: Omit<AlertaSolicitudes, "tipo">,
+    alertaExito: Omit<AlertaSolicitudes, "tipo">
+  ) => {
     setProcesando(true);
     setError(null);
+    onAlerta({ tipo: "loading", ...alertaCarga });
 
     try {
       await accion();
-      await cargar();
+      await cargar(false);
       onActualizarLista();
+      onAlerta({ tipo: "success", ...alertaExito });
     } catch (errorActual) {
-      setError(obtenerErrorSolicitudes(errorActual));
+      const mensajeError = obtenerErrorSolicitudes(errorActual);
+      setError(mensajeError);
+      onAlerta({
+        tipo: "error",
+        titulo: "No se pudo completar la operación",
+        descripcion: mensajeError,
+      });
     } finally {
       setProcesando(false);
     }
@@ -200,26 +223,54 @@ export function DetalleSolicitudChat({
     void ejecutar(async () => {
       await enviarMensajeSolicitudChat(id, contenido);
       setMensaje("");
+    }, {
+      titulo: "Enviando respuesta",
+      descripcion: "Registrando el mensaje en la conversación.",
+    }, {
+      titulo: "Respuesta enviada",
+      descripcion: "El mensaje se agregó correctamente a la conversación.",
     });
   };
 
   const finalizar = () => {
     void ejecutar(async () => {
       await finalizarSolicitudChat(id);
+    }, {
+      titulo: "Finalizando conversación",
+      descripcion: "Actualizando el estado de la conversación.",
+    }, {
+      titulo: "Conversación finalizada",
+      descripcion: "La conversación quedó cerrada correctamente.",
     }).finally(() => setConfirmarFinalizacion(false));
   };
 
   const eliminar = async () => {
     setProcesando(true);
     setError(null);
+    onAlerta({
+      tipo: "loading",
+      titulo: "Eliminando conversación",
+      descripcion: "Eliminando la conversación y sus mensajes asociados.",
+    });
 
     try {
       await eliminarSolicitudChat(id);
       setConfirmarEliminacion(false);
       onActualizarLista();
       onEliminada();
+      onAlerta({
+        tipo: "success",
+        titulo: "Conversación eliminada",
+        descripcion: "La conversación y sus mensajes se eliminaron correctamente.",
+      });
     } catch (errorActual) {
-      setError(obtenerErrorSolicitudes(errorActual));
+      const mensajeError = obtenerErrorSolicitudes(errorActual);
+      setError(mensajeError);
+      onAlerta({
+        tipo: "error",
+        titulo: "No se pudo eliminar la conversación",
+        descripcion: mensajeError,
+      });
     } finally {
       setProcesando(false);
     }
@@ -234,7 +285,13 @@ export function DetalleSolicitudChat({
   }
 
   if (!chat) {
-    return <Alert severity="error">{error || "No se encontró la conversación."}</Alert>;
+    return (
+      <Stack sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+        <Typography sx={{ color: "rgba(21,33,47,.58)" }}>
+          {error || "No se encontró la conversación."}
+        </Typography>
+      </Stack>
+    );
   }
 
   const cerrada = chat.estadoAtencion === "cerrada";
@@ -337,12 +394,6 @@ export function DetalleSolicitudChat({
         )}
       </Stack>
 
-      {error && (
-        <Alert severity="error" sx={{ borderRadius: 0 }}>
-          {error}
-        </Alert>
-      )}
-
       <Stack
         spacing={1.25}
         sx={{
@@ -362,9 +413,19 @@ export function DetalleSolicitudChat({
       </Stack>
 
       {cerrada ? (
-        <Alert severity="success" sx={{ m: 1.5 }}>
+        <Box
+          sx={{
+            m: 1.5,
+            p: 1.5,
+            color: "#1b6e4b",
+            bgcolor: "rgba(38,154,106,.1)",
+            borderRadius: 1.5,
+            fontFamily: "var(--fuente-regular)",
+            fontSize: 13,
+          }}
+        >
           Esta conversación está cerrada y se conserva para consulta.
-        </Alert>
+        </Box>
       ) : (
         <Box
           component="form"

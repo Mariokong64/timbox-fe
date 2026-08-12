@@ -18,7 +18,6 @@ import { REQUISITOS_CONTRASENA } from "../../../../../shared/validaciones/contra
 import {
   crearFormularioDesdeUsuario,
   hayErroresUsuario,
-  usuarioFormularioInicial,
   validarCampoUsuario,
   validarFormularioUsuario,
   verificarDisponibilidadUsuario,
@@ -28,7 +27,6 @@ import {
 } from "../servicio/usuariosServicio";
 
 interface ModalUsuarioProps {
-  abierto: boolean;
   usuario: UsuarioListado | null;
   guardando: boolean;
   onCerrar: () => void;
@@ -48,24 +46,16 @@ const estiloCampo = {
   },
 };
 
-export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar }: ModalUsuarioProps) {
+export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalUsuarioProps) {
   const editando = Boolean(usuario);
-  const [formulario, setFormulario] = useState<UsuarioFormulario>(usuarioFormularioInicial);
+  const [formulario, setFormulario] = useState<UsuarioFormulario>(() =>
+    crearFormularioDesdeUsuario(usuario)
+  );
   const [errores, setErrores] = useState<ErroresUsuarioFormulario>({});
   const [validandoUsuario, setValidandoUsuario] = useState(false);
   const [usuarioDisponible, setUsuarioDisponible] = useState<boolean | null>(null);
   const [contrasenaVisible, setContrasenaVisible] = useState(false);
   const timeoutUsuarioRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (abierto) {
-      setFormulario(crearFormularioDesdeUsuario(usuario));
-      setErrores({});
-      setValidandoUsuario(false);
-      setUsuarioDisponible(null);
-      setContrasenaVisible(false);
-    }
-  }, [abierto, usuario]);
 
   useEffect(() => {
     return () => {
@@ -109,9 +99,25 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
     }, 450);
   };
 
+  const cambiarUsuario = (event: ChangeEvent<HTMLInputElement>) => {
+    const valor = event.target.value.toUpperCase();
+    const errorCampo = validarCampoUsuario("usuario", valor, editando);
+
+    setFormulario((actual) => ({
+      ...actual,
+      usuario: valor,
+    }));
+    setErrores((actual) => ({
+      ...actual,
+      usuario: errorCampo,
+    }));
+    programarValidacionUsuario(valor, errorCampo);
+  };
+
   const cambiarCampo =
-    (campo: keyof UsuarioFormulario) => (event: ChangeEvent<HTMLInputElement>) => {
-      const valor = campo === "usuario" ? event.target.value.toUpperCase() : event.target.value;
+    (campo: Exclude<keyof UsuarioFormulario, "usuario">) =>
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const valor = event.target.value;
       const errorCampo = validarCampoUsuario(campo, valor, editando);
 
       setFormulario((actual) => ({
@@ -122,10 +128,6 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
         ...actual,
         [campo]: errorCampo,
       }));
-
-      if (campo === "usuario") {
-        programarValidacionUsuario(valor, errorCampo);
-      }
     };
 
   const enviar = async () => {
@@ -150,7 +152,7 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
 
   return (
     <Dialog
-      open={abierto}
+      open
       onClose={guardando ? undefined : onCerrar}
       fullWidth
       maxWidth="sm"
@@ -194,7 +196,7 @@ export function ModalUsuario({ abierto, usuario, guardando, onCerrar, onGuardar 
           <TextField
             label="Usuario"
             value={formulario.usuario}
-            onChange={cambiarCampo("usuario")}
+            onChange={cambiarUsuario}
             error={Boolean(errores.usuario)}
             helperText={
               errores.usuario ||

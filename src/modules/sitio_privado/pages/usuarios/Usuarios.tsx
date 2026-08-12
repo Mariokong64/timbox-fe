@@ -240,13 +240,14 @@ export function Usuarios() {
         />
       </Box>
 
-      <ModalUsuario
-        abierto={modalAbierto}
-        usuario={usuarioEditando}
-        guardando={guardando}
-        onCerrar={cerrarModal}
-        onGuardar={guardar}
-      />
+      {modalAbierto && (
+        <ModalUsuario
+          usuario={usuarioEditando}
+          guardando={guardando}
+          onCerrar={cerrarModal}
+          onGuardar={guardar}
+        />
+      )}
 
       <ModalConfirmacion
         abierto={Boolean(usuarioPorEliminar)}

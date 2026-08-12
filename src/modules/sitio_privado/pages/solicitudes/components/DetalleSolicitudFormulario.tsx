@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   CircularProgress,
@@ -25,7 +24,10 @@ import {
   obtenerErrorSolicitudes,
   obtenerSolicitudFormulario,
 } from "../servicio/solicitudesServicio";
-import type { SolicitudFormularioDetalle } from "../servicio/solicitudes.types";
+import type {
+  AlertaSolicitudes,
+  SolicitudFormularioDetalle,
+} from "../servicio/solicitudes.types";
 import { EstadoSolicitudChip } from "./EstadoSolicitudChip";
 
 function fechaCompleta(fecha: string): string {
@@ -79,20 +81,17 @@ function Dato({
   );
 }
 
-interface Confirmacion {
-  mensaje: string;
-  severidad: "success" | "warning";
-}
-
 interface DetalleSolicitudFormularioProps {
   id: string;
   onActualizarLista: () => void;
+  onAlerta: (alerta: AlertaSolicitudes) => void;
   onVolver: () => void;
 }
 
 export function DetalleSolicitudFormulario({
   id,
   onActualizarLista,
+  onAlerta,
   onVolver,
 }: DetalleSolicitudFormularioProps) {
   const [solicitud, setSolicitud] =
@@ -103,8 +102,6 @@ export function DetalleSolicitudFormulario({
   const [guardando, setGuardando] = useState(false);
   const [cerrando, setCerrando] = useState(false);
   const [confirmarCierre, setConfirmarCierre] = useState(false);
-  const [errorGuardado, setErrorGuardado] = useState<string | null>(null);
-  const [confirmacion, setConfirmacion] = useState<Confirmacion | null>(null);
 
   useEffect(() => {
     let vigente = true;
@@ -118,7 +115,13 @@ export function DetalleSolicitudFormulario({
       })
       .catch((errorActual: unknown) => {
         if (vigente) {
-          setError(obtenerErrorSolicitudes(errorActual));
+          const mensaje = obtenerErrorSolicitudes(errorActual);
+          setError(mensaje);
+          onAlerta({
+            tipo: "error",
+            titulo: "No se pudo cargar la solicitud",
+            descripcion: mensaje,
+          });
         }
       })
       .finally(() => {
@@ -130,7 +133,7 @@ export function DetalleSolicitudFormulario({
     return () => {
       vigente = false;
     };
-  }, [id]);
+  }, [id, onAlerta]);
 
   const guardarRespuesta = async () => {
     const contenido = respuesta.trim();
@@ -140,22 +143,30 @@ export function DetalleSolicitudFormulario({
     }
 
     setGuardando(true);
-    setErrorGuardado(null);
-    setConfirmacion(null);
+    onAlerta({
+      tipo: "loading",
+      titulo: "Enviando respuesta",
+      descripcion: "Guardando la respuesta y enviando el correo electrónico.",
+    });
 
     try {
       const resultado = await guardarRespuestaSolicitudFormulario(id, contenido);
       setSolicitud(await obtenerSolicitudFormulario(id));
       setRespuesta("");
-      setConfirmacion({
-        mensaje: resultado.correoEnviado
-          ? "La respuesta quedó guardada y se envió por correo electrónico."
-          : "La respuesta quedó guardada, pero el correo electrónico no pudo enviarse.",
-        severidad: resultado.correoEnviado ? "success" : "warning",
+      onAlerta({
+        tipo: resultado.correoEnviado ? "success" : "info",
+        titulo: "Respuesta guardada",
+        descripcion: resultado.correoEnviado
+          ? "La respuesta se envió por correo electrónico."
+          : "La respuesta se guardó, pero el correo electrónico no pudo enviarse.",
       });
       onActualizarLista();
     } catch (errorActual) {
-      setErrorGuardado(obtenerErrorSolicitudes(errorActual));
+      onAlerta({
+        tipo: "error",
+        titulo: "No se pudo enviar la respuesta",
+        descripcion: obtenerErrorSolicitudes(errorActual),
+      });
     } finally {
       setGuardando(false);
     }
@@ -167,17 +178,29 @@ export function DetalleSolicitudFormulario({
     }
 
     setCerrando(true);
-    setErrorGuardado(null);
-    setConfirmacion(null);
+    onAlerta({
+      tipo: "loading",
+      titulo: "Cerrando solicitud",
+      descripcion: "Actualizando el estado de la solicitud.",
+    });
 
     try {
       await cerrarSolicitudFormulario(id);
       setConfirmarCierre(false);
       setSolicitud(await obtenerSolicitudFormulario(id));
       onActualizarLista();
+      onAlerta({
+        tipo: "success",
+        titulo: "Solicitud cerrada",
+        descripcion: "La solicitud quedó cerrada correctamente.",
+      });
     } catch (errorActual) {
       setConfirmarCierre(false);
-      setErrorGuardado(obtenerErrorSolicitudes(errorActual));
+      onAlerta({
+        tipo: "error",
+        titulo: "No se pudo cerrar la solicitud",
+        descripcion: obtenerErrorSolicitudes(errorActual),
+      });
     } finally {
       setCerrando(false);
     }
@@ -192,7 +215,13 @@ export function DetalleSolicitudFormulario({
   }
 
   if (error || !solicitud) {
-    return <Alert severity="error">{error || "No se encontró la solicitud."}</Alert>;
+    return (
+      <Stack sx={{ height: "100%", alignItems: "center", justifyContent: "center" }}>
+        <Typography sx={{ color: "rgba(21,33,47,.58)" }}>
+          {error || "No se encontró la solicitud."}
+        </Typography>
+      </Stack>
+    );
   }
 
   return (
@@ -399,9 +428,18 @@ export function DetalleSolicitudFormulario({
         <Divider sx={{ my: 2.5 }} />
 
         {solicitud.estadoAtencion === "cerrada" ? (
-          <Alert severity="success">
+          <Box
+            sx={{
+              p: 1.5,
+              color: "#1b6e4b",
+              bgcolor: "rgba(38,154,106,.1)",
+              borderRadius: 1.5,
+              fontFamily: "var(--fuente-regular)",
+              fontSize: 13,
+            }}
+          >
             Esta solicitud está cerrada y se conserva para consulta.
-          </Alert>
+          </Box>
         ) : (
           <Box
             component="form"
@@ -430,8 +468,6 @@ export function DetalleSolicitudFormulario({
               placeholder="Escribe la respuesta para esta solicitud..."
               onChange={(evento) => {
                 setRespuesta(evento.target.value);
-                setErrorGuardado(null);
-                setConfirmacion(null);
               }}
               slotProps={{
                 htmlInput: {
@@ -440,17 +476,6 @@ export function DetalleSolicitudFormulario({
                 },
               }}
             />
-
-            {errorGuardado && (
-              <Alert severity="error" sx={{ mt: 1.25 }}>
-                {errorGuardado}
-              </Alert>
-            )}
-            {confirmacion && (
-              <Alert severity={confirmacion.severidad} sx={{ mt: 1.25 }}>
-                {confirmacion.mensaje}
-              </Alert>
-            )}
 
             <Stack
               direction={{ xs: "column", sm: "row" }}

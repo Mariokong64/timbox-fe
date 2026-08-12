@@ -1,5 +1,11 @@
 export type OrigenSolicitud = "formulario" | "chat";
 
+export interface AlertaSolicitudes {
+  tipo: "loading" | "success" | "error" | "info";
+  titulo: string;
+  descripcion?: string;
+}
+
 export type EstadoAtencionSolicitud =
   | "por_atender"
   | "en_atencion"
