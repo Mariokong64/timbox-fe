@@ -3,9 +3,13 @@ import {
   crearUsuarioApi,
   eliminarUsuarioApi,
   obtenerUsuariosApi,
+  obtenerPermisosUsuarioApi,
   verificarDisponibilidadUsuarioApi,
 } from "../api/usuariosApi";
 import { validarSeguridadContrasena } from "../../../../../shared/validaciones/contrasena";
+import type { AccionPermiso, PermisoPantalla } from "../../../permisos/permisos.types";
+
+export type { AccionPermiso, PermisoPantalla } from "../../../permisos/permisos.types";
 
 export interface UsuarioListado {
   id: string;
@@ -181,9 +185,46 @@ export async function listarUsuarios(): Promise<UsuarioListado[]> {
   return normalizarListaUsuarios(respuesta);
 }
 
+export async function listarPermisosUsuario(id: string): Promise<PermisoPantalla[]> {
+  const respuesta = await obtenerPermisosUsuarioApi(id);
+  const datos = leerData(respuesta);
+  if (!Array.isArray(datos)) {
+    throw new Error("No se pudieron cargar los permisos del usuario.");
+  }
+  return datos.map((valor) => {
+    if (!esRegistro(valor) || !leerTexto(valor, "pantallaId") || !leerTexto(valor, "clave")) {
+      throw new Error("Los permisos recibidos no son válidos.");
+    }
+    return {
+      pantallaId: leerTexto(valor, "pantallaId"),
+      clave: leerTexto(valor, "clave"),
+      nombre: leerTexto(valor, "nombre"),
+      leer: valor.leer === true,
+      crear: valor.crear === true,
+      editar: valor.editar === true,
+      eliminar: valor.eliminar === true,
+    };
+  });
+}
+
+export function cambiarPermiso(
+  permiso: PermisoPantalla,
+  accion: AccionPermiso,
+  activo: boolean
+): PermisoPantalla {
+  if (accion === "leer" && !activo) {
+    return { ...permiso, leer: false, crear: false, editar: false, eliminar: false };
+  }
+  if (accion !== "leer" && activo) {
+    return { ...permiso, leer: true, [accion]: true };
+  }
+  return { ...permiso, [accion]: activo };
+}
+
 export async function guardarUsuario(
   formulario: UsuarioFormulario,
-  usuarioEditando: UsuarioListado | null
+  usuarioEditando: UsuarioListado | null,
+  permisos: PermisoPantalla[]
 ): Promise<string> {
   const editando = Boolean(usuarioEditando);
   const datos = prepararUsuarioParaEnvio(formulario, editando);
@@ -193,7 +234,7 @@ export async function guardarUsuario(
   }
 
   const respuesta = usuarioEditando
-    ? await actualizarUsuarioApi(usuarioEditando.id, datos)
+    ? await actualizarUsuarioApi(usuarioEditando.id, { ...datos, permisos })
     : await crearUsuarioApi(datos);
 
   return obtenerMensajeRespuesta(

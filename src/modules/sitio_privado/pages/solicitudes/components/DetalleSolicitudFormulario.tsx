@@ -29,6 +29,7 @@ import type {
   SolicitudFormularioDetalle,
 } from "../servicio/solicitudes.types";
 import { EstadoSolicitudChip } from "./EstadoSolicitudChip";
+import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
 
 function fechaCompleta(fecha: string): string {
   const valor = new Date(fecha);
@@ -94,6 +95,7 @@ export function DetalleSolicitudFormulario({
   onAlerta,
   onVolver,
 }: DetalleSolicitudFormularioProps) {
+  const { crear, editar } = usePermisosPantalla("SOLICITUDES");
   const [solicitud, setSolicitud] =
     useState<SolicitudFormularioDetalle | null>(null);
   const [cargando, setCargando] = useState(true);
@@ -138,7 +140,7 @@ export function DetalleSolicitudFormulario({
   const guardarRespuesta = async () => {
     const contenido = respuesta.trim();
 
-    if (!contenido || guardando) {
+    if (!crear || !contenido || guardando) {
       return;
     }
 
@@ -269,7 +271,7 @@ export function DetalleSolicitudFormulario({
           estado={solicitud.estadoAtencion}
           etiqueta={solicitud.estatus}
         />
-        {solicitud.estadoAtencion !== "cerrada" && (
+        {editar && solicitud.estadoAtencion !== "cerrada" && (
           <Button
             color="success"
             variant="outlined"
@@ -462,6 +464,7 @@ export function DetalleSolicitudFormulario({
             <TextField
               fullWidth
               multiline
+              disabled={!crear || guardando}
               minRows={4}
               maxRows={8}
               value={respuesta}
@@ -505,7 +508,7 @@ export function DetalleSolicitudFormulario({
                     <SendRoundedIcon />
                   )
                 }
-                disabled={guardando || !respuesta.trim()}
+                disabled={!crear || guardando || !respuesta.trim()}
                 sx={{
                   flex: "0 0 auto",
                   bgcolor: "var(--rojo-timbox)",
@@ -520,7 +523,7 @@ export function DetalleSolicitudFormulario({
         )}
       </Box>
       <ModalConfirmacion
-        abierto={confirmarCierre}
+        abierto={editar && confirmarCierre}
         titulo="Cerrar solicitud"
         descripcion={`¿Seguro que quieres cerrar la solicitud de ${solicitud.nombre}? Una vez cerrada, ya no podrás registrar nuevas respuestas.`}
         textoConfirmar="Cerrar solicitud"

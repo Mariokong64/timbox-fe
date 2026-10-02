@@ -1,10 +1,18 @@
 import { enviarCredencialesLogin } from "../api/autenticacionApi";
 import type { CredencialesLogin } from "../api/autenticacionApi";
+import type { PermisoPantalla } from "../../permisos/permisos.types";
 
 const TOKEN_STORAGE_KEY = "token";
 const USUARIO_STORAGE_KEY = "usuarioTimbox";
+let permisosEnMemoria: PermisoPantalla[] | null = null;
+const suscriptoresPermisos = new Set<() => void>();
+
+function avisarCambioPermisos(): void {
+  suscriptoresPermisos.forEach((avisar) => avisar());
+}
 export const EVENTO_USUARIO_SESION_ACTUALIZADO =
   "timbox:usuario-sesion-actualizado";
+export const EVENTO_SESION_CERRADA = "timbox:sesion-cerrada";
 
 export interface UsuarioSesion {
   id: string;
@@ -17,6 +25,10 @@ export interface UsuarioSesion {
 export interface SesionUsuario {
   token: string;
   usuario: UsuarioSesion;
+}
+
+interface RespuestaSesion extends SesionUsuario {
+  permisos: PermisoPantalla[] | null;
 }
 
 export interface FormularioLogin {
@@ -90,7 +102,32 @@ function normalizarUsuario(valor: unknown): UsuarioSesion {
   return usuario;
 }
 
-function normalizarSesion(respuesta: unknown): SesionUsuario {
+function normalizarPermisos(valor: unknown): PermisoPantalla[] {
+  if (!Array.isArray(valor)) {
+    throw new Error("El servidor no regresó los permisos del usuario.");
+  }
+  return valor.map((dato) => {
+    if (
+      !esRegistro(dato) ||
+      !leerTexto(dato, "pantallaId") ||
+      !leerTexto(dato, "clave") ||
+      ["leer", "crear", "editar", "eliminar"].some((campo) => typeof dato[campo] !== "boolean")
+    ) {
+      throw new Error("El servidor regresó permisos incompletos.");
+    }
+    return {
+      pantallaId: leerTexto(dato, "pantallaId"),
+      clave: leerTexto(dato, "clave"),
+      nombre: leerTexto(dato, "nombre"),
+      leer: dato.leer as boolean,
+      crear: dato.crear as boolean,
+      editar: dato.editar as boolean,
+      eliminar: dato.eliminar as boolean,
+    };
+  });
+}
+
+function normalizarSesion(respuesta: unknown): RespuestaSesion {
   const origen = esRegistro(respuesta) && esRegistro(respuesta.data) ? respuesta.data : respuesta;
 
   if (!esRegistro(origen)) {
@@ -106,6 +143,7 @@ function normalizarSesion(respuesta: unknown): SesionUsuario {
   return {
     token,
     usuario: normalizarUsuario(origen.usuario),
+    permisos: origen.permisos === undefined ? null : normalizarPermisos(origen.permisos),
   };
 }
 
@@ -138,9 +176,27 @@ export function formularioLoginValido(errores: ErroresLogin): boolean {
   return !errores.usuario && !errores.contrasena;
 }
 
-export function guardarSesion(sesion: SesionUsuario): void {
+export function guardarSesion(sesion: RespuestaSesion): void {
   localStorage.setItem(TOKEN_STORAGE_KEY, sesion.token);
   localStorage.setItem(USUARIO_STORAGE_KEY, JSON.stringify(sesion.usuario));
+  permisosEnMemoria = sesion.permisos;
+  avisarCambioPermisos();
+}
+
+export function guardarPermisosEnMemoria(valor: unknown): void {
+  permisosEnMemoria = normalizarPermisos(valor);
+  avisarCambioPermisos();
+}
+
+export function obtenerPermisosEnMemoria(): PermisoPantalla[] | null {
+  return permisosEnMemoria;
+}
+
+export function suscribirCambiosPermisos(avisar: () => void): () => void {
+  suscriptoresPermisos.add(avisar);
+  return () => {
+    suscriptoresPermisos.delete(avisar);
+  };
 }
 
 export function actualizarUsuarioSesion(usuario: UsuarioSesion): void {
@@ -149,8 +205,11 @@ export function actualizarUsuarioSesion(usuario: UsuarioSesion): void {
 }
 
 export function cerrarSesion(): void {
+  permisosEnMemoria = null;
   localStorage.removeItem(TOKEN_STORAGE_KEY);
   localStorage.removeItem(USUARIO_STORAGE_KEY);
+  avisarCambioPermisos();
+  window.dispatchEvent(new Event(EVENTO_SESION_CERRADA));
 }
 
 export function obtenerTokenSesion(): string | null {
@@ -190,7 +249,7 @@ export function obtenerSesionGuardada(): SesionUsuario | null {
   }
 }
 
-export async function iniciarSesion(credenciales: CredencialesLogin): Promise<SesionUsuario> {
+export async function iniciarSesion(credenciales: CredencialesLogin): Promise<RespuestaSesion> {
   const respuesta = await enviarCredencialesLogin({
     usuario: credenciales.usuario.trim(),
     contrasena: credenciales.contrasena,

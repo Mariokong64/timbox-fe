@@ -4,6 +4,7 @@ import ViewSidebarRoundedIcon from "@mui/icons-material/ViewSidebarRounded";
 import iconoTimbox from "../../../shared/assets/icono_timbox.svg";
 import { LogoTimboxConLetras } from "../../../shared/components/LogoTimboxConLetras";
 import { opcionesMenuPrivado } from "./opcionesMenuPrivado";
+import { tieneAccesoPantalla } from "../permisos/tieneAccesoPantalla";
 
 interface MenuLateralPrivadoProps {
   abierto: boolean;
@@ -49,7 +50,7 @@ export function MenuLateralPrivado({ abierto, onAlternar }: MenuLateralPrivadoPr
           <Box
             component={NavLink}
             to="/privado"
-            aria-label="Ir al dashboard"
+            aria-label="Ir al inicio privado"
             sx={{
               display: "grid",
               placeItems: "center",
@@ -65,7 +66,7 @@ export function MenuLateralPrivado({ abierto, onAlternar }: MenuLateralPrivadoPr
       </Box>
 
       <Box component="nav" sx={{ display: "grid", alignContent: "start", gap: 1.3, mt: { xs: 1, md: 6 } }}>
-        {opcionesMenuPrivado.map((opcion) => {
+        {opcionesMenuPrivado.filter((opcion) => tieneAccesoPantalla(opcion.clave)).map((opcion) => {
           const Icono = opcion.icono;
 
           return (

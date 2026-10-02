@@ -31,6 +31,7 @@ import type {
   SolicitudChatDetalle,
 } from "../servicio/solicitudes.types";
 import { EstadoSolicitudChip } from "./EstadoSolicitudChip";
+import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
 
 function fechaCorta(fecha: string): string {
   const valor = new Date(fecha);
@@ -143,6 +144,7 @@ export function DetalleSolicitudChat({
   onEliminada,
   onVolver,
 }: DetalleSolicitudChatProps) {
+  const { crear, editar, eliminar: puedeEliminar } = usePermisosPantalla("SOLICITUDES");
   const [chat, setChat] = useState<SolicitudChatDetalle | null>(null);
   const [mensaje, setMensaje] = useState("");
   const [cargando, setCargando] = useState(true);
@@ -216,7 +218,7 @@ export function DetalleSolicitudChat({
   const enviar = () => {
     const contenido = mensaje.trim();
 
-    if (!contenido || !chat || chat.estadoAtencion === "cerrada") {
+    if (!crear || !contenido || !chat || chat.estadoAtencion === "cerrada") {
       return;
     }
 
@@ -351,7 +353,7 @@ export function DetalleSolicitudChat({
           </Typography>
         </Box>
         <EstadoSolicitudChip estado={chat.estadoAtencion} />
-        {chat.eliminablePorInactividad && (
+        {puedeEliminar && chat.eliminablePorInactividad && (
           <>
             <IconButton
               color="error"
@@ -377,7 +379,7 @@ export function DetalleSolicitudChat({
             </Button>
           </>
         )}
-        {!cerrada && (
+        {editar && !cerrada && (
           <Button
             color="success"
             variant="outlined"
@@ -439,6 +441,7 @@ export function DetalleSolicitudChat({
             <TextField
               fullWidth
               multiline
+              disabled={!crear || procesando}
               maxRows={4}
               value={mensaje}
               placeholder="Escribe una respuesta..."
@@ -447,7 +450,7 @@ export function DetalleSolicitudChat({
             <IconButton
               type="submit"
               aria-label="Enviar respuesta"
-              disabled={procesando || !mensaje.trim()}
+              disabled={!crear || procesando || !mensaje.trim()}
               sx={{
                 width: 48,
                 height: 48,
@@ -466,7 +469,7 @@ export function DetalleSolicitudChat({
       </Box>
 
       <ModalConfirmacion
-        abierto={confirmarFinalizacion}
+        abierto={editar && confirmarFinalizacion}
         titulo="Finalizar conversación"
         descripcion={`¿Seguro que quieres finalizar la conversación con ${chat.nombreVisitante}? Una vez finalizada, ya no podrás enviar nuevas respuestas.`}
         textoConfirmar="Finalizar"
@@ -480,7 +483,7 @@ export function DetalleSolicitudChat({
       />
 
       <Dialog
-        open={confirmarEliminacion}
+        open={puedeEliminar && confirmarEliminacion}
         onClose={() => {
           if (!procesando) {
             setConfirmarEliminacion(false);

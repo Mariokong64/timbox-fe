@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { Box, Button, Typography } from "@mui/material";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import { AlertasServicio, type TipoAlertaServicio } from "../../../../shared/components/AlertasServicio";
-import { ModalConfirmacion } from "../../../../shared/components/ModalConfirmacion";
-import { ModalUsuario } from "./components/ModalUsuario";
-import { TablaUsuarios } from "./components/TablaUsuarios";
+import { AlertasServicio, type TipoAlertaServicio } from "../../../../../shared/components/AlertasServicio";
+import { ModalConfirmacion } from "../../../../../shared/components/ModalConfirmacion";
+import { ModalUsuario } from "../components/ModalUsuario";
+import { TablaUsuarios } from "../components/TablaUsuarios";
+import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
 import {
   eliminarUsuario,
   guardarUsuario,
@@ -12,7 +13,8 @@ import {
   obtenerMensajeErrorUsuarios,
   type UsuarioFormulario,
   type UsuarioListado,
-} from "./servicio/usuariosServicio";
+  type PermisoPantalla,
+} from "../servicio/usuariosServicio";
 
 interface EstadoAlerta {
   abierta: boolean;
@@ -28,6 +30,7 @@ const alertaInicial: EstadoAlerta = {
 };
 
 export function Usuarios() {
+  const { crear, editar, eliminar } = usePermisosPantalla("USUARIOS");
   const [usuarios, setUsuarios] = useState<UsuarioListado[]>([]);
   const [cargando, setCargando] = useState(true);
   const [guardando, setGuardando] = useState(false);
@@ -108,12 +111,12 @@ export function Usuarios() {
     }
   };
 
-  const guardar = async (formulario: UsuarioFormulario) => {
+  const guardar = async (formulario: UsuarioFormulario, permisos: PermisoPantalla[]) => {
     setGuardando(true);
     cerrarAlerta();
 
     try {
-      const mensaje = await guardarUsuario(formulario, usuarioEditando);
+      const mensaje = await guardarUsuario(formulario, usuarioEditando, permisos);
       setAlerta({
         abierta: true,
         tipo: "success",
@@ -203,25 +206,27 @@ export function Usuarios() {
           </Typography>
         </Box>
 
-        <Button
-          type="button"
-          startIcon={<AddRoundedIcon />}
-          onClick={abrirCreacion}
-          sx={{
-            minWidth: 150,
-            height: 40,
-            borderRadius: "6px",
-            bgcolor: "var(--rojo-timbox)",
-            color: "var(--blanco-timbox)",
-            fontFamily: "var(--fuente-regular)",
-            textTransform: "none",
-            "&:hover": {
-              bgcolor: "#f04a32",
-            },
-          }}
-        >
-          Nuevo usuario
-        </Button>
+        {crear && (
+          <Button
+            type="button"
+            startIcon={<AddRoundedIcon />}
+            onClick={abrirCreacion}
+            sx={{
+              minWidth: 150,
+              height: 40,
+              borderRadius: "6px",
+              bgcolor: "var(--rojo-timbox)",
+              color: "var(--blanco-timbox)",
+              fontFamily: "var(--fuente-regular)",
+              textTransform: "none",
+              "&:hover": {
+                bgcolor: "#f04a32",
+              },
+            }}
+          >
+            Nuevo usuario
+          </Button>
+        )}
       </Box>
 
       <Box
@@ -235,6 +240,8 @@ export function Usuarios() {
         <TablaUsuarios
           usuarios={usuarios}
           cargando={cargando}
+          puedeEditar={editar}
+          puedeEliminar={eliminar}
           onEditar={abrirEdicion}
           onEliminar={solicitarEliminacion}
         />

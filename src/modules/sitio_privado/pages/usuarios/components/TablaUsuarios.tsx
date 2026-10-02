@@ -16,6 +16,8 @@ import type { UsuarioListado } from "../servicio/usuariosServicio";
 interface TablaUsuariosProps {
   usuarios: UsuarioListado[];
   cargando: boolean;
+  puedeEditar: boolean;
+  puedeEliminar: boolean;
   onEditar: (usuario: UsuarioListado) => void;
   onEliminar: (usuario: UsuarioListado) => void;
 }
@@ -38,7 +40,9 @@ function formatearFecha(valor?: string | null): string {
   });
 }
 
-export function TablaUsuarios({ usuarios, cargando, onEditar, onEliminar }: TablaUsuariosProps) {
+export function TablaUsuarios({ usuarios, cargando, puedeEditar, puedeEliminar, onEditar, onEliminar }: TablaUsuariosProps) {
+  const mostrarAcciones = puedeEditar || puedeEliminar;
+
   if (cargando) {
     return (
       <Box sx={{ py: 6, textAlign: "center", color: "#637083" }}>
@@ -59,7 +63,7 @@ export function TablaUsuarios({ usuarios, cargando, onEditar, onEliminar }: Tabl
     <Box sx={{ width: "100%", overflowX: "auto" }}>
       <Table
         sx={{
-          minWidth: 840,
+          minWidth: mostrarAcciones ? 840 : 740,
           border: "1px solid #dce1e7",
           "& th": {
             bgcolor: "var(--azul-timbox)",
@@ -84,7 +88,7 @@ export function TablaUsuarios({ usuarios, cargando, onEditar, onEliminar }: Tabl
             <TableCell>Nombre</TableCell>
             <TableCell>Correo</TableCell>
             <TableCell>Registro</TableCell>
-            <TableCell align="center">Acciones</TableCell>
+            {mostrarAcciones && <TableCell align="center">Acciones</TableCell>}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -94,28 +98,34 @@ export function TablaUsuarios({ usuarios, cargando, onEditar, onEliminar }: Tabl
               <TableCell>{usuario.nombre}</TableCell>
               <TableCell>{usuario.correo}</TableCell>
               <TableCell>{formatearFecha(usuario.fechaRegistro)}</TableCell>
-              <TableCell align="center">
-                <Tooltip title="Editar usuario">
-                  <IconButton
-                    type="button"
-                    aria-label={`Editar ${usuario.usuario}`}
-                    onClick={() => onEditar(usuario)}
-                    sx={{ color: "var(--azul-timbox)" }}
-                  >
-                    <EditRoundedIcon />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Eliminar usuario">
-                  <IconButton
-                    type="button"
-                    aria-label={`Eliminar ${usuario.usuario}`}
-                    onClick={() => onEliminar(usuario)}
-                    sx={{ color: "var(--rojo-timbox)" }}
-                  >
-                    <DeleteOutlineRoundedIcon />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
+              {mostrarAcciones && (
+                <TableCell align="center">
+                  {puedeEditar && (
+                    <Tooltip title="Editar usuario">
+                      <IconButton
+                        type="button"
+                        aria-label={`Editar ${usuario.usuario}`}
+                        onClick={() => onEditar(usuario)}
+                        sx={{ color: "var(--azul-timbox)" }}
+                      >
+                        <EditRoundedIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                  {puedeEliminar && (
+                    <Tooltip title="Eliminar usuario">
+                      <IconButton
+                        type="button"
+                        aria-label={`Eliminar ${usuario.usuario}`}
+                        onClick={() => onEliminar(usuario)}
+                        sx={{ color: "var(--rojo-timbox)" }}
+                      >
+                        <DeleteOutlineRoundedIcon />
+                      </IconButton>
+                    </Tooltip>
+                  )}
+                </TableCell>
+              )}
             </TableRow>
           ))}
         </TableBody>

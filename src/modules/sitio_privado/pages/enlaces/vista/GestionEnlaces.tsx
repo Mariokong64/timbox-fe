@@ -31,6 +31,7 @@ import {
   type SeccionAdministrable,
 } from "../servicio/enlacesServicio";
 import { ModalEnlace } from "./ModalEnlace";
+import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
 
 interface Alerta {
   tipo: "success" | "error";
@@ -45,6 +46,7 @@ function formatearFecha(valor: string): string {
 }
 
 export function GestionEnlaces() {
+  const { editar } = usePermisosPantalla("ENLACES");
   const [secciones, setSecciones] = useState<SeccionAdministrable[]>([]);
   const [enlaces, setEnlaces] = useState<EnlaceAdministrable[]>([]);
   const [seccionId, setSeccionId] = useState("");
@@ -220,15 +222,15 @@ export function GestionEnlaces() {
           </Box>
         ) : (
           <Box sx={{ overflowX: "auto", maxHeight: "calc(100vh - 300px)", overflowY: "auto" }}>
-            <Table stickyHeader sx={{ minWidth: 900 }}>
+            <Table stickyHeader sx={{ minWidth: editar ? 900 : 700 }}>
               <TableHead>
                 <TableRow sx={{ "& th": { bgcolor: "var(--azul-timbox)", color: "white", fontWeight: 800 } }}>
                   <TableCell>Clave</TableCell>
                   <TableCell>Sección</TableCell>
                   <TableCell>URL</TableCell>
-                  <TableCell align="center">Activo</TableCell>
+                  {editar && <TableCell align="center">Activo</TableCell>}
                   <TableCell>Última Actualización</TableCell>
-                  <TableCell align="center">Acciones</TableCell>
+                  {editar && <TableCell align="center">Acciones</TableCell>}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -247,17 +249,21 @@ export function GestionEnlaces() {
                         {enlace.url}
                       </Typography>
                     </TableCell>
-                    <TableCell align="center">
-                      <Switch checked={enlace.activo} disabled={guardando} onChange={() => void alternarActivo(enlace)} size="small" sx={{ "& .MuiSwitch-switchBase.Mui-checked": { color: "var(--rojo-timbox)" } }} />
-                    </TableCell>
+                    {editar && (
+                      <TableCell align="center">
+                        <Switch checked={enlace.activo} disabled={guardando} onChange={() => void alternarActivo(enlace)} size="small" sx={{ "& .MuiSwitch-switchBase.Mui-checked": { color: "var(--rojo-timbox)" } }} />
+                      </TableCell>
+                    )}
                     <TableCell sx={{ whiteSpace: "nowrap" }}>{formatearFecha(enlace.fechaActualizacion)}</TableCell>
-                    <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
-                      <Tooltip title="Editar URL y estado">
-                        <IconButton onClick={() => setEditando(enlace)} sx={{ color: "var(--azul-timbox)" }}>
-                          <EditRoundedIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </TableCell>
+                    {editar && (
+                      <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
+                        <Tooltip title="Editar URL y estado">
+                          <IconButton onClick={() => setEditando(enlace)} sx={{ color: "var(--azul-timbox)" }}>
+                            <EditRoundedIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </TableCell>
+                    )}
                   </TableRow>
                 ))}
               </TableBody>
@@ -266,7 +272,7 @@ export function GestionEnlaces() {
         )}
       </Box>
 
-      {editando && (
+      {editar && editando && (
         <ModalEnlace
           enlace={editando}
           guardando={guardando}

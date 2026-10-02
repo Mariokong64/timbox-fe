@@ -2,6 +2,8 @@ import { useEffect, useRef, useState, type ChangeEvent } from "react";
 import {
   Box,
   Button,
+  Checkbox,
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -17,11 +19,16 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import { REQUISITOS_CONTRASENA } from "../../../../../shared/validaciones/contrasena";
 import {
   crearFormularioDesdeUsuario,
+  cambiarPermiso,
   hayErroresUsuario,
+  listarPermisosUsuario,
+  obtenerMensajeErrorUsuarios,
   validarCampoUsuario,
   validarFormularioUsuario,
   verificarDisponibilidadUsuario,
   type ErroresUsuarioFormulario,
+  type AccionPermiso,
+  type PermisoPantalla,
   type UsuarioFormulario,
   type UsuarioListado,
 } from "../servicio/usuariosServicio";
@@ -30,7 +37,7 @@ interface ModalUsuarioProps {
   usuario: UsuarioListado | null;
   guardando: boolean;
   onCerrar: () => void;
-  onGuardar: (formulario: UsuarioFormulario) => Promise<void>;
+  onGuardar: (formulario: UsuarioFormulario, permisos: PermisoPantalla[]) => Promise<void>;
 }
 
 const estiloCampo = {
@@ -55,7 +62,38 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
   const [validandoUsuario, setValidandoUsuario] = useState(false);
   const [usuarioDisponible, setUsuarioDisponible] = useState<boolean | null>(null);
   const [contrasenaVisible, setContrasenaVisible] = useState(false);
+  const [permisos, setPermisos] = useState<PermisoPantalla[]>([]);
+  const [cargandoPermisos, setCargandoPermisos] = useState(Boolean(usuario));
+  const [errorPermisos, setErrorPermisos] = useState("");
+  const [intentoCarga, setIntentoCarga] = useState(0);
   const timeoutUsuarioRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!usuario) {
+      return;
+    }
+    let activo = true;
+    listarPermisosUsuario(usuario.id)
+      .then((datos) => {
+        if (activo) {
+          setPermisos(datos);
+          setErrorPermisos("");
+        }
+      })
+      .catch((error: unknown) => {
+        if (activo) {
+          setErrorPermisos(obtenerMensajeErrorUsuarios(error));
+        }
+      })
+      .finally(() => {
+        if (activo) {
+          setCargandoPermisos(false);
+        }
+      });
+    return () => {
+      activo = false;
+    };
+  }, [usuario, intentoCarga]);
 
   useEffect(() => {
     return () => {
@@ -130,7 +168,16 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
       }));
     };
 
+  const actualizarPermiso = (pantallaId: string, accion: AccionPermiso, activo: boolean) => {
+    setPermisos((actuales) => actuales.map((permiso) =>
+      permiso.pantallaId === pantallaId ? cambiarPermiso(permiso, accion, activo) : permiso
+    ));
+  };
+
   const enviar = async () => {
+    if (editando && (cargandoPermisos || errorPermisos)) {
+      return;
+    }
     const nuevosErrores = validarFormularioUsuario(formulario, editando);
 
     if (usuarioDisponible === false) {
@@ -147,7 +194,7 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
       return;
     }
 
-    await onGuardar(formulario);
+    await onGuardar(formulario, permisos);
   };
 
   return (
@@ -155,7 +202,7 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
       open
       onClose={guardando ? undefined : onCerrar}
       fullWidth
-      maxWidth="sm"
+      maxWidth={editando ? "md" : "sm"}
       slotProps={{
         paper: {
           sx: {
@@ -193,6 +240,9 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
 
       <DialogContent sx={{ pt: "28px !important" }}>
         <Box sx={{ display: "grid", gap: 2.2 }}>
+          <Typography component="h3" sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 17, fontWeight: 700 }}>
+            Datos del usuario
+          </Typography>
           <TextField
             label="Usuario"
             value={formulario.usuario}
@@ -259,6 +309,64 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
               sx={estiloCampo}
             />
           )}
+
+          {editando && (
+            <Box sx={{ mt: 1 }}>
+              <Typography component="h3" sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 17, fontWeight: 700, mb: 0.5 }}>
+                Permisos por pantalla
+              </Typography>
+              {cargandoPermisos ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1, py: 2 }}>
+                  <CircularProgress size={20} />
+                  <Typography sx={{ fontFamily: "var(--fuente-regular)" }}>Cargando permisos...</Typography>
+                </Box>
+              ) : errorPermisos ? (
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1, flexWrap: "wrap" }}>
+                  <Typography color="error" sx={{ fontFamily: "var(--fuente-regular)" }}>{errorPermisos}</Typography>
+                  <Button onClick={() => { setCargandoPermisos(true); setIntentoCarga((actual) => actual + 1); }}>
+                    Reintentar
+                  </Button>
+                </Box>
+              ) : permisos.length === 0 ? (
+                <Typography sx={{ fontFamily: "var(--fuente-regular)", color: "#6b7685" }}>No hay pantallas registradas.</Typography>
+              ) : (
+                <Box sx={{ overflowX: "auto" }}>
+                  <Box sx={{ minWidth: 690 }}>
+                    {permisos.map((permiso) => (
+                      <Box
+                        key={permiso.pantallaId}
+                        sx={{
+                          display: "grid",
+                          gridTemplateColumns: "240px minmax(0, 1fr)",
+                          alignItems: "center",
+                          gap: 10,
+                          py: 2,
+                          borderBottom: "1px solid #e4e4e4",
+                        }}
+                      >
+                        <Typography sx={{ fontFamily: "var(--fuente-regular)", fontWeight: 700, color: "var(--azul-timbox)" }}>
+                          {permiso.nombre}
+                        </Typography>
+                        <Box sx={{ display: "grid", gridTemplateColumns: "repeat(4, minmax(0, 1fr))" }}>
+                          {(["leer", "crear", "editar", "eliminar"] as const).map((accion) => (
+                            <Box component="label" key={accion} sx={{ display: "flex", alignItems: "center", gap: 0.3, cursor: "pointer", fontFamily: "var(--fuente-regular)", color: "var(--azul-timbox)", textTransform: "capitalize" }}>
+                              <Checkbox
+                                checked={permiso[accion]}
+                                onChange={(event) => actualizarPermiso(permiso.pantallaId, accion, event.target.checked)}
+                                slotProps={{ input: { "aria-label": `${accion} en ${permiso.nombre}` } }}
+                                sx={{ p: 0.5, color: "#7b8795", "&.Mui-checked": { color: "#1b6e4b" }, "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                              />
+                              {accion}
+                            </Box>
+                          ))}
+                        </Box>
+                      </Box>
+                    ))}
+                  </Box>
+                </Box>
+              )}
+            </Box>
+          )}
         </Box>
       </DialogContent>
 
@@ -280,7 +388,7 @@ export function ModalUsuario({ usuario, guardando, onCerrar, onGuardar }: ModalU
           onClick={() => {
             void enviar();
           }}
-          disabled={guardando}
+          disabled={guardando || (editando && (cargandoPermisos || Boolean(errorPermisos)))}
           sx={{
             minWidth: 120,
             bgcolor: "var(--rojo-timbox)",

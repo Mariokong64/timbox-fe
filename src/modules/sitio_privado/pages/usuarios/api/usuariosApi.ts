@@ -1,11 +1,16 @@
 import { apiPrivada } from "../../../api/apiPrivada";
-import type { UsuarioFormulario } from "../servicio/usuariosServicio";
+import type { PermisoPantalla, UsuarioFormulario } from "../servicio/usuariosServicio";
 
 const BASE_URL = "/usuarios";
 
 export async function obtenerUsuariosApi(): Promise<unknown> {
   const { data } = await apiPrivada.get(BASE_URL);
 
+  return data;
+}
+
+export async function obtenerPermisosUsuarioApi(id: string): Promise<unknown> {
+  const { data } = await apiPrivada.get(`${BASE_URL}/${id}/permisos`);
   return data;
 }
 
@@ -26,7 +31,10 @@ export async function crearUsuarioApi(datos: UsuarioFormulario): Promise<unknown
   return data;
 }
 
-export async function actualizarUsuarioApi(id: string, datos: UsuarioFormulario): Promise<unknown> {
+export async function actualizarUsuarioApi(
+  id: string,
+  datos: UsuarioFormulario & { permisos: PermisoPantalla[] }
+): Promise<unknown> {
   const { data } = await apiPrivada.put(`${BASE_URL}/${id}`, datos);
 
   return data;

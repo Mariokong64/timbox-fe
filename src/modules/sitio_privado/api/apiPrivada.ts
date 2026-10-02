@@ -1,5 +1,5 @@
 import axios, { type InternalAxiosRequestConfig } from "axios";
-import { cerrarSesion, obtenerTokenSesion } from "../login/servicio/autenticacionServicio";
+import { cerrarSesion, guardarPermisosEnMemoria, obtenerTokenSesion } from "../login/servicio/autenticacionServicio";
 
 function quitarDiagonalFinal(valor: string): string {
   return valor.replace(/\/+$/, "");
@@ -46,6 +46,11 @@ apiPrivada.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export async function cargarPermisosSesion(): Promise<void> {
+  const { data } = await apiPrivada.get("/mis-permisos");
+  guardarPermisosEnMemoria(data.data);
+}
 
 export async function validarSesionPrivada(): Promise<void> {
   await apiPrivada.get("/prueba");

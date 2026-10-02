@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { Box, CircularProgress } from "@mui/material";
-import { validarSesionPrivada } from "../api/apiPrivada";
-import { cerrarSesion, obtenerSesionGuardada } from "../login/servicio/autenticacionServicio";
+import axios from "axios";
+import { cargarPermisosSesion, validarSesionPrivada } from "../api/apiPrivada";
+import { cerrarSesion, EVENTO_SESION_CERRADA, obtenerPermisosEnMemoria, obtenerSesionGuardada } from "../login/servicio/autenticacionServicio";
 
 type EstadoRutaPrivada = "validando" | "permitida" | "bloqueada";
 
@@ -13,6 +14,12 @@ export function RutaPrivada() {
   );
 
   useEffect(() => {
+    const bloquearRuta = () => setEstado("bloqueada");
+    window.addEventListener(EVENTO_SESION_CERRADA, bloquearRuta);
+    return () => window.removeEventListener(EVENTO_SESION_CERRADA, bloquearRuta);
+  }, []);
+
+  useEffect(() => {
     let activo = true;
     const sesion = obtenerSesionGuardada();
 
@@ -20,7 +27,16 @@ export function RutaPrivada() {
       return undefined;
     }
 
-    validarSesionPrivada()
+    const cargarPermisos = obtenerPermisosEnMemoria() === null
+      ? cargarPermisosSesion().catch((error: unknown) => {
+          if (axios.isAxiosError(error) && error.response?.status === 404) {
+            return validarSesionPrivada();
+          }
+          throw error;
+        })
+      : Promise.resolve();
+
+    cargarPermisos
       .then(() => {
         if (activo) {
           setEstado("permitida");

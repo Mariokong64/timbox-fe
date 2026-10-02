@@ -1,12 +1,12 @@
 // src/app/AppRouter.tsx
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { ModuloNoImplementadoPrivado } from "../modules/sitio_privado/components/ModuloNoImplementadoPrivado";
+import { InicioPrivado, RutaConPermiso } from "../modules/sitio_privado/components/RutaConPermiso";
 import { RutaPrivada } from "../modules/sitio_privado/components/RutaPrivada";
 import { LayoutPrivado } from "../modules/sitio_privado/layout/LayoutPrivado";
 import { Login } from "../modules/sitio_privado/login/vista/Login";
 import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/vista/DashboardPrivado";
 import { PerfilPrivado } from "../modules/sitio_privado/pages/perfil/vista/PerfilPrivado";
-import { Usuarios } from "../modules/sitio_privado/pages/usuarios/Usuarios";
+import { Usuarios } from "../modules/sitio_privado/pages/usuarios/vista/Usuarios";
 import { SolicitudesContacto } from "../modules/sitio_privado/pages/solicitudes/vista/SolicitudesContacto";
 import { GestionEnlaces } from "../modules/sitio_privado/pages/enlaces/vista/GestionEnlaces";
 import { PaginaNoEncontradaPublica } from "../modules/sitio_publico/components/PaginaNoEncontradaPublica";
@@ -136,16 +136,16 @@ export function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route element={<RutaPrivada />}>
           <Route path="/privado" element={<LayoutPrivado />}>
-            <Route index element={<DashboardPrivado />} />
+            <Route index element={<InicioPrivado><DashboardPrivado /></InicioPrivado>} />
             <Route path="perfil" element={<PerfilPrivado />} />
-            <Route path="enlaces" element={<GestionEnlaces />} />
-            <Route path="solicitudes" element={<SolicitudesContacto />} />
+            <Route path="enlaces" element={<RutaConPermiso clave="ENLACES"><GestionEnlaces /></RutaConPermiso>} />
+            <Route path="solicitudes" element={<RutaConPermiso clave="SOLICITUDES"><SolicitudesContacto /></RutaConPermiso>} />
             <Route
               path="chats"
-              element={<Navigate to="/privado/solicitudes?origen=chat" replace />}
+              element={<RutaConPermiso clave="SOLICITUDES"><Navigate to="/privado/solicitudes?origen=chat" replace /></RutaConPermiso>}
             />
-            <Route path="usuarios" element={<Usuarios />} />
-            <Route path="*" element={<ModuloNoImplementadoPrivado />} />
+            <Route path="usuarios" element={<RutaConPermiso clave="USUARIOS"><Usuarios /></RutaConPermiso>} />
+            <Route path="*" element={<Navigate to="/privado" replace />} />
           </Route>
         </Route>
       </Routes>
