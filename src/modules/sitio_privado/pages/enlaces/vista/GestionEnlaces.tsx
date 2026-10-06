@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
-  Alert,
   Box,
   Chip,
   CircularProgress,
   IconButton,
   InputAdornment,
-  Snackbar,
   Switch,
   Table,
   TableBody,
@@ -31,6 +29,7 @@ import {
   type SeccionAdministrable,
 } from "../servicio/enlacesServicio";
 import { ModalEnlace } from "./ModalEnlace";
+import { AlertasServicio } from "../../../../../shared/components/AlertasServicio";
 import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
 
 interface Alerta {
@@ -158,16 +157,12 @@ export function GestionEnlaces() {
 
   return (
     <Box sx={{ color: "var(--azul-timbox)" }}>
-      <Snackbar
-        open={Boolean(alerta)}
-        autoHideDuration={4500}
-        onClose={() => setAlerta(null)}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert severity={alerta?.tipo ?? "success"} onClose={() => setAlerta(null)} variant="filled">
-          {alerta?.mensaje}
-        </Alert>
-      </Snackbar>
+      <AlertasServicio
+        abierta={Boolean(alerta)}
+        tipo={alerta?.tipo ?? "info"}
+        titulo={alerta?.mensaje ?? ""}
+        onCerrar={() => setAlerta(null)}
+      />
 
       <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: { xs: "flex-start", md: "center" }, gap: 2, mb: 2.2, flexDirection: { xs: "column", md: "row" } }}>
         <Box>

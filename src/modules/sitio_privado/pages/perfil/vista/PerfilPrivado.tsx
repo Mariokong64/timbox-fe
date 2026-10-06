@@ -1,5 +1,4 @@
 import {
-  Alert,
   Avatar,
   Box,
   Button,
@@ -18,6 +17,7 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import SaveRoundedIcon from "@mui/icons-material/SaveRounded";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import { AlertasServicio } from "../../../../../shared/components/AlertasServicio";
 import {
   REQUISITOS_CONTRASENA,
   validarSeguridadContrasena,
@@ -319,6 +319,13 @@ export function PerfilPrivado() {
 
   return (
     <Box sx={{ width: "100%", maxWidth: 1180, mx: "auto" }}>
+      <AlertasServicio
+        abierta={Boolean(aviso)}
+        tipo={aviso?.severidad ?? "info"}
+        titulo={aviso?.mensaje ?? ""}
+        onCerrar={() => setAviso(null)}
+      />
+
       <Box sx={{ mb: 2.5 }}>
         <Typography
           component="h1"
@@ -342,12 +349,6 @@ export function PerfilPrivado() {
           Administra tu fotografía y mantén segura tu contraseña de acceso.
         </Typography>
       </Box>
-
-      {aviso && (
-        <Alert severity={aviso.severidad} sx={{ mb: 2.2 }} onClose={() => setAviso(null)}>
-          {aviso.mensaje}
-        </Alert>
-      )}
 
       <Box
         sx={{

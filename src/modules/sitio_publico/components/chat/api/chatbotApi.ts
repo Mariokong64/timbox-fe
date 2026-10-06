@@ -3,7 +3,7 @@ import { timboxApi } from "../../../../../api/timboxApi";
 
 export const RUTA_MENSAJE_CHATBOT = "/chatbot/mensaje";
 
-const TIEMPO_ESPERA_CHATBOT_MS = 130_000;
+const TIEMPO_ESPERA_CHATBOT_MS = 200_000;
 const MENSAJE_ERROR_CONEXION =
   "No fue posible conectar con el asistente. Inténtalo nuevamente.";
 
