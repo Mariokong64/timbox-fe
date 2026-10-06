@@ -433,9 +433,6 @@ export function DashboardPrivado() {
           <Typography component="h1" sx={{ fontFamily: "var(--fuente-regular)", fontSize: 28, fontWeight: 900 }}>
             Dashboard
           </Typography>
-          <Typography sx={{ mt: 0.5, color: "#6b7685", fontFamily: "var(--fuente-regular)", fontSize: 15 }}>
-            Vista ejecutiva de contacto, atencion comercial y validaciones CFDI.
-          </Typography>
         </Box>
 
         <Button

@@ -201,9 +201,6 @@ export function Usuarios() {
           <Typography component="h1" sx={{ fontFamily: "var(--fuente-regular)", fontSize: 28, fontWeight: 800 }}>
             Usuarios
           </Typography>
-          <Typography sx={{ mt: 0.5, color: "#6b7685", fontFamily: "var(--fuente-regular)", fontSize: 15 }}>
-            Administra las cuentas que pueden entrar al sitio privado.
-          </Typography>
         </Box>
 
         {crear && (

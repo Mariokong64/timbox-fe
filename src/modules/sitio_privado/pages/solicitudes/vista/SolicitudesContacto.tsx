@@ -197,15 +197,6 @@ export function SolicitudesContacto() {
           >
             Solicitudes de contacto
           </Typography>
-          <Typography
-            sx={{
-              color: "rgba(21,33,47,.58)",
-              fontFamily: "var(--fuente-regular)",
-              fontSize: 13.5,
-            }}
-          >
-            Consultas recibidas mediante formulario y atención por chat
-          </Typography>
         </Box>
         <Box sx={{ flex: 1 }} />
         <Stack direction="row" sx={{ alignItems: "center", gap: 1 }}>

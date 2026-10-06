@@ -174,9 +174,6 @@ export function GestionEnlaces() {
           <Typography component="h1" sx={{ fontFamily: "var(--fuente-regular)", fontSize: 28, fontWeight: 800 }}>
             Gestión de enlaces
           </Typography>
-          <Typography sx={{ color: "#6b7685", fontSize: 14 }}>
-            Actualiza las URL publicadas y controla cuáles están activas.
-          </Typography>
         </Box>
         <Tooltip title="Actualizar">
           <IconButton onClick={() => void cargar()} disabled={cargando || guardando} sx={{ color: "var(--azul-timbox)", border: "1px solid #dce1e7", borderRadius: "6px" }}>
