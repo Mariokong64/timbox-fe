@@ -256,7 +256,7 @@ export function Usuarios() {
       <ModalConfirmacion
         abierto={Boolean(usuarioPorEliminar)}
         titulo="Eliminar usuario"
-        descripcion={`¿Seguro que quieres eliminar el usuario ${usuarioPorEliminar?.usuario ?? ""}? Esta acción no se puede deshacer.`}
+        descripcion={`¿Seguro que quieres eliminar el usuario ${usuarioPorEliminar?.usuario ?? ""}? Al eliminarlo, ya no podrá acceder al sistema.`}
         textoConfirmar="Eliminar"
         cargando={guardando}
         onCancelar={cancelarEliminacion}

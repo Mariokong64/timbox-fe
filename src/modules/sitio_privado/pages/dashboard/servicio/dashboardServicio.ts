@@ -10,25 +10,13 @@ export interface SerieDiariaDashboard {
   total: number;
 }
 
-export interface SolicitudRecienteDashboard {
-  id: string;
-  nombre: string;
-  correo: string;
-  estatus: string;
-  origen: string;
-  fechaRegistro: string;
-}
-
 export interface ResumenContactoDashboard {
   total: number;
   atendidas: number;
   pendientes: number;
-  enAtencion: number;
-  descartadas: number;
   porEstatus: MetricaDashboard[];
   porOrigen: MetricaDashboard[];
   porDia: SerieDiariaDashboard[];
-  recientes: SolicitudRecienteDashboard[];
 }
 
 export interface ResumenValidadorDashboard {
@@ -51,12 +39,9 @@ const resumenVacio: ResumenDashboard = {
     total: 0,
     atendidas: 0,
     pendientes: 0,
-    enAtencion: 0,
-    descartadas: 0,
     porEstatus: [],
     porOrigen: [],
     porDia: [],
-    recientes: [],
   },
   validador: {
     total: 0,
@@ -122,33 +107,12 @@ function normalizarSerieDiaria(valor: unknown): SerieDiariaDashboard | null {
   };
 }
 
-function normalizarSolicitudReciente(valor: unknown): SolicitudRecienteDashboard | null {
-  if (!esRegistro(valor)) {
-    return null;
-  }
-
-  const solicitud = {
-    id: leerTexto(valor, "id"),
-    nombre: leerTexto(valor, "nombre"),
-    correo: leerTexto(valor, "correo"),
-    estatus: leerTexto(valor, "estatus"),
-    origen: normalizarOrigen(leerTexto(valor, "origen")),
-    fechaRegistro: leerTexto(valor, "fechaRegistro"),
-  };
-
-  return solicitud.id ? solicitud : null;
-}
-
 function normalizarMetricas(lista: unknown[]): MetricaDashboard[] {
   return lista.map(normalizarMetrica).filter((metrica): metrica is MetricaDashboard => Boolean(metrica));
 }
 
 function normalizarSerie(lista: unknown[]): SerieDiariaDashboard[] {
   return lista.map(normalizarSerieDiaria).filter((serie): serie is SerieDiariaDashboard => Boolean(serie));
-}
-
-function normalizarRecientes(lista: unknown[]): SolicitudRecienteDashboard[] {
-  return lista.map(normalizarSolicitudReciente).filter((solicitud): solicitud is SolicitudRecienteDashboard => Boolean(solicitud));
 }
 
 function normalizarResumen(respuesta: unknown): ResumenDashboard {
@@ -166,8 +130,6 @@ function normalizarResumen(respuesta: unknown): ResumenDashboard {
       total: leerNumero(contacto, "total"),
       atendidas: leerNumero(contacto, "atendidas"),
       pendientes: leerNumero(contacto, "pendientes"),
-      enAtencion: leerNumero(contacto, "enAtencion"),
-      descartadas: leerNumero(contacto, "descartadas"),
       porEstatus: normalizarMetricas(leerLista(contacto, "porEstatus")),
       porOrigen: normalizarMetricas(leerLista(contacto, "porOrigen")).map(
         (metrica) => ({
@@ -176,7 +138,6 @@ function normalizarResumen(respuesta: unknown): ResumenDashboard {
         })
       ),
       porDia: normalizarSerie(leerLista(contacto, "porDia")),
-      recientes: normalizarRecientes(leerLista(contacto, "recientes")),
     },
     validador: {
       total: leerNumero(validador, "total"),

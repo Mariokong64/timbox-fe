@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useState, type ReactNode } from "react";
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import ContactMailRoundedIcon from "@mui/icons-material/ContactMailRounded";
@@ -13,7 +13,6 @@ import {
   type MetricaDashboard,
   type ResumenDashboard,
   type SerieDiariaDashboard,
-  type SolicitudRecienteDashboard,
 } from "../servicio/dashboardServicio";
 
 type IconoTarjeta = typeof ContactMailRoundedIcon;
@@ -27,12 +26,6 @@ interface TarjetaIndicadorProps {
 }
 
 const formatoNumero = new Intl.NumberFormat("es-MX");
-const formatoFecha = new Intl.DateTimeFormat("es-MX", {
-  day: "2-digit",
-  month: "short",
-  hour: "2-digit",
-  minute: "2-digit",
-});
 
 const coloresGraficas = ["var(--rojo-timbox)", "var(--azul-timbox)", "#2f8f6b", "#d59b2d", "#6b7685"];
 
@@ -46,20 +39,6 @@ function calcularPorcentaje(valor: number, total: number): number {
   }
 
   return Math.round((valor / total) * 100);
-}
-
-function formatearFecha(valor: string): string {
-  if (!valor) {
-    return "Sin fecha";
-  }
-
-  const fecha = new Date(valor);
-
-  if (Number.isNaN(fecha.getTime())) {
-    return valor;
-  }
-
-  return formatoFecha.format(fecha);
 }
 
 function obtenerEtiquetaDia(valor: string): string {
@@ -128,7 +107,7 @@ function TarjetaIndicador({ titulo, valor, descripcion, color, icono: Icono }: T
   );
 }
 
-function Panel({ titulo, subtitulo, children }: { titulo: string; subtitulo?: string; children: ReactNode }) {
+function Panel({ titulo, children }: { titulo: string; children: ReactNode }) {
   return (
     <Box
       sx={{
@@ -143,11 +122,6 @@ function Panel({ titulo, subtitulo, children }: { titulo: string; subtitulo?: st
       <Typography sx={{ fontFamily: "var(--fuente-regular)", fontSize: 18, fontWeight: 800, color: "var(--azul-timbox)" }}>
         {titulo}
       </Typography>
-      {subtitulo && (
-        <Typography sx={{ mt: 0.35, mb: 2.2, color: "#7b8794", fontFamily: "var(--fuente-regular)", fontSize: 13.5 }}>
-          {subtitulo}
-        </Typography>
-      )}
       {children}
     </Box>
   );
@@ -221,104 +195,6 @@ function SerieBarras({ datos, color }: { datos: SerieDiariaDashboard[]; color: s
   );
 }
 
-function DonaEstado({ atendidas, pendientes, descartadas, total }: { atendidas: number; pendientes: number; descartadas: number; total: number }) {
-  const porcentajeAtendidas = calcularPorcentaje(atendidas, total);
-  const porcentajePendientes = calcularPorcentaje(pendientes, total);
-  const finAtendidas = porcentajeAtendidas;
-  const finPendientes = porcentajeAtendidas + porcentajePendientes;
-
-  return (
-    <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "210px 1fr" }, gap: 2.5, alignItems: "center" }}>
-      <Box
-        sx={{
-          width: 190,
-          height: 190,
-          mx: "auto",
-          borderRadius: "50%",
-          background: total
-            ? `conic-gradient(var(--rojo-timbox) 0 ${finAtendidas}%, var(--azul-timbox) ${finAtendidas}% ${finPendientes}%, #b4bcc6 ${finPendientes}% 100%)`
-            : "#e5e9ee",
-          display: "grid",
-          placeItems: "center",
-        }}
-      >
-        <Box sx={{ width: 126, height: 126, borderRadius: "50%", bgcolor: "var(--blanco-timbox)", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", textAlign: "center" }}>
-          <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 34, fontWeight: 900, lineHeight: 1 }}>
-            {porcentajeAtendidas}%
-          </Typography>
-          <Typography sx={{ color: "#7b8794", fontFamily: "var(--fuente-regular)", fontSize: 12, mt: 0.6 }}>
-            atendidas
-          </Typography>
-        </Box>
-      </Box>
-
-      <Box sx={{ display: "grid", gap: 1.2 }}>
-        {[
-          { etiqueta: "Atendidas", valor: atendidas, color: "var(--rojo-timbox)" },
-          { etiqueta: "Pendientes", valor: pendientes, color: "var(--azul-timbox)" },
-          { etiqueta: "Descartadas", valor: descartadas, color: "#b4bcc6" },
-        ].map((item) => (
-          <Box key={item.etiqueta} sx={{ display: "grid", gridTemplateColumns: "12px 1fr auto", gap: 1, alignItems: "center" }}>
-            <Box sx={{ width: 10, height: 10, borderRadius: "50%", bgcolor: item.color }} />
-            <Typography sx={{ color: "#4f5b68", fontFamily: "var(--fuente-regular)", fontSize: 14 }}>
-              {item.etiqueta}
-            </Typography>
-            <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 14, fontWeight: 800 }}>
-              {formatearNumero(item.valor)}
-            </Typography>
-          </Box>
-        ))}
-      </Box>
-    </Box>
-  );
-}
-
-function SolicitudesRecientes({ solicitudes }: { solicitudes: SolicitudRecienteDashboard[] }) {
-  if (!solicitudes.length) {
-    return <Typography sx={{ color: "#7b8794", fontSize: 14 }}>Aun no hay solicitudes registradas.</Typography>;
-  }
-
-  return (
-    <Box sx={{ display: "grid", gap: 1 }}>
-      {solicitudes.map((solicitud) => (
-        <Box
-          key={solicitud.id}
-          sx={{
-            display: "grid",
-            gridTemplateColumns: { xs: "1fr", md: "1.1fr 1fr 98px" },
-            gap: { xs: 0.6, md: 1.5 },
-            alignItems: "center",
-            border: "1px solid #edf1f5",
-            borderRadius: "8px",
-            px: 1.5,
-            py: 1.2,
-          }}
-        >
-          <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 14, fontWeight: 800 }} noWrap>
-              {solicitud.nombre}
-            </Typography>
-            <Typography sx={{ color: "#7b8794", fontFamily: "var(--fuente-regular)", fontSize: 12.5 }} noWrap>
-              {solicitud.correo}
-            </Typography>
-          </Box>
-          <Box sx={{ minWidth: 0 }}>
-            <Typography sx={{ color: "#4f5b68", fontFamily: "var(--fuente-regular)", fontSize: 13 }} noWrap>
-              {solicitud.origen}
-            </Typography>
-            <Typography sx={{ color: "var(--rojo-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 12.5, fontWeight: 800 }} noWrap>
-              {solicitud.estatus}
-            </Typography>
-          </Box>
-          <Typography sx={{ color: "#7b8794", fontFamily: "var(--fuente-regular)", fontSize: 12, textAlign: { xs: "left", md: "right" } }}>
-            {formatearFecha(solicitud.fechaRegistro)}
-          </Typography>
-        </Box>
-      ))}
-    </Box>
-  );
-}
-
 export function DashboardPrivado() {
   const [resumen, setResumen] = useState<ResumenDashboard | null>(null);
   const [cargando, setCargando] = useState(true);
@@ -371,43 +247,42 @@ export function DashboardPrivado() {
     };
   }, []);
 
-  const tarjetas = useMemo(() => {
-    const contacto = resumen?.contacto;
-    const validador = resumen?.validador;
-    const porcentajeAtendidas = calcularPorcentaje(contacto?.atendidas ?? 0, contacto?.total ?? 0);
-    const porcentajeVigentes = calcularPorcentaje(validador?.vigentes ?? 0, validador?.total ?? 0);
-
-    return [
-      {
-        titulo: "Solicitudes de contacto",
-        valor: contacto?.total ?? 0,
-        descripcion: `${porcentajeAtendidas}% atendidas hasta ahora`,
-        color: "var(--azul-timbox)",
-        icono: ContactMailRoundedIcon,
-      },
-      {
-        titulo: "Atendidas",
-        valor: contacto?.atendidas ?? 0,
-        descripcion: `${contacto?.pendientes ?? 0} siguen pendientes`,
-        color: "var(--rojo-timbox)",
-        icono: CheckCircleRoundedIcon,
-      },
-      {
-        titulo: "Uso del validador",
-        valor: validador?.total ?? 0,
-        descripcion: `${porcentajeVigentes}% resultaron vigentes`,
-        color: "#2f8f6b",
-        icono: FactCheckRoundedIcon,
-      },
-      {
-        titulo: "Con incidencias CFDI",
-        valor: (validador?.cancelados ?? 0) + (validador?.noEncontrados ?? 0) + (validador?.errores ?? 0),
-        descripcion: "Cancelados, no encontrados o con error",
-        color: "#d59b2d",
-        icono: WarningAmberRoundedIcon,
-      },
-    ];
-  }, [resumen]);
+  const contacto = resumen?.contacto;
+  const validador = resumen?.validador;
+  const porcentajeAtendidas = calcularPorcentaje(contacto?.atendidas ?? 0, contacto?.total ?? 0);
+  const porcentajeVigentes = calcularPorcentaje(validador?.vigentes ?? 0, validador?.total ?? 0);
+  const tarjetasContacto = [
+    {
+      titulo: "Total de solicitudes",
+      valor: contacto?.total ?? 0,
+      descripcion: `${porcentajeAtendidas}% atendidas hasta ahora`,
+      color: "var(--azul-timbox)",
+      icono: ContactMailRoundedIcon,
+    },
+    {
+      titulo: "Atendidas",
+      valor: contacto?.atendidas ?? 0,
+      descripcion: `${contacto?.pendientes ?? 0} siguen pendientes`,
+      color: "var(--rojo-timbox)",
+      icono: CheckCircleRoundedIcon,
+    },
+  ];
+  const tarjetasValidador = [
+    {
+      titulo: "Validaciones realizadas",
+      valor: validador?.total ?? 0,
+      descripcion: `${porcentajeVigentes}% resultaron vigentes`,
+      color: "#2f8f6b",
+      icono: FactCheckRoundedIcon,
+    },
+    {
+      titulo: "Con incidencias CFDI",
+      valor: (validador?.cancelados ?? 0) + (validador?.noEncontrados ?? 0) + (validador?.errores ?? 0),
+      descripcion: "Cancelados, no encontrados o con error",
+      color: "#d59b2d",
+      icono: WarningAmberRoundedIcon,
+    },
+  ];
 
   return (
     <Box sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)" }}>
@@ -467,72 +342,77 @@ export function DashboardPrivado() {
         </Box>
       ) : (
         <>
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", xl: "repeat(4, 1fr)" }, gap: 2, mb: 2.4 }}>
-            {tarjetas.map((tarjeta) => (
-              <TarjetaIndicador key={tarjeta.titulo} {...tarjeta} />
-            ))}
+          <Box component="section" aria-labelledby="seccion-contacto" sx={{ mb: 4 }}>
+            <Typography id="seccion-contacto" component="h2" sx={{ fontFamily: "var(--fuente-regular)", color: "var(--rojo-timbox)", fontSize: 22, fontWeight: 800, mb: 2 }}>
+              Solicitudes de contacto
+            </Typography>
+
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" }, gap: 2, mb: 2.4 }}>
+              {tarjetasContacto.map((tarjeta) => (
+                <TarjetaIndicador key={tarjeta.titulo} {...tarjeta} />
+              ))}
+            </Box>
+
+            <Box sx={{ mb: 2.4 }}>
+              <Panel titulo="Solicitudes en los últimos 14 días">
+                <SerieBarras datos={contacto?.porDia ?? []} color="var(--rojo-timbox)" />
+              </Panel>
+            </Box>
+
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr" }, gap: 2.4 }}>
+              <Panel titulo="Origen de solicitudes">
+                <BarrasHorizontales datos={contacto?.porOrigen ?? []} total={contacto?.total ?? 0} />
+              </Panel>
+
+              <Panel titulo="Solicitudes por estatus">
+                <BarrasHorizontales datos={contacto?.porEstatus ?? []} total={contacto?.total ?? 0} />
+              </Panel>
+            </Box>
           </Box>
 
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", xl: "1.1fr 0.9fr" }, gap: 2.4, mb: 2.4 }}>
-            <Panel titulo="Ritmo de solicitudes" subtitulo="Solicitudes recibidas durante los ultimos 14 dias">
-              <SerieBarras datos={resumen?.contacto.porDia ?? []} color="var(--rojo-timbox)" />
-            </Panel>
+          <Box component="section" aria-labelledby="seccion-validador" sx={{ borderTop: "1px solid #dce1e7", pt: 3.5 }}>
+            <Typography id="seccion-validador" component="h2" sx={{ fontFamily: "var(--fuente-regular)", color: "var(--rojo-timbox)", fontSize: 22, fontWeight: 800, mb: 2 }}>
+              Validador de comprobantes fiscales
+            </Typography>
 
-            <Panel titulo="Estado comercial" subtitulo="Relacion entre solicitudes atendidas y pendientes">
-              <DonaEstado
-                atendidas={resumen?.contacto.atendidas ?? 0}
-                pendientes={resumen?.contacto.pendientes ?? 0}
-                descartadas={resumen?.contacto.descartadas ?? 0}
-                total={resumen?.contacto.total ?? 0}
-              />
-            </Panel>
-          </Box>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)" }, gap: 2, mb: 2.4 }}>
+              {tarjetasValidador.map((tarjeta) => (
+                <TarjetaIndicador key={tarjeta.titulo} {...tarjeta} />
+              ))}
+            </Box>
 
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", lg: "0.9fr 0.9fr 1.2fr" }, gap: 2.4, mb: 2.4 }}>
-            <Panel titulo="Origen de solicitudes" subtitulo="Canales que estan generando oportunidades">
-              <BarrasHorizontales datos={resumen?.contacto.porOrigen ?? []} total={resumen?.contacto.total ?? 0} />
-            </Panel>
+            <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", xl: "1fr 1fr" }, gap: 2.4 }}>
+              <Panel titulo="Uso del validador en los últimos 14 días">
+                <SerieBarras datos={validador?.porDia ?? []} color="var(--azul-timbox)" />
+              </Panel>
 
-            <Panel titulo="Solicitudes por estatus" subtitulo="Distribucion operativa actual">
-              <BarrasHorizontales datos={resumen?.contacto.porEstatus ?? []} total={resumen?.contacto.total ?? 0} />
-            </Panel>
+              <Panel titulo="Resultados del validador">
+                <BarrasHorizontales datos={validador?.porResultado ?? []} total={validador?.total ?? 0} />
+                <Box sx={{ mt: 2.4, display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" }, gap: 1.2 }}>
+                  {[
+                    { etiqueta: "Vigentes", valor: validador?.vigentes ?? 0, icono: CheckCircleRoundedIcon, color: "#2f8f6b" },
+                    { etiqueta: "No encontrados", valor: validador?.noEncontrados ?? 0, icono: HourglassTopRoundedIcon, color: "var(--azul-timbox)" },
+                    { etiqueta: "Errores", valor: validador?.errores ?? 0, icono: WarningAmberRoundedIcon, color: "#d59b2d" },
+                  ].map((item) => {
+                    const Icono = item.icono;
 
-            <Panel titulo="Solicitudes recientes" subtitulo="Ultimos registros recibidos desde el sitio publico">
-              <SolicitudesRecientes solicitudes={resumen?.contacto.recientes ?? []} />
-            </Panel>
-          </Box>
-
-          <Box sx={{ display: "grid", gridTemplateColumns: { xs: "1fr", xl: "1fr 1fr" }, gap: 2.4 }}>
-            <Panel titulo="Uso del validador CFDI" subtitulo="Validaciones ejecutadas durante los ultimos 14 dias">
-              <SerieBarras datos={resumen?.validador.porDia ?? []} color="var(--azul-timbox)" />
-            </Panel>
-
-            <Panel titulo="Resultados del validador" subtitulo="Lectura rapida de vigentes, cancelados y errores">
-              <BarrasHorizontales datos={resumen?.validador.porResultado ?? []} total={resumen?.validador.total ?? 0} />
-              <Box sx={{ mt: 2.4, display: "grid", gridTemplateColumns: { xs: "1fr", sm: "repeat(3, 1fr)" }, gap: 1.2 }}>
-                {[
-                  { etiqueta: "Vigentes", valor: resumen?.validador.vigentes ?? 0, icono: CheckCircleRoundedIcon, color: "#2f8f6b" },
-                  { etiqueta: "No encontrados", valor: resumen?.validador.noEncontrados ?? 0, icono: HourglassTopRoundedIcon, color: "var(--azul-timbox)" },
-                  { etiqueta: "Errores", valor: resumen?.validador.errores ?? 0, icono: WarningAmberRoundedIcon, color: "#d59b2d" },
-                ].map((item) => {
-                  const Icono = item.icono;
-
-                  return (
-                    <Box key={item.etiqueta} sx={{ border: "1px solid #edf1f5", borderRadius: "8px", p: 1.4, display: "grid", gridTemplateColumns: "32px 1fr", gap: 1, alignItems: "center" }}>
-                      <Icono sx={{ color: item.color, fontSize: 26 }} />
-                      <Box>
-                        <Typography sx={{ color: "#6b7685", fontFamily: "var(--fuente-regular)", fontSize: 12.5 }}>
-                          {item.etiqueta}
-                        </Typography>
-                        <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 22, fontWeight: 900, lineHeight: 1 }}>
-                          {formatearNumero(item.valor)}
-                        </Typography>
+                    return (
+                      <Box key={item.etiqueta} sx={{ border: "1px solid #edf1f5", borderRadius: "8px", p: 1.4, display: "grid", gridTemplateColumns: "32px 1fr", gap: 1, alignItems: "center" }}>
+                        <Icono sx={{ color: item.color, fontSize: 26 }} />
+                        <Box>
+                          <Typography sx={{ color: "#6b7685", fontFamily: "var(--fuente-regular)", fontSize: 12.5 }}>
+                            {item.etiqueta}
+                          </Typography>
+                          <Typography sx={{ color: "var(--azul-timbox)", fontFamily: "var(--fuente-regular)", fontSize: 22, fontWeight: 900, lineHeight: 1 }}>
+                            {formatearNumero(item.valor)}
+                          </Typography>
+                        </Box>
                       </Box>
-                    </Box>
-                  );
-                })}
-              </Box>
-            </Panel>
+                    );
+                  })}
+                </Box>
+              </Panel>
+            </Box>
           </Box>
         </>
       )}
