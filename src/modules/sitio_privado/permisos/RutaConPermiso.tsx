@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 import { Box, Typography } from "@mui/material";
 import LockOutlineRoundedIcon from "@mui/icons-material/LockOutlineRounded";
 import { opcionesMenuPrivado } from "../layout/opcionesMenuPrivado";
-import { tieneAccesoPantalla } from "../permisos/tieneAccesoPantalla";
+import { tieneAccesoPantalla } from "./tieneAccesoPantalla";
 
 interface RutaConPermisoProps {
   clave: string;

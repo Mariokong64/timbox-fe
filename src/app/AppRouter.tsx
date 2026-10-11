@@ -1,7 +1,7 @@
 // src/app/AppRouter.tsx
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
-import { InicioPrivado, RutaConPermiso } from "../modules/sitio_privado/components/RutaConPermiso";
-import { RutaPrivada } from "../modules/sitio_privado/components/RutaPrivada";
+import { InicioPrivado, RutaConPermiso } from "../modules/sitio_privado/permisos/RutaConPermiso";
+import { RutaPrivada } from "../modules/sitio_privado/permisos/RutaPrivada";
 import { LayoutPrivado } from "../modules/sitio_privado/layout/LayoutPrivado";
 import { Login } from "../modules/sitio_privado/login/vista/Login";
 import { DashboardPrivado } from "../modules/sitio_privado/pages/dashboard/vista/DashboardPrivado";

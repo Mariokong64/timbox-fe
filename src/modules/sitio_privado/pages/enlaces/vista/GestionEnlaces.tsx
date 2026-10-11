@@ -2,22 +2,15 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Box,
   Chip,
-  CircularProgress,
   IconButton,
-  InputAdornment,
   Switch,
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
   TableRow,
-  TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import RefreshRoundedIcon from "@mui/icons-material/RefreshRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 import {
   cambiarActivo,
   guardarEnlace,
@@ -31,6 +24,7 @@ import {
 import { ModalEnlace } from "./ModalEnlace";
 import { AlertasServicio } from "../../../../../shared/components/AlertasServicio";
 import { usePermisosPantalla } from "../../../permisos/usePermisosPantalla";
+import { TablaPrivada } from "../../../components/TablaPrivada";
 
 interface Alerta {
   tipo: "success" | "error";
@@ -177,92 +171,73 @@ export function GestionEnlaces() {
         </Tooltip>
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 1, mb: 1.8 }}>
-        <Chip label="Todas" onClick={() => setSeccionId("")} variant={seccionId ? "outlined" : "filled"} sx={!seccionId ? { bgcolor: "#ffe8e3", color: "var(--rojo-timbox)", fontWeight: 700 } : undefined} />
-        {secciones.map((seccion) => (
-          <Chip
-            key={seccion.id}
-            label={seccion.nombre}
-            onClick={() => setSeccionId(seccion.id)}
-            variant={seccionId === seccion.id ? "filled" : "outlined"}
-            sx={seccionId === seccion.id ? { bgcolor: "#ffe8e3", color: "var(--rojo-timbox)", fontWeight: 700 } : undefined}
-          />
+      <TablaPrivada
+        busqueda={busqueda}
+        onCambiarBusqueda={setBusqueda}
+        herramientas={
+          <>
+            <Chip label="Todas" onClick={() => setSeccionId("")} variant={seccionId ? "outlined" : "filled"} sx={!seccionId ? { bgcolor: "#ffe8e3", color: "var(--rojo-timbox)", fontWeight: 700 } : undefined} />
+            {secciones.map((seccion) => (
+              <Chip
+                key={seccion.id}
+                label={seccion.nombre}
+                onClick={() => setSeccionId(seccion.id)}
+                variant={seccionId === seccion.id ? "filled" : "outlined"}
+                sx={seccionId === seccion.id ? { bgcolor: "#ffe8e3", color: "var(--rojo-timbox)", fontWeight: 700 } : undefined}
+              />
+            ))}
+            <Typography sx={{ fontWeight: 800, ml: { sm: 1 } }}>
+              {visibles.length} {visibles.length === 1 ? "registro" : "registros"}
+            </Typography>
+          </>
+        }
+        columnas={[
+          { id: "clave", titulo: "Clave" },
+          { id: "seccion", titulo: "Sección" },
+          { id: "url", titulo: "URL" },
+          ...(editar ? [{ id: "activo", titulo: "Activo", align: "center" as const }] : []),
+          { id: "actualizacion", titulo: "Última Actualización" },
+          ...(editar ? [{ id: "acciones", titulo: "Acciones", align: "center" as const }] : []),
+        ]}
+        anchoMinimo={editar ? 900 : 700}
+        cargando={cargando}
+        vacia={visibles.length === 0}
+        mensajeCargando="Cargando enlaces..."
+        mensajeVacio="No hay resultados en esta sección."
+        descripcionVacio="Prueba con otros filtros de búsqueda."
+        filas={visibles.map((enlace) => (
+          <TableRow key={enlace.id} hover>
+            <TableCell sx={{ fontWeight: 700, maxWidth: 240, overflowWrap: "anywhere" }}>{enlace.clave}</TableCell>
+            <TableCell>{enlace.seccion.nombre}</TableCell>
+            <TableCell sx={{ maxWidth: 520 }}>
+              <Typography
+                component="a"
+                href={enlace.url}
+                target="_blank"
+                rel="noreferrer"
+                sx={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", color: "#1769aa", overflowWrap: "anywhere" }}
+              >
+                {enlace.url}
+              </Typography>
+            </TableCell>
+            {editar && (
+              <TableCell align="center">
+                <Switch checked={enlace.activo} disabled={guardando} onChange={() => void alternarActivo(enlace)} size="small" sx={{ "& .MuiSwitch-switchBase.Mui-checked": { color: "var(--rojo-timbox)" } }} />
+              </TableCell>
+            )}
+            <TableCell sx={{ whiteSpace: "nowrap" }}>{formatearFecha(enlace.fechaActualizacion)}</TableCell>
+            {editar && (
+              <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
+                <Tooltip title="Editar URL y estado">
+                  <IconButton onClick={() => setEditando(enlace)} sx={{ color: "var(--azul-timbox)" }}>
+                    <EditRoundedIcon />
+                  </IconButton>
+                </Tooltip>
+              </TableCell>
+            )}
+          </TableRow>
         ))}
-        <Typography sx={{ fontWeight: 800, ml: { sm: 1 } }}>
-          {visibles.length} {visibles.length === 1 ? "registro" : "registros"}
-        </Typography>
-        <TextField
-          size="small"
-          placeholder="Buscar en estos resultados..."
-          value={busqueda}
-          onChange={(event) => setBusqueda(event.target.value)}
-          sx={{ ml: { sm: "auto" }, width: { xs: "100%", sm: 340 }, "& .MuiOutlinedInput-root": { borderRadius: "20px" } }}
-          slotProps={{ input: { startAdornment: <InputAdornment position="start"><SearchRoundedIcon /></InputAdornment> } }}
-        />
-      </Box>
-
-      <Box sx={{ border: "1px solid #dce1e7", borderRadius: "8px", overflow: "hidden", bgcolor: "white" }}>
-        {cargando ? (
-          <Box sx={{ py: 8, display: "grid", placeItems: "center", gap: 1.5 }}>
-            <CircularProgress size={30} sx={{ color: "var(--rojo-timbox)" }} />
-            <Typography color="#687485">Cargando enlaces...</Typography>
-          </Box>
-        ) : visibles.length === 0 ? (
-          <Box sx={{ py: 8, textAlign: "center" }}>
-            <Typography sx={{ fontWeight: 700 }}>No hay resultados en esta sección.</Typography>
-            <Typography sx={{ color: "#6b7685", mt: 0.5 }}>Prueba con otros filtros de búsqueda.</Typography>
-          </Box>
-        ) : (
-          <Box sx={{ overflowX: "auto", maxHeight: "calc(100vh - 300px)", overflowY: "auto" }}>
-            <Table stickyHeader sx={{ minWidth: editar ? 900 : 700 }}>
-              <TableHead>
-                <TableRow sx={{ "& th": { bgcolor: "var(--azul-timbox)", color: "white", fontWeight: 800 } }}>
-                  <TableCell>Clave</TableCell>
-                  <TableCell>Sección</TableCell>
-                  <TableCell>URL</TableCell>
-                  {editar && <TableCell align="center">Activo</TableCell>}
-                  <TableCell>Última Actualización</TableCell>
-                  {editar && <TableCell align="center">Acciones</TableCell>}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {visibles.map((enlace) => (
-                  <TableRow key={enlace.id} hover>
-                    <TableCell sx={{ fontWeight: 700, maxWidth: 240, overflowWrap: "anywhere" }}>{enlace.clave}</TableCell>
-                    <TableCell>{enlace.seccion.nombre}</TableCell>
-                    <TableCell sx={{ maxWidth: 520 }}>
-                      <Typography
-                        component="a"
-                        href={enlace.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        sx={{ display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical", overflow: "hidden", color: "#1769aa", overflowWrap: "anywhere" }}
-                      >
-                        {enlace.url}
-                      </Typography>
-                    </TableCell>
-                    {editar && (
-                      <TableCell align="center">
-                        <Switch checked={enlace.activo} disabled={guardando} onChange={() => void alternarActivo(enlace)} size="small" sx={{ "& .MuiSwitch-switchBase.Mui-checked": { color: "var(--rojo-timbox)" } }} />
-                      </TableCell>
-                    )}
-                    <TableCell sx={{ whiteSpace: "nowrap" }}>{formatearFecha(enlace.fechaActualizacion)}</TableCell>
-                    {editar && (
-                      <TableCell align="center" sx={{ whiteSpace: "nowrap" }}>
-                        <Tooltip title="Editar URL y estado">
-                          <IconButton onClick={() => setEditando(enlace)} sx={{ color: "var(--azul-timbox)" }}>
-                            <EditRoundedIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    )}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        )}
-      </Box>
+      />
 
       {editar && editando && (
         <ModalEnlace

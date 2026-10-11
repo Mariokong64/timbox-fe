@@ -1,17 +1,14 @@
+import { useState } from "react";
 import {
-  Box,
   IconButton,
-  Table,
-  TableBody,
   TableCell,
-  TableHead,
   TableRow,
   Tooltip,
-  Typography,
 } from "@mui/material";
 import DeleteOutlineRoundedIcon from "@mui/icons-material/DeleteOutlineRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import type { UsuarioListado } from "../servicio/usuariosServicio";
+import { TablaPrivada } from "../../../components/TablaPrivada";
 
 interface TablaUsuariosProps {
   usuarios: UsuarioListado[];
@@ -42,94 +39,65 @@ function formatearFecha(valor?: string | null): string {
 
 export function TablaUsuarios({ usuarios, cargando, puedeEditar, puedeEliminar, onEditar, onEliminar }: TablaUsuariosProps) {
   const mostrarAcciones = puedeEditar || puedeEliminar;
-
-  if (cargando) {
-    return (
-      <Box sx={{ py: 6, textAlign: "center", color: "#637083" }}>
-        <Typography sx={{ fontFamily: "var(--fuente-regular)" }}>Cargando usuarios...</Typography>
-      </Box>
-    );
-  }
-
-  if (usuarios.length === 0) {
-    return (
-      <Box sx={{ py: 6, textAlign: "center", color: "#637083" }}>
-        <Typography sx={{ fontFamily: "var(--fuente-regular)" }}>Todavía no hay usuarios registrados.</Typography>
-      </Box>
-    );
-  }
+  const [busqueda, setBusqueda] = useState("");
+  const consulta = busqueda.trim().toLocaleLowerCase("es");
+  const visibles = usuarios.filter((usuario) =>
+    !consulta || [usuario.usuario, usuario.nombre, usuario.correo, formatearFecha(usuario.fechaRegistro)]
+      .some((valor) => valor.toLocaleLowerCase("es").includes(consulta))
+  );
 
   return (
-    <Box sx={{ width: "100%", overflowX: "auto" }}>
-      <Table
-        sx={{
-          minWidth: mostrarAcciones ? 840 : 740,
-          border: "1px solid #dce1e7",
-          "& th": {
-            bgcolor: "var(--azul-timbox)",
-            color: "var(--blanco-timbox)",
-            fontFamily: "var(--fuente-regular)",
-            fontSize: 15,
-            fontWeight: 700,
-          },
-          "& td": {
-            color: "var(--azul-timbox)",
-            fontFamily: "var(--fuente-regular)",
-            fontSize: 14,
-          },
-          "& th, & td": {
-            borderBottom: "1px solid #dce1e7",
-          },
-        }}
-      >
-        <TableHead>
-          <TableRow>
-            <TableCell>Usuario</TableCell>
-            <TableCell>Nombre</TableCell>
-            <TableCell>Correo</TableCell>
-            <TableCell>Registro</TableCell>
-            {mostrarAcciones && <TableCell align="center">Acciones</TableCell>}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {usuarios.map((usuario) => (
-            <TableRow key={usuario.id} hover>
-              <TableCell>{usuario.usuario}</TableCell>
-              <TableCell>{usuario.nombre}</TableCell>
-              <TableCell>{usuario.correo}</TableCell>
-              <TableCell>{formatearFecha(usuario.fechaRegistro)}</TableCell>
-              {mostrarAcciones && (
-                <TableCell align="center">
-                  {puedeEditar && (
-                    <Tooltip title="Editar usuario">
-                      <IconButton
-                        type="button"
-                        aria-label={`Editar ${usuario.usuario}`}
-                        onClick={() => onEditar(usuario)}
-                        sx={{ color: "var(--azul-timbox)" }}
-                      >
-                        <EditRoundedIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                  {puedeEliminar && (
-                    <Tooltip title="Eliminar usuario">
-                      <IconButton
-                        type="button"
-                        aria-label={`Eliminar ${usuario.usuario}`}
-                        onClick={() => onEliminar(usuario)}
-                        sx={{ color: "var(--rojo-timbox)" }}
-                      >
-                        <DeleteOutlineRoundedIcon />
-                      </IconButton>
-                    </Tooltip>
-                  )}
-                </TableCell>
+    <TablaPrivada
+      busqueda={busqueda}
+      onCambiarBusqueda={setBusqueda}
+      columnas={[
+        { id: "usuario", titulo: "Usuario" },
+        { id: "nombre", titulo: "Nombre" },
+        { id: "correo", titulo: "Correo" },
+        { id: "registro", titulo: "Registro" },
+        ...(mostrarAcciones ? [{ id: "acciones", titulo: "Acciones", align: "center" as const }] : []),
+      ]}
+      anchoMinimo={mostrarAcciones ? 840 : 740}
+      cargando={cargando}
+      vacia={visibles.length === 0}
+      mensajeCargando="Cargando usuarios..."
+      mensajeVacio={consulta ? "No hay usuarios que coincidan con la búsqueda." : "Todavía no hay usuarios registrados."}
+      filas={visibles.map((usuario) => (
+        <TableRow key={usuario.id} hover>
+          <TableCell>{usuario.usuario}</TableCell>
+          <TableCell>{usuario.nombre}</TableCell>
+          <TableCell>{usuario.correo}</TableCell>
+          <TableCell>{formatearFecha(usuario.fechaRegistro)}</TableCell>
+          {mostrarAcciones && (
+            <TableCell align="center">
+              {puedeEditar && (
+                <Tooltip title="Editar usuario">
+                  <IconButton
+                    type="button"
+                    aria-label={`Editar ${usuario.usuario}`}
+                    onClick={() => onEditar(usuario)}
+                    sx={{ color: "var(--azul-timbox)" }}
+                  >
+                    <EditRoundedIcon />
+                  </IconButton>
+                </Tooltip>
               )}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Box>
+              {puedeEliminar && (
+                <Tooltip title="Eliminar usuario">
+                  <IconButton
+                    type="button"
+                    aria-label={`Eliminar ${usuario.usuario}`}
+                    onClick={() => onEliminar(usuario)}
+                    sx={{ color: "var(--rojo-timbox)" }}
+                  >
+                    <DeleteOutlineRoundedIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
+            </TableCell>
+          )}
+        </TableRow>
+      ))}
+    />
   );
 }

@@ -226,23 +226,14 @@ export function Usuarios() {
         )}
       </Box>
 
-      <Box
-        sx={{
-          border: "1px solid #dce1e7",
-          borderRadius: "8px",
-          overflow: "hidden",
-          bgcolor: "var(--blanco-timbox)",
-        }}
-      >
-        <TablaUsuarios
-          usuarios={usuarios}
-          cargando={cargando}
-          puedeEditar={editar}
-          puedeEliminar={eliminar}
-          onEditar={abrirEdicion}
-          onEliminar={solicitarEliminacion}
-        />
-      </Box>
+      <TablaUsuarios
+        usuarios={usuarios}
+        cargando={cargando}
+        puedeEditar={editar}
+        puedeEliminar={eliminar}
+        onEditar={abrirEdicion}
+        onEliminar={solicitarEliminacion}
+      />
 
       {modalAbierto && (
         <ModalUsuario
