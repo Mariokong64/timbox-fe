@@ -496,7 +496,6 @@ export function DetalleSolicitudFormulario({
                   fontSize: 11.5,
                 }}
               >
-                Se guardará en la base de datos y se enviará al correo registrado.
               </Typography>
               <Button
                 type="submit"
